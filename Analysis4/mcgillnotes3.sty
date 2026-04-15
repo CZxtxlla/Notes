@@ -10,34 +10,39 @@
 %\RequirePackage{mathpazo} % Palatino Font
 %\RequirePackage{lmodern}
 \RequirePackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\RequirePackage[dvipsnames]{xcolor}
 \RequirePackage{mathtools,amsmath,amssymb,amsthm,amsfonts}
-\mathtoolsset{showonlyrefs=false} 
+\mathtoolsset{showonlyrefs=false}
 \RequirePackage{dsfont,nicefrac}
 \RequirePackage{titletoc}
-\RequirePackage[dvipsnames, svgnames, x11names]{xcolor}
 \RequirePackage{tikz,pgfplots}
 \usepgfplotslibrary{colormaps}
-\RequirePackage[labelfont=bf,textfont=md,font=small, font=footnotesize]{caption}
+\RequirePackage[labelfont=bf,textfont=md,font=small,font=footnotesize]{caption}
 \RequirePackage{capt-of}
 \RequirePackage{etoolbox}
 \RequirePackage{lettrine}
 \RequirePackage{tcolorbox}
-\tcbuselibrary{skins, breakable, theorems}
+\tcbuselibrary{skins,breakable,theorems}
 \RequirePackage{array,tabularx,booktabs}
 \RequirePackage{fancyhdr}
 \RequirePackage{setspace}
-\RequirePackage{marginnote} 
-
-% --- INDEXING PACKAGE ---
+\RequirePackage{marginnote}
 \RequirePackage{imakeidx}
-\makeindex[columns=2, title=Index, intoc] 
-
-% --- TITLES & FORMATTING (Must be loaded here) ---
+\makeindex
 \RequirePackage[explicit,newlinetospace]{titlesec}
 
 % --- HYPERREF (Must be loaded after most packages) ---
-\RequirePackage[colorlinks=true, linkcolor=MidnightBlue, urlcolor=MidnightBlue, citecolor=MidnightBlue]{hyperref}
+\RequirePackage{hyperref}
 \RequirePackage{cleveref}
+
+\definecolor{MidnightBlue}{RGB}{25,25,112}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=MidnightBlue,
+    citecolor=MidnightBlue,
+    urlcolor=MidnightBlue,
+    filecolor=MidnightBlue
+}
 
 % Line spacing
 \setstretch{1.05}
@@ -48,35 +53,32 @@
 \RequirePackage{geometry}
 
 \geometry{
-    left=13mm, 
-    textwidth=145mm, 
-    marginparsep=8mm, 
-    marginparwidth=45mm,
-    top=25mm,
-    bottom=20mm
+        left=13mm,
+        textwidth=145mm,
+        marginparsep=8mm,
+        marginparwidth=45mm,
+        bottom=20mm
 }
 
 % Redefine \maketitle to use centered geometry for title page
 \let\oldmaketitle\maketitle
 \renewcommand{\maketitle}{%
-  \newgeometry{margin=1in}% Symmetric margins for title page
-  \oldmaketitle
-  \restoregeometry% Return to main layout
+    \newgeometry{margin=1in}% Symmetric margins for title page
+    \oldmaketitle
+    \restoregeometry% Return to main layout
 }
 
 % Start section numbering at 1
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
 
-% --- HEADERS AND FOOTERS ---
 \pagestyle{fancy}
 \fancyhfoffset[R]{8mm + 45mm} % Extend header to include margin
-\fancyhead{} 
-\fancyhead[L]{\small \sffamily \color{gray} \rightmark} 
-\fancyhead[R]{\small \bfseries \thepage} 
-\fancyfoot{} 
+\fancyhead{}
+\fancyhead[L]{\small \sffamily \color{gray} \rightmark}
+\fancyhead[R]{\small \bfseries \thepage}
+\fancyfoot{}
 \renewcommand{\headrulewidth}{0pt}
-
 \renewcommand{\sectionmark}[1]{\markright{#1}}
 
 %----------------------------------------------------------------------------------------
@@ -88,20 +90,19 @@
 
 % 1. Format SECTION
 % When a new Section starts, we reset the Subsection Name to "Introduction"
-% This handles words defined before the first subsection appears.
 \titleformat{\section}
-  {\normalfont\Large\sffamily\bfseries\color{MidnightBlue}} % Format
-  {\thesection} % Label
-  {1em} % Separator
-  {#1\gdef\currentSubsectionName{Introduction}} % Title Code + Reset Subsec Name
+    {\normalfont\Large\sffamily\bfseries\color{MidnightBlue}} % Format
+    {\thesection} % Label
+    {1em} % Separator
+    {#1\gdef\currentSubsectionName{Introduction}} % Title Code + Reset Subsec Name
 
 % 2. Format SUBSECTION
 % We capture the subsection title immediately here
 \titleformat{\subsection}
-  {\normalfont\large\sffamily\bfseries\color{MidnightBlue}}
-  {\thesubsection}
-  {1em}
-  {#1\gdef\currentSubsectionName{#1}} % Capture Title
+    {\normalfont\large\sffamily\bfseries\color{MidnightBlue}}
+    {\thesubsection}
+    {1em}
+    {#1\gdef\currentSubsectionName{#1}} % Capture Title
 
 %----------------------------------------------------------------------------------------
 %   4. MARGINALIA & FOOTNOTES SETTINGS
@@ -140,9 +141,9 @@
 %----------------------------------------------------------------------------------------
 %   5. COLORS
 %----------------------------------------------------------------------------------------
-% Hayek Colors
-\definecolor{hayekRed}{RGB}{128, 0, 0}       
-\definecolor{hayekRedBack}{RGB}{250, 235, 235} 
+% theorem colors
+\definecolor{thmRed}{RGB}{128, 0, 0}       
+\definecolor{thmRedBack}{RGB}{250, 235, 235} 
 
 % Proof Color
 \definecolor{proofGray}{RGB}{240, 240, 240} 
@@ -160,14 +161,14 @@
 \definecolor{exBack}{RGB}{254, 247, 239}
 
 %----------------------------------------------------------------------------------------
-%   6. THEOREMS & ENVIRONMENTS (HAYEK STYLE)
+%   6. THEOREMS & ENVIRONMENTS
 %----------------------------------------------------------------------------------------
 \newcounter{thm}[subsection]
 \renewcommand{\thethm}{\thesubsection.\arabic{thm}}
 
-% --- BASE HAYEK STYLE DEFINITION ---
+% --- BASE STYLE DEFINITION ---
 \tcbset{
-    hayekstyle/.style={
+    thmstyle/.style={
         enhanced,
         breakable,
         arc=5pt,
@@ -182,16 +183,16 @@
 
 % --- THEOREM BOX ---
 \newtcolorbox{thm}[1][]{
-    hayekstyle,
-    colframe=hayekRed,
-    colback=hayekRedBack,
+    thmstyle,
+    colframe=thmRed,
+    colback=thmRedBack,
     title={Theorem \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
-    fonttitle=\bfseries\color{hayekRed}
+    fonttitle=\bfseries\color{thmRed}
 }
 
 % --- PROPOSITION BOX ---
 \newtcolorbox{prop}[1][]{
-    hayekstyle,
+    thmstyle,
     colframe=propPurple,
     colback=propBack,
     title={Proposition \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
@@ -200,7 +201,7 @@
 
 % --- LEMMA BOX ---
 \newtcolorbox{lem}[1][]{
-    hayekstyle,
+    thmstyle,
     colframe=lemGreen,
     colback=lemBack,
     title={Lemma \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
@@ -209,7 +210,7 @@
 
 % --- COROLLARY BOX ---
 \newtcolorbox{cor}[1][]{
-    hayekstyle,
+    thmstyle,
     colframe=propPurple,
     colback=propBack,
     title={Corollary \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
@@ -218,7 +219,7 @@
 
 % --- DEFINITION BOX ---
 \newtcolorbox{defn}[1][]{
-    hayekstyle,
+    thmstyle,
     colframe=defGreen,
     colback=defBack,
     title={Definition \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
@@ -227,7 +228,7 @@
 
 % --- EXAMPLE BOX ---
 \newtcolorbox{exmp}[1][]{
-    hayekstyle,
+    thmstyle,
     colframe=black,
     colback=white,
     title={Example \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
@@ -236,7 +237,7 @@
 
 % --- UPDATED GOAL/QUESTION/FACT/MOTIVATION BOX (Uniform Blue) ---
 \newtcolorbox{goal}[1][goal]{
-    hayekstyle,
+    thmstyle,
     colframe=goalBlue,
     colback=goalBack,
     title={%
@@ -317,6 +318,6 @@
 
 % \newword command: Groups words under "Subsection X.Y: [Title]" in the index
 \newcommand{\newword}[1]{%
-    \textit{\textcolor{hayekRed}{#1}}% Style
+    \textit{\textcolor{thmRed}{#1}}% Style
     \index{\indexsortkey @\textbf{\thesubsection: \currentSubsectionName}!#1}% Index logic
 }
