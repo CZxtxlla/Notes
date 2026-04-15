@@ -1,0 +1,2286 @@
+\section{Abstract Metric and Topological Spaces}
+\subsection{Metric Spaces Review }
+Throughout, assume $X$ is a non empty set.
+\begin{defn}[Metric]
+    $p : X \times X \to \R$ is called a \newword{metric}, and thus 
+    $(X, p)$ a metric space, if for all $x,y,z \in X$
+    \begin{itemize}
+        \item $p(x,y) \geq 0$, 
+        \item $p(x,y) = 0 \iff x = y$,
+        \item $p(x,y) = p(y,x)$,
+        \item $p(x,y) \leq p(x,z) + p(z,y)$ (Triangle Inequality).   
+    \end{itemize}
+\end{defn}
+
+\begin{defn}[Norm]
+    Let $X$ be a vector space.\footnote{closed under linear combinations} 
+    A function $\| \cdot \| : X \to [0,\infty)$ 
+    is called a \newword{norm}, and thus $(X, \| . \| )$ a \newword{normed vector space},
+     if for all $u,v \in X$ and $\alpha \in \R$
+    \begin{itemize}
+        \item $\| u \| = 0 \iff u = 0$,
+        \item $\| u + v \| \leq \| u \| + \| v \| $,
+        \item $\| \alpha u \| = \left| \alpha \right|  \| u \| $.
+    \end{itemize}
+\end{defn}
+
+\begin{rem}
+    A norm induces a metric by $p(x,y) := \| x-y \| $.
+\end{rem}
+
+\begin{exmp} Examples of normed vector spaces:
+    \begin{enumerate}
+        \item $(\R^n, \left| . \right| )$ where $\left| x \right| = ({x_1}^2 + \dots {x_n}^2)$
+        \item $L^p(E)$ for $E \subseteq \R^n, 1 \leq p \leq \infty $ where $\| f \|_{L^P(E)} =  
+        (\int_{E}^{}\left| f(x) \right|^p dx)^{\frac{1}{p}}$ 
+        \item Discrete metric: if $X$ is a non empty set, then $p(x,y) = \begin{cases}
+            0 & x = y \\
+            1 & x \neq y
+        \end{cases} $
+        \item $C([a, b]) = \left\{ f : [a,b] \to \R \mid f \text{ is continuous on }  [a,b] \right\} $ 
+        for $a, b \subseteq \R$. Then, $\| f \|_{\infty} := \sup_{x \in [a,b]} \left| f(x) \right| =
+        \max_{x \in [a,b]} \left| f(x) \right|$,  $p(f,g) = \| f - g \|_{\infty} $
+    \end{enumerate}
+\end{exmp}
+
+\begin{defn}[equivalent metrics]
+    Given two metrics $p, \sigma$ on $X$, we say they are \newword{equivalent} if
+    $\exists$ a $C > 0$ such that 
+    $\frac{1}{C}\sigma(x,y) \leq p(x,y) \leq C\sigma(x,y)$ for every $x,y \in X$.
+    A similar definition follows for equivalence of norms.     
+\end{defn}
+
+\noindent Given a metric space $(X, P)$, then, we have the notion of
+\begin{itemize}
+    \item open balls $B(x,r) = \left\{ y \in X : p(x,y) \leq r \right\} $ 
+    \item open sets (subsets of $X$ with the property that for every $x \in X$, there is a constant
+    $r > 0$ such that $B(x,r) \subseteq X$), closed sets, closures, and
+    \item \textit{convergence} 
+\end{itemize}
+
+\begin{defn}[Convergence]
+    $\left\{ x_n \right\}_{n = 1}^{\infty} \subseteq X $ \newword{converges} to $x$ in $(X, p)$ if 
+    $\lim_{n \to \infty} p(x_n, x) = 0$  
+\end{defn}
+
+\noindent We have several (equivalent) notions, then, of continuity; via sequences, 
+$\epsilon \ \text{--} \ \delta$ definition, and by pullbacks (inverse images of open sets are open).
+
+\begin{defn}[Uniform Continuity]
+    $f : (X,p) \to (\R, \left| . \right| )$ \newword{uniformly continuous} if $f$ has a 
+    "modulus of continuity", i.e. there is a continuous function 
+    $\omega : [0, \infty) \to [0, \infty)$ such that $\lim_{t \to 0^{+}} \omega(t) = 0 $, and 
+    \[
+        \left| f(x) - f(y) \right|  \leq \omega(p(x, y))
+    \]  
+    for every $x, y \in X$ 
+\end{defn}
+\begin{rem}
+    For instance, we say $f$ Lipschitz continuous if there is a constant 
+    $C > 0$ such that $\omega(.) = C (.)$. Let $\alpha \in (0,1)$. 
+    We say $f$ $\alpha$-Holder continuous if $\omega(.) = C(.)^\alpha$ for some constant $C$.      
+\end{rem}
+\begin{defn}[Completeness]
+    We say $(X, p)$ \newword{complete} if every Cauchy sequence in $(X, p)$ converges
+    to a point in $X$. 
+\end{defn}
+
+\begin{rem}
+    let $E \subseteq X$ and $(X, p)$ complete metric space. Then $(E, p)$ is complete iff
+    $E \subseteq X$ is closed (so limits belong to E) 
+\end{rem}  
+
+\subsection{Compactness, Separability}
+
+\begin{defn}[Open Cover, Compactness]
+    $\left\{ X_\lambda \right\}_{\lambda \in \Lambda} \subseteq 2^X$
+    \footnote{$2^X$ denotes the power set of $X$, i.e. the set of all subsets of $X$.},
+    where $X_\lambda$ open in $X$ and $\Lambda$ an arbitrary index set, an \newword{open cover} 
+    of $X$ if for every $x \in X$, $\exists \lambda \in \Lambda$ such that $x \in X_\lambda$.
+    \footnote{A cover is finite if $\left| \Lambda \right| < \infty$ }
+    $X$ is \newword{compact} if every open cover of $X$ admits a finite subcover. 
+    We say $E \subseteq X$ compact if $(E, p)$ compact.  
+\end{defn}
+
+\begin{rem}
+    for $E \subseteq X$, $X_\lambda \subseteq E$ is open in $(E, p)$ iff $X_\lambda$ is open in $(X, p)$
+    Therefore, $E \subseteq X$ is compact iff every open cover of $E$ (in $X$) has a finite subcover.     
+\end{rem}
+
+\begin{rem}
+    This definition leads to another definition of compactness 
+    based on the finite intersection property.
+\end{rem}
+
+One useful consequence of this result is if $(X, p)$ is compact metric space, and 
+$\left\{ E_k \right\}_{k = 1}^{\infty} \subseteq X$ closed, and $E_{k + 1} \subseteq E_k \forall k$, 
+$\cap_{k = 1}^{\infty} E_k \neq \emptyset$.  
+
+\begin{defn}[Totally Bounded, $\epsilon$-nets]
+    $(X, p)$ is \newword{totally bounded} if 
+    $\forall \epsilon > 0$, there is a finite cover of $X$ of balls with radius $\epsilon > 0$.
+    \footnote{Totally bounded implies $(X, p)$ is bounded}
+    If $E \subseteq X$, an $\epsilon$-net of $E$ is a collection 
+    $\left\{ B(x_i, \epsilon) \right\}^N_{i=1} $ such that 
+    $E \subseteq \bigcup^N_{i=1} B(x_i, \epsilon)$ and $x_i \in X$ 
+    (note that $x_i$ need not be in $E$).
+\end{defn}
+
+\begin{defn}[Sequentially Compact]
+    $(X, p)$ \newword{sequentially compact} if every sequence in $X$ has
+    a convergent subsequence whose limit is in $X$. 
+\end{defn}
+
+\begin{defn}[Relatively/Pre-Compact]
+    $E \subseteq X$ \newword{precompact} if $\overline{E}$ compact.   
+\end{defn}
+
+\begin{thm}
+    TFAE:
+    \begin{enumerate}
+        \item $X$ complete and totally bounded;
+        \item $X$ compact;
+        \item $X$ sequentially compact.
+    \end{enumerate}
+\end{thm}
+
+\begin{rem} TFAE:
+    \begin{enumerate}
+        \item $E$ is totally bdd and Cauchy Seq. converge
+        \item $E$ is precompact
+        \item $\forall \left\{ x_k \right\}_{k = 1}^{\infty} \subseteq E, \exists$ a convergent subsequence   
+    \end{enumerate}
+
+\end{rem}  
+
+\noindent Let $f: (X, p) \to (\R, \left| . \right| )$ continuous with $(X, p)$ compact. Then,
+\begin{itemize}
+    \item $f(X)$ compact in $(\R, \left| . \right| )$;
+    \item The max and min of $f$ over $X$ are attained;  
+    \item $f$ is uniformly continuous. 
+\end{itemize}
+
+\begin{lem}
+    Any cauchy sequence \footnote{$\forall \epsilon > 0, \exists N > 0 $ s.t. $\forall m, n > N$,
+    $\| x_n - x_m \| < \epsilon$   }
+     converges iff it has a convergent subsequence.
+\end{lem}
+\begin{comment}
+\begin{proof} \mbox{}\\
+    $\Rightarrow$ trivial. 
+    \newline
+    $\Leftarrow$ Let $\left\{ x_n \right\}_{n \in \N}$ be cauchy in a metric space $(X, p)$ with
+    convergent subsequence $\left\{ x_{n_k} \right\}_{k \in \N}$ which converges to some $x \in X$.
+    Fix $\epsilon > 0$. Let $N \geq 1$ be such that for all 
+    $m, n \geq N$, $p(x_n, x_m) < \frac{\epsilon}{2}$. Let $K \geq 1$ be such that for all 
+    $k \geq K$, $p(x_{n_k}, x) < \frac{\epsilon}{2}$. Let $n, n_k \geq \max{\left\{ N, K \right\} }$, then       
+    \[
+        p(x_n, x) \leq p(x_n, x_{n_{k}}) + p(x_{n_{k}}, x) < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon
+    \] 
+    Therefore, $\lim_{n \to \infty} x_n = x$.
+\end{proof}
+
+\begin{proof} \mbox{}\\
+    $\Rightarrow$ 
+    If $\{f_{n}\}_{n=1}^{\infty} $ converges, then $\exists f : X \to \R$ s.t. $
+    \| f_n - f \|_{\infty} \to 0 $, so all subsequences also converge to $f$. 
+    \newline $\Leftarrow$  
+    Now assume $\exists$ a subsequence $\{f_{n_k}\}_{k=1}^{\infty} \subseteq C(X)$ s.t. 
+    $\lim_{k \to \infty} f_{n_k} = f$ in $C(X) \iff \| f_{n_k} - f \|_{\infty} \to 0$.      
+    Suppose for the purpose of contradiction that $f_n \not\to f$. Thus, $\exists \epsilon > 0$, 
+    and a subsequence $\{f_{n_j}\}_{j=1}^{\infty} \subseteq C(X)$ s.t. $\| f_{n_j} -f  \|_{\infty} 
+    > \epsilon$ for every $j \geq 1$. Then, \[ \| f_{n_k} - f_{n_j} \|_{\infty} \geq  \| f_{n_j} - f \|
+    _{\infty} -\| f - f_{n_k} \|_{\infty} > \epsilon - \frac{\epsilon}{2} = \frac{\epsilon}{2}\] for k 
+    sufficiently large and for $n_k, n_j$ large enough. But this violates $\{f_{n}\}_{n=1}^{\infty} $ 
+    being cauchy. (Contradiction), so we must have $f_n \to f$ in $C(X)$.
+\end{proof}
+\end{comment}
+\begin{proof} \leavevmode
+\begin{description}
+    \item[($\Rightarrow$)] 
+    If $\{f_{n}\}_{n=1}^{\infty} $ converges, then $\exists f : X \to \mathbb{R}$ s.t. 
+    $\| f_n - f \|_{\infty} \to 0$, so all subsequences also converge to $f$.
+    
+    \item[($\Leftarrow$)] 
+    Now assume $\exists$ a subsequence $\{f_{n_k}\}_{k=1}^{\infty} \subseteq C(X)$ s.t. 
+    $\lim_{k \to \infty} f_{n_k} = f$ in $C(X) \iff \| f_{n_k} - f \|_{\infty} \to 0$.
+    
+    Suppose for the purpose of contradiction that $f_n \not\to f$. Thus, $\exists \epsilon > 0$, 
+    and a subsequence $\{f_{n_j}\}_{j=1}^{\infty} \subseteq C(X)$ s.t. $\| f_{n_j} -f  \|_{\infty} 
+    > \epsilon$ for every $j \geq 1$. Then, 
+    \[ 
+    \| f_{n_k} - f_{n_j} \|_{\infty} \geq  \| f_{n_j} - f \|_{\infty} -\| f - f_{n_k} 
+    \|_{\infty} > \epsilon - \frac{\epsilon}{2} = \frac{\epsilon}{2}
+    \] 
+    for $k$ sufficiently large and for $n_k, n_j$ large enough. But this violates 
+    $\{f_{n}\}_{n=1}^{\infty} $ being cauchy. (Contradiction), so we must have $f_n \to f$ 
+    in $C(X)$. \qedhere
+\end{description}
+\end{proof}
+
+\noindent Let $C(X) := \left\{ f : X \in \R \mid f \text{ continuous} \right\} $ and 
+$\| f \|_{\infty} := \max_{x \in X} \left| f(x) \right| $ the sup norm. Then,  
+
+\begin{prop}
+    Let $(X, p)$ compact. Then $(C(X), \| . \| _{\infty})$ is complete.
+\end{prop}
+\begin{comment}
+\begin{proof}
+    Let $\left\{ f_n \right\}_{n = 1}^{\infty} \subseteq C(X)$ Cauchy with respect to $\| . \| _{\infty}$. 
+    Then, there exists a subsequence $\left\{ f_{n_k} \right\} $ such that for each $k \geq 1$,
+    $\| f_{n_{k + 1}} - f_{n_k}\| \leq 2^{-k}$  
+    \newline
+    (To construct this subsequence, let $n_1 \geq 1$ be such that 
+    $\| f_n - f_{n_1}\|_{\infty} < \frac{1}{2} $ for all $n \geq n_1$, which exists since 
+    $\left\{ f_n  \right\} $ Cauchy. Then, for each $k \geq 1$, define inductively $n_{k + 1}$ 
+    such that $n_{k + 1} > n_k$ and $\| f_n - f_{n_{k + 1}} \| _{\infty} < \frac{1}{2^{k + 1}}$ 
+    for each $n \geq n_{k + 1}$. Then, for any $k \geq 1$, $\| f_{n_{k + 1}} - f_{n_k}\|_{\infty} < 2^{-k}$
+    , since $n_{k + 1} > n_k$.  ) .
+\end{proof}
+\end{comment}
+\begin{proof}
+    let $\{f_{n}\}_{n=1}^{\infty} \subseteq C(X)$ be Cauchy. Fix $k \in \N$. By Cauchy defn, let 
+    $\epsilon = 2^{-k}$, so $ \exists N_k$ sufficiently large s.t. $\| f_{N_k} - f_{{N_k} + 1} \|_{\infty}
+    < 2^{-k} $. We can then choose $\{n_{k}\}_{k=1}^{\infty} $ s.t. $n_k \to \infty$ and
+    $\| f_{n_k} - f_{n_{k + 1}} \| < 2^{-k} \quad \forall k \in \N$. Let $j \in \N$. Then
+    \[\| f_{n_{k + j}} - f_{n_k} \|_{\infty} \leq \sum_{\ell=k}^{k + j - 1} 
+    \| f_{n_{\ell + 1}} - f_{n_\ell} \|_{\infty} \leq \sum_{\ell=k}^{k + j - 1} 2^{-\ell} \leq 
+    \sum_{\ell=k}^{\infty} 2^{-\ell} \xrightarrow[k \to \infty]{} 0\]
+    In particular, $\forall x \in X$ fixed, let $c_k := f_{n_k}(x)$. Then $\left| c_{k + j} - c_k \right| 
+    \leq \| f_{n_{k + j}} - f_{n_k} \|_{\infty} \to 0 \quad \forall j \in \N$.
+    Thus $\{c_{k}\}_{k=1}^{\infty} \subseteq \R$ is cauchy, so by completeness of $\R$,
+    $\exists \overline{c} \in \R$ s.t. $\lim_{k \to \infty} c_k = \overline{c} =: f(x)$
+    Doing this $\forall x \in X$, we have 
+    \begin{align*}
+        \left| f_{n_k}(x) - f(x) \right| 
+        &= \lim_{j \to \infty} \left| f_{n_k}(x) - f_{n_{k + j}}(x) \right| \\
+        &\leq \lim_{j \to \infty} \| f_{n_k} - f_{n_{k + j}} \|_{\infty} \\
+        &\leq \sum_{\ell=k}^{\infty} 2^{-\ell} \xrightarrow[k \to \infty]{} 0
+    \end{align*}
+    $\Rightarrow \| f_{n_k} - f \|_{\infty} = \sup_{x \in X} \left| f_{n_k}(x) - f(x) \right|  
+    \xrightarrow[k \to \infty]{} 0$, so $f_{n_k} \to f$ in $C(X)$. 
+    Finally, by the lemma this implies $f_n \to f$ in $C(X)$, so
+    $(C(X), \| . \|_{\infty} )$ is complete.            
+\end{proof}
+
+\begin{defn}[Density/Separability]
+    A set $D \subseteq X$ is called \newword{dense} in $(X, p)$ if for every
+    \footnote{If $A$ dense in $X$, then $\overline{A}$ dense in $X$}  
+    nonempty open subset $A \subseteq X$, $D \cap A \neq \emptyset$. We say that $X$ is 
+    \newword{separable} if there is a countable dense subset $D \subseteq X$.    
+\end{defn}
+
+\begin{prop}
+    If $X$ compact, then $X$ is separable
+\end{prop}
+\begin{proof}
+    Since $X$ is compact, it is totally bounded. Therefore, for $n \in \N$, there is some
+    $K_n$ and $\left\{ x_i^n \right\} \subseteq X$ such that 
+    $X \subseteq \cup_{i = 1}^{K_n} B(x_i^n, \frac{1}{n})$. Then, 
+    $D = \cup_{n = 1}^{\infty}\cup_{i = 1}^{K_n} \left\{ x_i^n \right\} $ countable and 
+    dense in $X$ 
+\end{proof}
+
+\subsection{Arzelà-Ascoli}
+\begin{goal}
+    Given a sequence $\left\{ f_n \right\}_{n = 1}^{\infty} \subseteq C(X)$, find suitable conditions
+    for $\left\{ f_n \right\}$ to have a convergent subsequence in 
+    $(C(X), \| . \|_{\infty}) $.
+\end{goal}
+
+\begin{defn}[Equicontinuous]
+    A family $\mathcal{F} \subseteq C(X)$ is called \newword{equicontinuous} at
+    $x \in X$ if $\forall \epsilon > 0$ there exists a $\delta_x > 0$ such that 
+    if $p(x, x') < \delta_x$ then $\left| f(x) - f(x') \right| < \epsilon $ for every $f \in \mathcal{F}$.
+    $\mathcal{F}$ is \newword{pointwise equicontinuous} on $X$ if $\mathcal{F}$ is equicontinuous at
+    every point $x \in X$. \footnote{
+        if $\left| \mathcal{F} \right|  < \infty$, then $\mathcal{F}$ is pointwise equicontinuous on $X$.   
+    }      
+\end{defn}
+
+\begin{exmp}
+    Fix $M > 0, [a,b] \subseteq \R$. $\mathcal{F} := \left\{ f \in C([a,b]) \cap C'((a,b))
+    \mid \left| f' \right| \leq M \right\} $. By Mean Value Theorem, $\left| f(x) - f(y) \right|
+    \leq \left| f'(x^*) \right| \left| x - y \right| \leq M \left| x -y \right|  $ for some 
+    $x^* \in [x, y]$, so $\forall x \in [a,b]$ 
+    if $\left| x - y \right| < \frac{\epsilon}{M} $ then $\left| f(x) - f(y) \right| < \epsilon, 
+    \; \forall f \in \mathcal{F}$, therefore $\mathcal{F}$ is pointwise equicontinuous on $[a,b]$.     
+\end{exmp}
+
+\begin{exmp}
+    Consider $f_n(x) := x^n$ on $[0,1]$. Then $\{f_{n}\}_{n=1}^{\infty} $ is non equicontinuous
+    at $x = 1$. $f_n(1) = 1 \; \forall n$, but the threshold to be close to $f_n(1)$ is 
+    not uniform on n.
+    \begin{marginfigure}
+        \centering
+        \input{fn_graph.tex}
+        \caption{The sequence $f_n(x)=x^n$ is not equicontinuous.}
+    \end{marginfigure}
+\end{exmp}
+
+
+\begin{defn}[Pointwise, Uniform Boundedness]
+    $\left\{ f_n \right\}$ \newword{pointwise bounded} if $\forall x \in X, 
+    \exists M(x) > 0$ such that $\left| f_n(x) \right| \leq M(x) \ \forall n$, and 
+    \newword{uniformly bounded} if such an M exists independent of $x$.    
+\end{defn}
+
+\begin{defn}[Uniform Equicontinuous]
+    $\mathcal{F} \subseteq C(X)$ is \newword{uniformly equicontinuous} on
+    $X$ if $\forall \epsilon > 0 \; \exists \delta > 0$ s.t. $\forall x,y \in X$ if $p(x, y) < \delta$,
+    then $\left| f(x) - f(y) \right| < \epsilon, \; \forall f \in \mathcal{F}$.      
+\end{defn}
+
+\begin{rem}
+    $\mathcal{F} $ equicontinuous at x $\iff$ all $f \in \mathcal{F}$ share the same modulus of 
+    continuity at $x$, i.e. $\exists \omega_x$ s.t. $\left| f(x) - f(y) \right| 
+    \leq \omega_x \left| x - y \right|,\; \forall f \in \mathcal{F}$.      
+\end{rem} 
+\begin{prop}[Sufficient Conditions for Uniform Equicontinuity]
+\leavevmode
+\begin{enumerate}
+    \item $\mathcal{F} \subseteq C(X)$ is uniformly Lipschitz continuous, i.e. $\exists M > 0$
+    s.t. $\left| f(x) - f(y) \right| \leq Mp(x, y) \; \forall f \in \mathcal{F}$;
+    \item $\mathcal{F} \subseteq C(X) \cap C^1(X)$ has a uniform $L^\infty$ bound on the
+    1st derivative (same as earlier example, by MVT);
+    \item If $(X, p)$ is compact and $\mathcal{F} \subseteq C(X)$ is pointwise equicontinuous on 
+    $X$ $\Rightarrow \mathcal{F}$ is uniformly equicontinuous (Homework).          
+\end{enumerate}
+\end{prop}
+
+\begin{lem}[Arzelà-Ascoli Lemma]
+    Let $X$ be separable and let $\{f_{n}\}_{n=1}^{\infty} \subseteq C(X)$
+    be pointwise bounded and equicontinuous. Then, there is a function $f \subseteq C(X)$ 
+    and a subsequence $\{f_{n_k}\}_{k=1}^{\infty} $ which converges pointwise to $f$ on all of $X$.  
+\end{lem}
+
+\begin{proof}
+    Let $D = \{x_{j}\}_{j=1}^{\infty} \subseteq X$ be a countable dense subset of $X$. Since
+    $\left\{ f_n \right\} $ is pointwise bounded, $\left\{ f_n(x_1) \right\} $ as a sequence of 
+    real numbers is bounded and so by Bolzano-Weierstrass, there is a convergent 
+    subsequence $\left\{ f_{n(1, k)}(x_1) \right\}_k $ that converges to some $a_1 \in \R$.
+    Consider now $\left\{ f_{n(1, k)}(x_2) \right\}_k$, which is again a bounded sequence of $\R$
+    and so has a convergent subsequence, call it $\left\{ f_{n(2, k)}(x_2) \right\}_k$, which
+    converges to some $a_2 \in \R$. Note that
+    $\left\{ f_{n(2, k)} \right\} \subseteq \left\{ f_{n(1, k)} \right\} $, so also 
+    $f_{n(2, k)}(x_1) \to a_1$ as $k \to \infty$. We can repeat this procedure, producing
+    a sequence of real numbers $\left\{ a_\ell \right\} $, and for each $j \in \N$
+    a subsequence $\left\{ f_{n(j, k)}\right\}_k \subseteq \left\{ f_n \right\} $ such that
+    $f_{n(j, k)}(x_\ell) \to a_\ell$ for each $1 \leq \ell \leq j$. Define then
+    \[
+    f : D \to \R, \quad f(x_j) := a_j
+    \] 
+    Consider now
+    \[
+    f_{n_k} := f_{n(k, k)}, \quad k \geq 1
+    \]
+    the "diagonal sequence", and remark that $f_{n_k}(x_j) \to a_j = f(x_j)$ as $k \to \infty$
+    for every $j \geq 1$. Hence, $\left\{ f_{n_k} \right\}_k$ converges to $f$ on $D$, pointwise.
+    
+    We claim now that $\left\{ f_{n_k} \right\}_k$ converges on all of $X$ to some function
+    $f : X \to \R$, pointwise. Put $g_k := f_{n_k}$ for notational convenience. Fix $x_0 \in X,
+    \epsilon > 0$, and let $\delta_{x_0} > 0$ be such that if 
+    $x \in X$ such that $p(x, x_0) < \delta_{x_0}$,
+    $\left| g_k(x) - g_k(x_0) \right| < \frac{\epsilon}{3}$. Since $D$ is dense in $X$, 
+    $\exists x_j \in D$ s.t. $p(x_j, x_0) < \delta_{x_0}$. Since $\left\{ g_k(x_j) \right\}_k$ 
+    converges, it is thus Cauchy, and hence for every 
+    $k, \ell \geq K$, $\left| g_k(x_j) - g_\ell(x_j) \right| < \frac{\epsilon}{3}$. Therefore,
+    \[
+        \left| g_k(x_0) - g_\ell(x_0) \right| \leq 
+        \left| g_k(x_0) - g_k(x_j) \right| + \left| g_k(x_j) - g_\ell(x_j) \right| + 
+        \left| g_\ell(x_j) - g_\ell(x_0) \right| < \epsilon 
+    \]  
+    And thus $\left\{ g_k(x_0) \right\}_{k}  $ Cauchy as a sequence in $\R$. Since $\R$ is complete,
+    then $\left\{ g_k(x_0) \right\}_{k}$ also converges, to, say, $f(x_0) \in \R$. Since $x_0$ was
+    arbitrary, this means there is some function $f : X \to \R$ such that $g_k \to f$ pointwise
+    on $X$ as we aimed to show.    
+\end{proof}
+
+\begin{thm}[Arzelà-Ascoli Theorem]
+    Let $X$ be compact and let $\{f_{n}\}_{n=1}^{\infty} \subseteq C(X)$
+    be uniformly bounded and uniformly equiontinuous. Then, $\exists$ subseq 
+    $\{f_{n_k}\}_{k=1}^{\infty} $  and $f \in C(X)$ s.t. $f_{n_k} \xrightarrow[k \to \infty]{} f$ 
+    in $C(X)$ (i.e. uniformly)    
+\end{thm}
+\begin{comment}
+\begin{proof}
+    Since $(X, p)$ is compact, it is thus separable. Also, uniform bounded/equicontinuous implies
+    pointwise bounded/equicontinuous. Therefore, by Arzelà-Ascoli lemma, $\exists f: X \to \R$
+    and $\{f_{n_k}\}_{k=1}^{\infty} $ s.t. $f_{n_k} \to f$ pointwise in $X$.
+    Let $g_k := f_{n_k}$. 
+    \newline \underline{Claim:} $\{g_{k}\}_{k=1}^{\infty} $ is uniformly Cauchy
+    \footnote{Cauchy sequence in $(C(X), \| . \|_{\infty} )$  }
+    \newline Fix $\epsilon > 0$. By uniform equicontinuity, $\exists \delta > 0$ s.t. 
+    $p(x, y) < \delta \Rightarrow \left| f_n(x) - f_n(y)\right| < \frac{\epsilon}{3} \; 
+    \forall n \in \N$.
+    Letting $n = n_k$, $p(x, y) < \delta \Rightarrow \left| g_k(x) - g_k(y) \right| < 
+    \epsilon \; \forall k \in \N$.
+    Since $X$ is compact, it is totally bounded, so $\exists \{x_{i}\}_{i=1}^{N} $ s.t. 
+    $X \subseteq \bigcup_{i = 1}^N B^p(x_i, \delta)$
+    Moreover, $\forall 1\leq i \leq N$ fixed, we know $\{g_{k}\}_{k=1}^{\infty} x_i \subseteq \R$
+    converges becuase $\{g_{k}\}_{k=1}^{\infty} $ converges pointwise, so $\{g_{k}\}_{k=1}^{\infty}$
+    is a Cauchy sequenece. So $\exists K_i > 0 $ s.t. $\forall k, \ell \geq K_i$, 
+    $\left| g_k(x_i) - g_\ell(x_i) \right| \leq \frac{\epsilon}{3}$
+    Let $K := \max_{1 \leq i \leq N}{K_i}$. Then, $\forall k, \ell \geq K$, we have
+    $\left| g_k(x_i) - g_\ell(x_i) \right| \leq \frac{\epsilon}{3} \quad \forall 1 \leq i \leq N$.
+    So $\forall x + X \subseteq \cup_{i = 1}^N B^p(x_i, \delta). \exists x_i $ s.t. 
+    $p(x, x_i) < \delta$, and $\forall k, \ell > K,$
+    \[
+        \left| g_k(x) - g_\ell(x) \right| \leq 
+        \left| g_k(x) - g_k(x_i) \right| + \left| g_k(x_i) - g_\ell(x_i) \right| + 
+        \left| g_\ell(x_i) - g_\ell(x) \right| < \epsilon
+    \]            
+    $\Rightarrow \forall \epsilon > 0, \exists K > 0 $ s.t. $\forall k, \ell > K$,
+    $\| g_k - g_\ell \|_{\infty} = \sup_{x \in X} \left| g_k(x) - g_\ell(x) \right| < \epsilon$, 
+    so $\{g_{k}\}_{k=1}^{\infty} $ is uniformly Cauchy. Since $(X, p)$ is compact, $C(X)$ is complete, 
+    so $\{g_{k}\}_{k=1}^{\infty} = \{f_{n_k}\}_{k=1}^{\infty} $ converges uniformly. 
+    Since $f_{n_k} \to f$ pointwise in $X$, it must be that $f_{n_k} \to f$ uniformly, 
+    and thus $f \in C(X)$.        
+\end{proof}
+\end{comment}
+\begin{proof}
+    Since $(X, p)$ is compact, it is thus separable. Also, uniform bounded/\\equicontinuous 
+    implies pointwise bounded/equicontinuous. Therefore, by Arzelà-Ascoli lemma, 
+    $\exists f: X \to \R$ and $\{f_{n_k}\}_{k=1}^{\infty}$ s.t. $f_{n_k} \to f$ pointwise in $X$.
+    
+    \noindent Now let $g_k := f_{n_k}$. 
+    
+    \medskip
+    \noindent \textbf{Claim:} $\{g_{k}\}_{k=1}^{\infty}$ is uniformly Cauchy.\footnote{Cauchy sequence in $(C(X), \| \cdot \|_{\infty} )$}
+    
+    \medskip
+    \noindent Fix $\epsilon > 0$. By uniform equicontinuity, $\exists \delta > 0$ s.t. 
+    \[
+        p(x, y) < \delta \implies \left| f_n(x) - f_n(y)\right| < \frac{\epsilon}{3} 
+        \quad \forall n \in \N.
+    \]
+    Letting $n = n_k$, 
+    \[
+        p(x, y) < \delta \implies \left| g_k(x) - g_k(y) \right| < \epsilon \quad \forall k \in \N.
+    \]
+    Since $X$ is compact, it is totally bounded, so $\exists \{x_{i}\}_{i=1}^{N}$ s.t. 
+    $X \subseteq \bigcup_{i = 1}^N B^p(x_i, \delta)$.
+    
+    Moreover, $\forall 1\leq i \leq N$ fixed, we know $\{g_{k}(x_i)\}_{k=1}^{\infty} \subseteq \R$ 
+    converges because $\{g_{k}\}_{k=1}^{\infty}$ converges pointwise, so $\{g_{k}(x_i)\}_{k=1}^{\infty}$
+    is a Cauchy sequence. So $\exists K_i > 0$ s.t. $\forall k, \ell \geq K_i$, 
+    \[
+        \left| g_k(x_i) - g_\ell(x_i) \right| \leq \frac{\epsilon}{3}.
+    \]
+    Let $K := \max_{1 \leq i \leq N}{K_i}$. Then, $\forall k, \ell \geq K$, we have
+    \[
+        \left| g_k(x_i) - g_\ell(x_i) \right| \leq \frac{\epsilon}{3} \quad \forall 1 \leq i \leq N.
+    \]
+    So $\forall x \in X \subseteq \bigcup_{i = 1}^N B^p(x_i, \delta)$, 
+    $\exists x_i$ s.t. $p(x, x_i) < \delta$, and $\forall k, \ell > K$,
+    \[
+        \left| g_k(x) - g_\ell(x) \right| \leq \left| g_k(x) - g_k(x_i) \right| + 
+        \left| g_k(x_i) - g_\ell(x_i) \right| + \left| g_\ell(x_i) - g_\ell(x) \right| < \epsilon.
+    \]
+    This implies $\forall \epsilon > 0, \exists K > 0$ s.t. $\forall k, \ell > K$,
+    \[
+        \| g_k - g_\ell \|_{\infty} = \sup_{x \in X} \left| g_k(x) - g_\ell(x) \right| < \epsilon,
+    \]
+    so $\{g_{k}\}_{k=1}^{\infty}$ is uniformly Cauchy. Since $(X, p)$ is compact, 
+    $C(X)$ is complete, so $\{g_{k}\}_{k=1}^{\infty} = \{f_{n_k}\}_{k=1}^{\infty}$ 
+    converges uniformly. Since $f_{n_k} \to f$ pointwise in $X$, it must be that $f_{n_k} \to f$ 
+    uniformly, and thus $f \in C(X)$.        
+\end{proof}
+
+\begin{rem}
+    How do we use the AA theorem? To extract convergent subsequence, which may give us convergence
+    of the original sequence. 
+\end{rem} 
+
+\begin{goal}[fact]
+    Let $\{f_{n}\}_{n=1}^{\infty} \subseteq C(X)$. If $\exists! \; f$ 
+    s.t. for every subsequence, $\exists $ a further subsequence $\{f_{n_{k_j}}\}_{j=1}^{\infty} $ s.t. 
+    $f_{n_{k_j}} \xrightarrow[j \to \infty]{} f$ uniformly, then $f_n \xrightarrow[n \to \infty]{} f $ 
+    uniformly.     
+\end{goal}  
+
+\begin{exmp}[Typical Applications of Arzelà-Ascoli]
+    \begin{itemize}
+    \item Verify $\left\{ f_n \right\} $  satisfies hypothesis of AA;
+    \item For every subseq $\left\{ f_{n_k} \right\} $ also satisfies hypothesis of AA; 
+    \item Use AA to extract $\{f_{n_{k_j}}\}_{j=1}^{\infty} $ s.t. $f_{n_{k_j}} \to f$ uniformly on $X$.
+    \item If you can show $f$ is unique, then $f_n \to f$ in $C(X)$.     
+\end{itemize}
+\end{exmp}
+
+\begin{cor}
+    Let $(X, p)$ be a compact metric space. Let $\mathcal{F} \subseteq C(X)$ be uniformly bounded and
+    uniformly equicontinuous. Then, $\mathcal{F}$ is precompact in $(C(X), \| . \|_{\infty} )$.  
+\end{cor}
+\begin{proof}
+    If $f$ is uniformly bounded and uniformly equicontinuous, then by the AA theorem, $\forall$ sequence
+    $\{f_{n}\}_{n=1}^{\infty} \subseteq \mathcal{F}$, there is a subseq. $\{f_{n_j}\}_{j=1}^{\infty} $
+    and $f \in C(X)$ s.t. $f_{n_j} \to f$ in $C(X)$. Note, $f$ may not be in $\mathcal{F}$. So
+    $\mathcal{F}$ is precompact.          
+\end{proof}
+\begin{comment}
+\begin{exmp}
+    Let $M > 0$, $\mathcal{F} = \left\{ f \in C([a, b]) \cap C^1([a,b]) : \| f \|_{\infty} + 
+    \| f' \|_{\infty} < M   \right\} $. $\mathcal{F}$ is uniformly bounded and uniformly equicontinuous. 
+    So by AA then, for $\left\{ f_n \right\} \subseteq \mathcal{F}, \exists \{f_{n_k}\}_{k=1}^{\infty}$
+    s.t. $f_{n_k} \to f$ uniformly. But, $f$ may not be in $C^1([a,b])$. 
+    (So, $f$ may not be in $\mathcal{F}$  )    
+\end{exmp}
+\end{comment}
+\begin{exmp}
+    Let $M > 0$, and define
+    \[
+        \mathcal{F} = \left\{ f \in C([a, b]) \cap C^1([a,b]) : \| f \|_{\infty} + \| f' \|_{\infty} < 
+        M \right\}.
+    \]
+    $\mathcal{F}$ is uniformly bounded and uniformly equicontinuous.
+    
+    So by AA then, for $\left\{ f_n \right\} \subseteq \mathcal{F}, \exists \{f_{n_k}\}_{k=1}^{\infty}$
+    s.t. $f_{n_k} \to f$ uniformly. But, $f$ may not be in $C^1([a,b])$. 
+    (So, $f$ may not be in $\mathcal{F}$  )
+\end{exmp}
+
+
+\textbf{Extra stuff left in the assignment, go back and look at it.}
+
+\subsection{Baire Category Theorem}
+
+\begin{defn}[Hollow/Nowhere Dense]
+    We say a set $E$ is \newword{hollow} if $\interior(E) = \emptyset$.
+    \footnote{i.e. $E$ contains no nontrivial open sets} 
+    We say 
+    $E \subseteq X$ \newword{nowhere dense} if its closure is hollow, i.e.
+    $\interior(\overline{E}) = \emptyset$. 
+\end{defn}
+
+\begin{rem}
+    $E$ hollow $\iff E^c$ dense in $X$, since $\interior(E) = \emptyset \iff
+    (\interior (E))^c = \overline{E^c} = X.$  
+\end{rem} 
+
+\begin{goal}
+    When can we guarantee that 
+    \begin{itemize}
+        \item a union of hollow sets is hollow?
+        \item an intersection of dense sets is dense?
+    \end{itemize}
+
+\end{goal}
+
+\begin{comment}
+\begin{thm}
+    (Baire Category Theorem): Let $(X, p)$ be a complete metric space.
+    \newline
+    Let $\left\{ F_n \right\}_{n =1}^{\infty} \subseteq X$ be a collection of closed hollow sets. 
+    Then $\bigcup_{n = 1}^{\infty} F_n$ is hollow.   
+    \newline
+    Let $\left\{ \mathcal{O}_n \right\}_{n = 1}^{\infty} \subseteq X$  be a collection of 
+    open dense sets. Then $\bigcap_{n = 1}^{\infty} \mathcal{O}_n$ is dense. 
+\end{thm}
+\begin{proof}
+    $(2) \Rightarrow (1)$ by taking complements and using the previous remark, so we prove only $(2)$.
+    \newline
+    \underline{Claim:} Let $G = \cap_{n =1}^{\infty} \mathcal{O}_n$. Then $G$  is dense in $X$.
+    \newline
+    FIx $x \in X, r > 0$. $\forall n \in \N, \mathcal{O}_n$ is open and dense, so 
+    $\exists y \in \mathcal{O}_n$ and $s > 0$ s.t. $B(x, r) \cap \mathcal{O}_n \supseteq B(y, 2s)
+    \supseteq \overline{B(y, s)}$. Now we use this fact indictively in n. Let 
+    $x_1 \in X, r_1 < \frac{1}{2}$ s.t. $\overline{B(x_1, r_1)} \subseteq B(x, r) \cap \mathcal{O}_1$.
+    Let $x_2 \in X, r_2 < 2^{-2}$ s.t. $\overline{B(x_2, r_2)} \subseteq B(x_1, r_1) \cap \mathcal{O}_2$.
+    Take $x_n \in X$, $r_n < 2^{-n}$ s.t. $\overline{B(x_n, r_n)} 
+    \subseteq B(x_{n - 1}, r_{n -1}) \cap \mathcal{O}_n$. 
+    \[\Rightarrow \overline{B(x_1, r_1)} \supseteq \overline{B(x_2, r_2)} 
+    \supseteq \dots \supseteq \overline{B(x_n, r_n)} \supseteq \dots \],
+    and $r_n \to 0$. Therefore $\{x_{n}\}_{n=1}^{\infty} $ is cauchy, and $(x, p)$ is complete, 
+    so $\exists x_0 \in X$ s.t. $x_n \to x_0$. Thus, $x_0 = 
+    \cap_{n = 1}^{\infty} \overline{B(x_n, r_n)}$.
+    Since $x_0 \in \overline{B(x_n, r_n)} \subseteq \mathcal{O}_n \; \forall n$, and $x_0 \in 
+    \overline{B(x_1, r_1)} \subseteq B(x, r) \Rightarrow x_0 \in G \cap B(x, r)$.
+    $\Rightarrow G \cap B(x, r) \neq \emptyset \; \forall x \in X, \forall r > 0$.
+    $\Rightarrow G$ is dense in $X$.
+\end{proof}
+\end{comment}
+
+\begin{thm}[Baire Category Theorem]
+    Let $(X, p)$ be a complete metric space.
+    \begin{enumerate}
+        \item Let $\left\{ F_n \right\}_{n =1}^{\infty} \subseteq X$ be a collection of closed hollow sets. 
+        Then $\bigcup_{n = 1}^{\infty} F_n$ is hollow.   
+        \item Let $\left\{ \mathcal{O}_n \right\}_{n = 1}^{\infty} \subseteq X$ be a collection of 
+        open dense sets. Then $\bigcap_{n = 1}^{\infty} \mathcal{O}_n$ is dense. 
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    $(2) \Rightarrow (1)$ by taking complements and using the previous remark, so we prove only $(2)$.
+    
+    \medskip
+    \noindent \textbf{Claim:} Let $G = \bigcap_{n =1}^{\infty} \mathcal{O}_n$. Then $G$ is dense in $X$.
+    
+    \medskip
+    \noindent Fix $x \in X, r > 0$. $\forall n \in \N, \mathcal{O}_n$ is open and dense, so 
+    $\exists y \in \mathcal{O}_n$ and $s > 0$ s.t. 
+    \[
+    B(x, r) \cap \mathcal{O}_n \supseteq B(y, 2s) \supseteq \overline{B(y, s)}.
+    \]
+    Now we use this fact inductively in $n$. Let 
+    $x_1 \in X, r_1 < \frac{1}{2}$ s.t. $\overline{B(x_1, r_1)} \subseteq B(x, r) \cap \mathcal{O}_1$.
+    Let $x_2 \in X, r_2 < 2^{-2}$ s.t. $\overline{B(x_2, r_2)} \subseteq B(x_1, r_1) \cap \mathcal{O}_2$.
+    Repeating this process, take $x_n \in X$, $r_n < 2^{-n}$ s.t. $\overline{B(x_n, r_n)} 
+    \subseteq B(x_{n - 1}, r_{n -1}) \cap \mathcal{O}_n$. 
+    \[
+    \Rightarrow \overline{B(x_1, r_1)} \supseteq \overline{B(x_2, r_2)} 
+    \supseteq \dots \supseteq \overline{B(x_n, r_n)} \supseteq \dots,
+    \]
+    and $r_n \to 0$. Therefore $\{x_{n}\}_{n=1}^{\infty} $ is Cauchy, and $(X, p)$ is complete, 
+    so $\exists x_0 \in X$ s.t. $x_n \to x_0$. Thus, 
+    \[
+    x_0 = \bigcap_{n = 1}^{\infty} \overline{B(x_n, r_n)}.
+    \]
+    Since $x_0 \in \overline{B(x_n, r_n)} \subseteq \mathcal{O}_n \; \forall n$, and $x_0 \in 
+    \overline{B(x_1, r_1)} \subseteq B(x, r) \Rightarrow x_0 \in G \cap B(x, r)$.
+    \[
+    \Rightarrow G \cap B(x, r) \neq \emptyset \; \forall x \in X, \forall r > 0.
+    \]
+    $\Rightarrow G$ is dense in $X$.
+\end{proof}
+
+Another restatement of the Baire Category Theorem is as follows: 
+If $(X, p)$ is complete, the countable union of nowhere dense sets is hollow.
+\begin{proof}
+    Let $\{E_{n}\}_{n=1}^{\infty} $ be nowhere dense sets. Then by BCT, $\cup_{n = 1}^{\infty}
+    \overline{E_n}$ is hollow. It follows that $\cup_{n = 1}^{\infty} E_n \subseteq 
+    \cup_{n = 1}^{\infty} \overline{E_n}$  so $\cup_{n = 1}^{\infty} E_n$ is also hollow. 
+\end{proof}  
+
+The main way we will use the Baire Category Theorem is the following:
+\begin{cor}
+    Let $(X, p)$ be complete. Suppose $\{F_{n}\}_{n=1}^{\infty} $ is a collection of closed sets.
+    If $X = \cup_{n=1}^{\infty} F_n$, then $\exists n_0$ s.t. $\interior(F_{n_0}) \neq \emptyset$.   
+
+\end{cor}
+\begin{proof}
+    If $\nexists n_0$, then $F_n$ is hollow $\forall n$, so by BCT $X = \cup_{n =1}^{\infty} F_n$
+    is hollow, but this is a contradiction because $X \subseteq X$ is open and nontrivial.     
+\end{proof} 
+
+\begin{thm}
+    Let $X \subseteq C(X)$ where $(X, p)$ is complete. Suppose $\mathcal{F}$ is pointwise bounded. 
+    Then, $\exists $ non-empty open set $\mathcal{O} \subseteq X$ s.t. $\mathcal{F}$ is uniformly
+    bounded on $\mathcal{O}$, i.e. $\exists M > 0$ s.t. \[
+        \sup_{f \in \mathcal{F}} \sup_{x \in \mathcal{O}} \left|  f(x) \right| \leq M
+    \] 
+\end{thm}
+
+\begin{comment}
+\begin{proof}
+    Let $E_n = \left\{ x \in X : \left| f(x) \right| \leq n \forall f \in \mathcal{F} \right\} =
+    \bigcap_{f\in \mathcal{F}} \left\{ x \in X : \left| f(x) \right| \leq n  \right\}  $
+    $\Rightarrow E_n$ is closed $\forall n$. Since $\mathcal{F}$ is pointwise bounded, 
+    $\forall x \in X, \exists M_x > 0 $ s.t. $\sup_{ f \in \mathcal{F}} \left| f(x) \right|  \leq M_x$
+    Thus, $\forall n$ s.t. $M_x \leq n$, then $x \in E_n$  $(\left| f(x) \right| \leq M_x \leq n)$.
+    So, $X = \bigcup_{n=1}^{\infty} E_n$ and $E_n$  is closed. By corollary, $\exists n_0 $ s.t. 
+    $\interior(E_{n_0}) \neq \emptyset$. So $\exists x_0 \in X, r$ s.t. $B^p(x_0, r) 
+    \subseteq E_{n_0}$. Letting $\mathcal{O} = B^p(x_0, r)$, we have 
+    $\sup_{x \in \mathcal{O}} \left| f(x) \right| \leq n_0 \quad \forall f \in \mathcal{F}$.  
+\end{proof}
+\end{comment} 
+
+\begin{proof}
+    Let
+    \[
+        E_n = \left\{ x \in X : \left| f(x) \right| \leq n, \; \forall f \in \mathcal{F} \right\} 
+        = \bigcap_{f\in \mathcal{F}} \left\{ x \in X : \left| f(x) \right| \leq n  \right\}.
+    \]
+    $\Rightarrow E_n$ is closed $\forall n$. Since $\mathcal{F}$ is pointwise bounded,
+    \[
+        \forall x \in X, \exists M_x > 0 \text{ s.t. } \sup_{ f \in \mathcal{F}} \left| f(x) \right|
+         \leq M_x.
+    \]
+    Thus, $\forall n$ s.t.\ $M_x \leq n$, then $x \in E_n$ (since $\left| f(x) \right| \leq M_x \leq n$).
+    
+    So, $X = \bigcup_{n=1}^{\infty} E_n$ and $E_n$ is closed. By corollary, $\exists n_0$ s.t.
+    $\interior(E_{n_0}) \neq \emptyset.$
+    So $\exists x_0 \in X, r$ s.t.\ $B^p(x_0, r) \subseteq E_{n_0}$. Letting $\mathcal{O} = 
+    B^p(x_0, r)$, we have
+    \[
+        \sup_{x \in \mathcal{O}} \left| f(x) \right| \leq n_0 \quad \forall f \in \mathcal{F}. \qedhere
+    \]
+\end{proof}
+
+\begin{cor}
+    Let $(X, p)$ be a complete metric space. Suppose $\{F_{n}\}_{n=1}^{\infty} $ is a collection
+    of closed sets. Then $\bigcup_{n=1}^{\infty} \partial F_n$  is hollow.
+\end{cor}
+\begin{proof}
+    \textbf{Claim:} $\partial F_n$ is hollow $\forall n$. Suppose for contradiction that
+    $\exists n$ s.t. $\interior (\partial F_n) \neq \emptyset$. Then $\exists x_0 \in
+    \partial F_n, r > 0$ s.t. $B^p(x_0, r) \subseteq \partial F_n$. But then,
+    \[
+        B^p(x_0, r) \cap F_n^c = B^p(x_0, r) \cap \overline{F_n}^c = B^p(x_0, r) \cap 
+        (F_n \cup \partial F_n)^c = B^p(x_0, r) \cap \partial F_n^c \cap F_n^c = \emptyset
+    \]       
+    and this contradicts $x_0 \in \partial F_n$ by defn. $\Rightarrow \partial F_n$ is hollow 
+    $\forall n$.
+    Furthermore, $\partial F_n$ is closed, since it contains all of its limit points by definition.
+    Thus, by BCT, $\bigcup_{n=1}^{\infty} \partial F_n$ is hollow.    
+\end{proof}
+
+\noindent Now recall that in general, $\{f_{n}\}_{n=1}^{\infty} \subseteq C(X)$ and $f_n \to f$ 
+pointwise, then $f$  is not necessarily continuous.  
+
+\begin{comment}
+\begin{thm}
+    Let $(X, p)$ be complete. Let $\{f_{n}\}_{n=1}^{\infty} \subseteq C(X)$ s.t. $f_n \to f$
+    pointwise in X. Then there is a dense subset $D \subseteq X$ where $\{f_{n}\}_{n=1}^{\infty} $
+    is pointwise equicontinuous on D and $\forall x_0 \in D$, $f$ is continuous at $x_0$.         
+\end{thm}
+
+\begin{proof}
+    Let $m, n \in \N$. Define 
+    \[
+    E(m , n) = \left\{ x \in X : \left| f_j(x) - f_k(x) \right| 
+    \leq \frac{1}{m} \; \forall j,k \geq n \right\} = \bigcap_{j, k \geq n} \left\{ x \in X
+    : \left| f_j(x) - f_k(x) \right| \leq \frac{1}{m} \right\}   
+    \]
+
+So $E(m ,n)$ is closed $\forall m, n$. Thus, by the corollary, $\bigcup_{m, n \in \N} 
+\partial E(m ,n)$ is hollow.
+$\Rightarrow D : = (\bigcup_{m , n \in \N} \partial E(m ,n))^c = \bigcap_{m, n \in \N}
+\partial E(m ,n)^c$ is dense.
+
+\textbf{Claim 1.} If $\exists x \in X, m, n \in \mathbb{N}$ s.t. $x \in D \cap E(m,n)$, then $x \in \interior(E(m,n))$.
+
+If $x \in D$, then
+\[
+x \in \underbrace{\partial E(m,n)^c}_{\text{open}} = \interior(E(m,n)) \cup \exterior(E(m,n)).
+\]
+For the exterior term:
+\begin{align*}
+\exterior(E(m,n)) &= X \setminus (\interior(E(m,n)) \cup \partial E(m,n)) \\
+&= X \setminus E(m,n) = E(m,n)^c.
+\end{align*}
+Since we also have $x \in E(m,n)$, this means $x \in \interior(E(m,n))$
+
+\textbf{Claim 2.} $\{f_{n}\}_{n=1}^{\infty} $ is equicontinuous on D
+
+Let $x_0 \in D$ and $\epsilon > 0$. Choose $m$ s.t. $\frac{1}{m} < \frac{\epsilon}{4}$. Since
+$\{f_{n}\}_{n=1}^{\infty} $ converges, $\{f_{n}\}_{n=1}^{\infty} \subseteq \R$ is a Cauchy sequence.
+So $\exists N$ s.t. $\forall j, k \geq N$,
+\[
+    \left| f_j(x_0) - f_k(x_0) \right| \leq \frac{1}{m}
+\]         
+This means $x_0 \in E(m, n) \cap D$, so by claim 1, $x_0 \in \interior(E(m ,n))$.
+Let $B^p(x_0, r) \subseteq E(m ,N)$, so $\forall j, k \geq N$, $\forall x \in B(x_0 , r)$,
+\[
+    \left| f_j(x) - f_k(x) \right| \leq \frac{1}{m}.
+\]       
+Since $f_N$ is continuous at $x_0$, $\exists \delta_{x_0} > 0$ (Which WLOG we can choose $< r$ ), 
+s.t. $\forall x \in B^p(x_0, \delta_{x_0})$,
+\[
+    \left| f_N(x) - f_n(x_0)  \right| \leq \frac{1}{m}
+\]
+so $\forall j \geq N, \forall x \in B^p(x_0, \delta_{x_0})$,
+\[
+    \left| f_j(x) - f_j(x_0) \right| \leq \left| f_j(x) - f_N(x) \right| + \left| f_N(x) - f_N(x_0) \right| 
+    + \left| f_N(x_0) - f_j(x_0) \right| \leq \frac{3}{m} \leq \frac{3\epsilon}{4}
+\]       
+
+Since this holds $\forall j \geq N$, this implies that $\{f_{n}\}_{n=1}^{\infty} $ is equicnontinuous
+at $x_0$. Furthermore, $\forall x \in B^p(x_0, \delta_{x_0})$, sending $j \to \infty$, we obtain
+that $\forall x \in B^p(x_0, \delta_{x_0}), \left| f(x) - f(x_0) \right| \leq \frac{3\epsilon}{4}$,
+so $f$ is continuois at $x_0 \in D$.        
+\end{proof}
+\end{comment}
+
+\begin{thm}
+    Let $(X, p)$ be complete. Let $\{f_{n}\}_{n=1}^{\infty} \subseteq C(X)$ s.t. $f_n \to f$ pointwise 
+    in $X$. Then there is a dense subset $D \subseteq X$ where $\{f_{n}\}_{n=1}^{\infty}$ is pointwise 
+    equicontinuous on $D$ and $\forall x_0 \in D$, $f$ is continuous at $x_0$.
+\end{thm}
+
+\begin{proof}
+    Let $m, n \in \mathbb{N}$. Define 
+    %\[
+    %E(m , n) = \left\{ x \in X : \left| f_j(x) - f_k(x) \right| \leq \frac{1}{m} \; \forall j,k 
+    %\geq n \right\} = \bigcap_{j, k \geq n} \underbrace{\left\{ x \in X : \left| f_j(x) - f_k(x) 
+    %\right| \leq \frac{1}{m} \right\} }_{\text{closed, since }f_k, f_j \in C(X)}.
+    %\]
+    \begin{align*}
+        E(m , n) &= \left\{ x \in X : \left| f_j(x) - f_k(x) \right| \leq \frac{1}{m} \; \forall j,k 
+        \geq n \right\} \\
+                &= \bigcap_{j, k \geq n} \underbrace{\left\{ x \in X : \left| f_j(x) - f_k(x) \right| 
+                \leq \frac{1}{m} \right\} }_{\text{closed, since }f_k, f_j \in C(X)}.
+    \end{align*}
+    So $E(m ,n)$ is closed $\forall m, n$. Thus, by the corollary, $\bigcup_{m, n \in \mathbb{N}} 
+    \partial E(m ,n)$ is hollow. This implies that
+    \[
+    D := \left(\bigcup_{m , n \in \mathbb{N}} \partial E(m ,n)\right)^c = \bigcap_{m, n \in \mathbb{N}}
+     \partial E(m ,n)^c \quad \text{is dense.}
+    \]
+
+    \noindent \textbf{Claim 1:} If $\exists x \in X, m, n \in \mathbb{N}$ s.t. $x \in D \cap E(m,n)$, 
+    then $x \in \interior(E(m,n))$.
+
+    \noindent If $x \in D$, then
+    \[
+    x \in \underbrace{\partial E(m,n)^c}_{\text{open}} = \interior(E(m,n)) \cup \exterior(E(m,n)).
+    \]
+    For the exterior term:
+    \begin{align*}
+    \exterior(E(m,n)) &= X \setminus (\interior(E(m,n)) \cup \partial E(m,n)) \\
+    &= X \setminus E(m,n) = E(m,n)^c.
+    \end{align*}
+    Since we also have $x \in E(m,n)$, this means $x \in \interior(E(m,n))$.
+
+    \noindent \textbf{Claim 2:} $\{f_{n}\}_{n=1}^{\infty}$ is equicontinuous on $D$.
+
+    \noindent Let $x_0 \in D$ and $\epsilon > 0$. Choose $m$ s.t. $\frac{1}{m} < \frac{\epsilon}{4}$. 
+    Since $\{f_{n}\}_{n=1}^{\infty}$ converges, $\{f_{n}(x_0)\}_{n=1}^{\infty} \subseteq \mathbb{R}$ 
+    is a Cauchy sequence. So $\exists N$ s.t. $\forall j, k \geq N$,
+    \[
+        \left| f_j(x_0) - f_k(x_0) \right| \leq \frac{1}{m}.
+    \]
+    This means $x_0 \in E(m, n) \cap D$, so by Claim 1, $x_0 \in \interior(E(m ,n))$. 
+    Let $B^p(x_0, r) \subseteq E(m ,N)$, so $\forall j, k \geq N$, $\forall x \in B(x_0 , r)$,
+    \[
+        \left| f_j(x) - f_k(x) \right| \leq \frac{1}{m}.
+    \]
+    Since $f_N$ is continuous at $x_0$, $\exists \delta_{x_0} > 0$ 
+    (which WLOG we can choose $< r$), s.t. $\forall x \in B^p(x_0, \delta_{x_0})$,
+    \[
+        \left| f_N(x) - f_N(x_0) \right| \leq \frac{1}{m}.
+    \]
+    So $\forall j \geq N, \forall x \in B^p(x_0, \delta_{x_0})$,
+    \begin{align*}
+        \left| f_j(x) - f_j(x_0) \right| &\leq \left| f_j(x) - f_N(x) \right| + 
+        \left| f_N(x) - f_N(x_0) \right| + \left| f_N(x_0) - f_j(x_0) \right| \\ &\leq \frac{3}{m} 
+        \leq \frac{3\epsilon}{4}.
+    \end{align*}
+    Since this holds $\forall j \geq N$, this implies that $\{f_{n}\}_{n=1}^{\infty}$ is 
+    equicontinuous at $x_0$. Furthermore, $\forall x \in B^p(x_0, \delta_{x_0})$, 
+    sending $j \to \infty$, we obtain that $\forall x \in B^p(x_0, \delta_{x_0})$, 
+    \newline $\left| f(x) - f(x_0) \right| \leq \frac{3\epsilon}{4}$, so $f$ is continuous at 
+    $x_0 \in D$.
+\end{proof}
+
+
+
+\subsection{Topological Spaces}
+We'll consider topological spaces, where we will define all concepts using open sets,
+and we will generalize what we have learned from Metric Spaces.
+\begin{defn}
+    Let $X$ be a non empty set. A \newword{topology} $\mathcal{T}$ on $X$ is a collection of subsets of $X$,
+    such that
+    \begin{itemize}
+        \item $X, \emptyset \in \mathcal{T}$;
+        \item If $\left\{ E_n \right\} \subseteq \mathcal{T}, \bigcap_{n=1}^{N} E_n \in \mathcal{T}$
+        (closed under finite intersections);
+        \item If $\left\{ E_n \right\}_{\lambda \in \Lambda} \subseteq \mathcal{T}, 
+        \bigcup_{\lambda \in \Lambda} E_\lambda \in \mathcal{T}$ (closed under arbitrary unions).
+    \end{itemize}
+    We say $(X, \mathcal{T})$ is a \newword{topological space}.  
+    \newline If $E \in \mathcal{T}$, then we call $E$ an open set (with respect to $\mathcal{T}$).  
+    \newline If $x \in X$, a set $E \in \mathcal{T}$ containing x is called a 
+    \newword{neighborhood} of $x$.
+
+\end{defn}
+
+\begin{rem}
+    By definition of $\mathcal{T}$, $E \in \mathcal{T}$ iff $\forall x \in E, \exists$ a neighbourhood 
+    of $x$, contained in $E$. (consistent with metric space definition of open set)     
+\end{rem} 
+
+\begin{exmp}[Metric topology]
+    Let $(X, p)$ be a metric space. Define 
+    \[
+        \mathcal{T} := \left\{ \text{open sets w.r.t. } p  \right\} .
+    \]
+    Then, $\mathcal{T}$ is a topology on $X$, called the metric topology induced by $p$.
+
+    Given a topology $\mathcal{T}$, if $\exists $ a metric $p$ s.t. $\mathcal{T}$ is the metric topology 
+    induced by $p$, then we say $\mathcal{T}$ is \textit{metrizable}.  
+    
+\end{exmp}
+
+\begin{exmp}[Trivial Topology]
+    Let $X$ be a non empty set. Define 
+    \[
+        \mathcal{T} = \left\{ \emptyset, X \right\} .
+    \]
+    Then, $\mathcal{T}$ is a topology on $X$, called the trivial topology.
+    
+\end{exmp}
+
+\begin{exmp}[Discrete Topology]
+    Let $X$ be a non empty set. Let $p(x, y)$ be the discrete metric on $X$. Define
+    Then \[ B^p(x_0, r) = \begin{cases}
+        \left\{ x_0 \right\} , & 0 < r \leq 1 \\
+        X, & r > 1
+    \end{cases}\]
+    So $\forall E \subseteq X, \forall x \in E, B^p(x, \frac{1}{2}) = \{x\} \subseteq E 
+    \Rightarrow E$ is open. Then, \newline $\mathcal{T} = \mathcal{P}(X) = \left\{ \text{All possible subsets of }
+     X \right\}$ is a topology on $X$, called the discrete topology, and it contains all subsets of $X$.
+    
+\end{exmp}
+
+\begin{exmp}[Relative Topology]
+    Let $(X, \mathcal{T})$ be a topological space. Let $Y \subseteq X$. Then,
+    \[
+        \mathcal{T}_Y := \left\{ U \cap Y : U \in \mathcal{T}  \right\} .
+    \]
+    Then, $\mathcal{T}_Y$ is a topology on $Y$, called the relative topology on $Y$ 
+    induced by $\mathcal{T}$.
+
+    If $X = \R, Y = \N$, then $\mathcal{T}_{\N} = \left\{ U \cap \N : U \subseteq \R \text{ open}\right\}$
+    So $\forall y \in \N, \forall x \in \R, r > 0, $ \[B(x, r) \cap \N = \begin{cases}
+        \left\{ y \right\} , & y \in B(x, r) \\
+        \emptyset, & y \notin B(x, r)
+    \end{cases}\]
+    Thus, $\mathcal{T}_{\N} = \mathcal{P}(\N)$, the discrete topology on $\N$.
+    
+    If $X = \R, Y = [0, 1)$, then $\mathcal{T}_{[0, 1)} = \left\{ U \cap [0, 1) : U \subseteq \R 
+    \text{ open}\right\}$
+    So the set $[0, \frac{1}{2}) = [0, 1) \cap (-1, \frac{1}{2}) \in \mathcal{T}_{[0, 1)}$.
+    So $[0, \frac{1}{2})$ is relatively open in $Y = [0, 1)$ (belongs to the relative topology on $Y$).
+\end{exmp}
+
+In metric spaces, everything is done using balls. In a generic topological space $(X, \mathcal{T})$,
+what plays the role of balls?
+
+\begin{defn}[base/neighbourhood base]
+    Let $(X, \mathcal{T})$ Topological space. Fix $x \in X$. Let $\mathcal{B}_x$ be a collection of
+    neighborhoods of $x$. We call $\mathcal{B}_x$ a \newword{neighbourhood base} at $x$ if 
+    $\forall$ neighborhood of $x$ (call it $U_x$), $\exists B \in \mathcal{B}_x$ such that $B 
+    \subseteq U_x$. We say $\mathcal{B}$, a collection of open sets, is a \newword{base} for 
+    $\mathcal{T}$ if 
+    $\forall x \in X$, $\exists$ a neighbourhood base $\mathcal{B}_x \subseteq \mathcal{B}$ at $x$.    
+
+\end{defn}
+
+\begin{exmp}
+    In $(X, p)$ a metric space, $\forall x \in X$
+    \[
+        \mathcal{B}_x = \left\{ B^p(x, r) : r > 0  \right\} \text{ is a neighbourhood base}
+    \]   
+    $B = \left\{ \text{all balls of all radii} \right\} $ 
+\end{exmp}
+
+\begin{rem}
+    Given a topology, a neighbourood base is not unique.
+    \[
+        \mathcal{B}_x = \{B^p(x, \frac{1}{n})\}_{n=1}^{\infty} 
+    \] 
+    is also a neighbourhood base at $x$ in a metric space.
+\end{rem}
+
+\begin{defn}[first countable/second countable]
+    Let $(X, \mathcal{T})$ be a topological space.
+    \begin{itemize}
+        \item We say $(X, \mathcal{T})$ is \newword{first countable} if there is a countable neigbourhood
+        base at each $x \in X$;
+        \item We say $(X, \mathcal{T})$ is \newword{second countable} if there is a countable base $B$
+        of $\mathcal{T}$. 
+    \end{itemize}
+\end{defn}
+
+\begin{rem}
+    Any metric space is first countable, and any separable metric space is second countable. 
+\end{rem}
+
+\begin{rem}
+    For a topology $\mathcal{T}$, $\mathcal{B} = \mathcal{T}$ is always a base for $\mathcal{T}$ (so 
+    a base always exists).  
+\end{rem}
+
+\begin{prop}
+    If $(X, \mathcal{T})$ be a topological space. A collection of open sets $\mathcal{B}$ is a base 
+    for $\mathcal{T}$ iff every non-empty open set $U \in \mathcal{T}$ can be written
+    as a union of elements of $\mathcal{B}$.
+\end{prop}
+\begin{comment}
+\begin{proof}
+    ($\Rightarrow$) Suppose $\mathcal{B}$ is a base for $\mathcal{T}$. Let $U \in \mathcal{T}$.
+    Then $\forall x \in U, \exists B_x \in \mathcal{B}_x \subseteq B$ such that
+    \[
+        x \in B_x \subseteq U \Rightarrow \bigcup_{x \in U} B_x \subseteq U 
+    \] 
+    and
+    \[
+        U = \bigcup_{x \in U} \left\{ x \right\} \subseteq \bigcup_{x \in U} B_x \Rightarrow U 
+        = \bigcup_{x \in U} B_x.
+    \] 
+
+    ($\Leftarrow$) Suppose every non-empty open set $U \in \mathcal{T}$ can be written as a union of
+    elements of $\mathcal{B}$.. Fix $x \in U$, and let $\mathcal{B}_x := \left\{ B \in \mathcal{B}
+    : x \in B \right\}  = \left\{ B \in \mathcal{B} : \left\{ x \right\} \cap B \neq \emptyset \right\}
+    \subseteq \mathcal{B}$. Since $U= \cup B$, this means $\mathcal{B}_x \neq \emptyset$. So $u$ is
+    a neighbourhood of $x$, and $\exists B \in \mathcal{B}_x$ such that $B \subseteq u$.
+    $\Rightarrow \mathcal{B}_X$ is a neighbourhood base at $x$. Doing that $\forall x \in X$,
+    we get a $\mathcal{B}$ that is a base for $\mathcal{T}$.         
+\end{proof}
+\end{comment}
+\begin{proof} \leavevmode
+    \begin{description}
+        \item[($\Rightarrow$)] Suppose $\mathcal{B}$ is a base for $\mathcal{T}$. Let $U \in \mathcal{T}$.
+        Then $\forall x \in U, \exists B_x \in \mathcal{B}_x \subseteq B$ such that
+        \begin{gather*}
+            x \in B_x \subseteq U \Rightarrow \bigcup_{x \in U} B_x \subseteq U \\
+            \shortintertext{and}
+            U = \bigcup_{x \in U} \left\{ x \right\} \subseteq \bigcup_{x \in U} B_x \Rightarrow 
+            U = \bigcup_{x \in U} B_x.
+        \end{gather*}
+
+        \item[($\Leftarrow$)] Suppose every non-empty open set $U \in \mathcal{T}$ can be written as a union of
+        elements of $\mathcal{B}$. Fix $x \in U$, and let
+        \[
+            \mathcal{B}_x := \left\{ B \in \mathcal{B} : x \in B \right\} 
+            = \left\{ B \in \mathcal{B} : \left\{ x \right\} \cap B \neq \emptyset \right\}
+            \subseteq \mathcal{B}.
+        \]
+        Since $U = \cup B$, this means $\mathcal{B}_x \neq \emptyset$. So $U$ is
+        a neighbourhood of $x$, and $\exists B \in \mathcal{B}_x$ such that $B \subseteq U$
+        $\Rightarrow \mathcal{B}_x$ is a neighbourhood base at $x$. Doing that $\forall x \in X$,
+        we get a $\mathcal{B}$ that is a base for $\mathcal{T}$. \qedhere
+    \end{description}
+\end{proof}
+
+\begin{goal}[question]
+Given a collection $\mathcal{B}$, what does it take to be a base for some topology?
+\end{goal}
+\begin{prop}
+    Let $X \neq \emptyset$. Let $\mathcal{B} \subseteq \mathcal{P}(X)$ be a collection of sets. Then 
+    $\mathcal{B}$ is a base for some topology $\mathcal{T}$ iff 
+    \begin{enumerate}
+        \item $X = \bigcup_{B \in \mathcal{B}} B$;
+        \item $\forall B_1, B_2 \in \mathcal{B}$, and $x \in B_1 \cap B_2$,
+        then $\exists B \in \mathcal{B}$ such that $x \in B \subseteq B_1 \cap B_2$.\footnote{
+            For balls, this is true}   
+    \end{enumerate}    
+\end{prop}
+\begin{comment}
+\begin{proof}
+    ($\Rightarrow$) $\mathcal{B}$ is a base for a topology $\mathcal{T}$. Then, since $X \in \mathcal{T}$,
+    by the last result, $X = \bigcup_{B \in \mathcal{B}} B$, so (1) holds.
+    Moreover, if $B_1, B_2 \in \mathcal{B} \subseteq \mathcal{T}$, then $B_1 \cap B_2 \in \mathcal{T}$.
+    So for $x \in B_1 \cap B_2$, then $B_1 \cap B_2$ is a neighbourhood of $x$. 
+    Since $\mathcal{B}$ is a base, $\exists B \in \mathcal{B}$ s.t. $x \in B \subseteq B_1 \cap B_2$,
+    so (2) holds.
+
+    ($\Leftarrow$) Suppose (1) and (2) hold. Let
+    \[
+        \mathcal{T} := \left\{ U \subseteq X : \forall x \in U \; \exists B \in \mathcal{B} \text{s.t.}
+        x \in B \subseteq U \right\} 
+    \] 
+    Since $X = \bigcup_{B \in \mathcal{B}} B$, so $\forall x \in X, \exists B \in \mathcal{B}$ s.t.
+    $x \in B \subseteq X$, $\Rightarrow x \in \mathcal{T}$.
+    Similarly, $\emptyset \in \mathcal{T}$ because the condition is empty. 
+    The definition of $\mathcal{T}$ shows us that it is closed under arbitrary unions.
+
+    Let $U_1, U_2 \in \mathcal{T}$, and assume $U_1 \cap U_2 \neq \emptyset$, so $\forall x \in U_1 
+    \cap U_2$, by definition of $\mathcal{T}$, $\exists B_1 \in \mathcal{B}$ s.t. $x \in B_1 \subseteq 
+    U_1$, and $\exists B_2 \in \mathcal{B}$ s.t. $x \in B_2 \subseteq U_2$.
+    $\Rightarrow x \in B_1 \cap B_2$. By (2), $\exists B \in \mathcal{B}$ s.t. $x \in B 
+    \subseteq B_1 \cap B_2 \subseteq U_1 \cap U_2$. Thus, $B_1 \cap B_2 \in \mathcal{T}$. 
+    Inductively, we conclude $\mathcal{T}$ is closed under finite intersections.     
+\end{proof}
+\end{comment}
+\begin{proof} \leavevmode
+    \begin{description}
+        \item[($\Rightarrow$)] $\mathcal{B}$ is a base for a topology $\mathcal{T}$. Then, since $X \in 
+        \mathcal{T}$, by the last result, $X = \bigcup_{B \in \mathcal{B}} B$, so (1) holds.
+        Moreover, if $B_1, B_2 \in \mathcal{B} \subseteq \mathcal{T}$, then $B_1 \cap B_2 \in \mathcal{T}$.
+        So for $x \in B_1 \cap B_2$, then $B_1 \cap B_2$ is a neighbourhood of $x$. 
+        Since $\mathcal{B}$ is a base, $\exists B \in \mathcal{B}$ s.t.\ $x \in B \subseteq B_1 \cap B_2$,
+        so (2) holds.
+
+        \item[($\Leftarrow$)] Suppose (1) and (2) hold. Let
+        \[
+            \mathcal{T} := \left\{ U \subseteq X : \forall x \in U, \; \exists B \in \mathcal{B} 
+            \text{ s.t. } x \in B \subseteq U \right\}.
+        \] 
+        Since $X = \bigcup_{B \in \mathcal{B}} B$, so $\forall x \in X, \exists B \in \mathcal{B}$ s.t.\ 
+        $x \in B \subseteq X$, $\Rightarrow X \in \mathcal{T}$.
+        Similarly, $\emptyset \in \mathcal{T}$ because the condition is empty. 
+        The definition of $\mathcal{T}$ shows us that it is closed under arbitrary unions.
+        
+        Let $U_1, U_2 \in \mathcal{T}$, and assume $U_1 \cap U_2 \neq \emptyset$, so $\forall x \in U_1 
+        \cap U_2$, by definition of $\mathcal{T}$, $\exists B_1 \in \mathcal{B}$ s.t.\ $x \in B_1 
+        \subseteq U_1$, and $\exists B_2 \in \mathcal{B}$ s.t.\ $x \in B_2 \subseteq U_2$.
+        $\Rightarrow x \in B_1 \cap B_2$. By (2), $\exists B \in \mathcal{B}$ s.t.\ $x \in B 
+        \subseteq B_1 \cap B_2 \subseteq U_1 \cap U_2$. Thus, $B_1 \cap B_2 \in \mathcal{T}$. 
+        Inductively, we conclude $\mathcal{T}$ is closed under finite intersections. \qedhere
+    \end{description}
+\end{proof}
+
+\noindent Observe that the properties which define $\mathcal{T}$ are closed under intersections, so we
+may define a $\sigma$-algebra like structure for topologies:  
+\begin{defn}
+Let 
+$\mathcal{E} \subseteq \mathcal{P}(X)$ be a collection of sets. Then
+\[
+    \mathcal{T}(\mathcal{E}) = \bigcap \left\{ \text{All topologies containing } \mathcal{E} \right\} = 
+    \text{topology generated by } \mathcal{E}
+\]   
+\end{defn}
+\begin{defn}[weaker/coarser vs. stronger/finer]
+    Let $\mathcal{T}_1 $ and $ \mathcal{T}_2$ be topologies on $X$. If $\mathcal{T}_1 \subsetneq 
+    \mathcal{T}_2$, we say $\mathcal{T}_1$ is a \newword{weaker/coarser} topology than $\mathcal{T}_2$ 
+    (fewer open sets), and $\mathcal{T}_2$ is a \newword{stronger/finer} topology than $\mathcal{T}_1$ 
+    (more open sets).   
+\end{defn}
+
+\begin{exmp}
+    Trivial topology is the weakest topology on $X$ and discrete topology is the strongest topology 
+    on $X$. So $\mathcal{T}(\mathcal{E})$ is the weakest topology containing $\mathcal{E}$.
+\end{exmp}
+
+\begin{prop}
+    Let $\mathcal{E} \subseteq \mathcal{P}(X)$. Then 
+    \[
+        \mathcal{T}(\mathcal{E}) = \left\{ \emptyset, X, \bigcup \left\{ \text{
+            finite intersections of sets in } \mathcal{E} \right\}  \right\} 
+    \]  
+\end{prop}
+\begin{proof}
+    \textbf{Claim:} $\mathcal{B} = \left\{ \emptyset, X, \text{ finite intersections of elements of } 
+    \mathcal{E} \right\} $ forms a base.
+    $\mathcal{B}$ satisfies (1) and (2) of the previous proposition, so $\mathcal{B}$ is a base for 
+    some topology 
+
+    \[
+        \tilde{\mathcal{T}} = \left\{ \emptyset, X, \bigcup \left\{ \text{finite intersections of 
+        elements of } \mathcal{E} \right\}  \right\} 
+    \] 
+    Observe that $\tilde{\mathcal{T}} \subseteq \left\{ \text{any topology which contains } \mathcal{E} 
+    \right\} $ $\Rightarrow \tilde{\mathcal{T}} \subseteq \mathcal{T}(\mathcal{E})$. $\tilde{\mathcal{T}}$ 
+    is also a topology, which contains $\mathcal{E}$. So $\mathcal{T}(\mathcal{E}) \subseteq 
+    \tilde{\mathcal{T}}$. Thus, $\tilde{\mathcal{T}} = \mathcal{T}(\mathcal{E})$.   
+\end{proof}
+
+\begin{goal}
+    Topologies give us open sets, bases give ball-like sets, now we need a notion for closed sets.
+\end{goal}
+
+\begin{defn}[limit point, closure, closed set]
+    If $E \subseteq X, x \in X$ is a \newword{limit point} if $\forall $ neighbourhood $U_x$ of $x$,
+    \[
+        U_x \cap E \neq \emptyset.
+    \]
+    We say $\overline{E} = \left\{  \text{All limit points of E } \right\} $, is the \newword{closure} 
+    of $E$.
+    
+    \noindent We say $E$ is \newword{closed} if $E = \overline{E}$.   
+\end{defn}
+
+\begin{rem}
+    We always have $E \subseteq \overline{E}$, so we just need $\overline{E} \subseteq E$ to show
+    $E$ is closed.  
+\end{rem}
+
+
+\begin{prop}
+    Let $E \subseteq X$.
+    \begin{enumerate}
+        \item $\overline{E}$ is closed;
+        \item $\overline{E}$ is the smallest closed set containing $E$, i.e. if $ \forall F$ closed
+        s.t. $E \subseteq F \Rightarrow \overline{E} \subseteq F$;
+        \item $E$ is open iff $E^c$ is closed.     
+    \end{enumerate} 
+\end{prop}
+\begin{comment}
+\begin{proof} (1) + (2)
+    \textbf{Claim:} $L := \left\{ \text{limit points of } \overline{E} \right\} = 
+    \overline{\overline{E}} \subseteq \overline{E}$ 
+
+    Let $x \in L$, and a neighbourhood $U_x$ of $x$. Then by defn of $L$, we know $\exists x' \in
+    U_x \cap \overline{E}$. This means $x' \in \overline{E}$, and $U_x$ is a neighbourhood of $x'
+    \Rightarrow U_x \cap E \neq \emptyset$. This holds $\forall $ neighbourhood $U_x$ of $x$, so 
+    $x \in \overline{E} \Rightarrow L \subseteq \overline{E} \Rightarrow \overline{E}$ is closed. 
+    
+    Suppose $E \subseteq F$ and $F$ is closed. Let $x \in \overline{E}$, then $\forall$ neighbourhood 
+    $U_x$, $U_x \cap E \neq \emptyset \Rightarrow U_x \cap F \neq \emptyset \Rightarrow 
+    x \in \overline{F}$      
+    $\Rightarrow \overline{E} \subseteq \overline{F} = F$. 
+\end{proof}
+
+\begin{proof} (3)
+    ($\Rightarrow$)  Let $E \subseteq X$ be open. Let $x \in \overline{E^c}$.
+    
+    \textbf{Claim:} $x \in E^c$.
+
+    Suppose not, so $x \in E$. So $\exists $ neighbourhood $U_x$ of $x$ s.t. $U_x \subseteq E$.
+    $\Rightarrow U_x \cap E = \emptyset$. So $x \notin \overline{E^c}$. 
+    So, $x \in \overline{E^c} \Rightarrow x \in E^c \Rightarrow \overline{E^c} \subseteq E^c
+    \Rightarrow E^c closed$.
+    
+    ($\Leftarrow$) Let $E^c$ be closed. Let $x \in E$.
+
+    \textbf{Claim:} $\exists$ neighbourhood $U_x$ s.t. $U_x \subseteq E$.
+    
+    Suppose not, then every neighbourhood $U_x$ we have $U_x \cap E^c \neq \emptyset
+    \Rightarrow x \in \overline{E^c} = E^c$ (contradicts $x \in E$ ).
+    By claim, $E$ is open.  
+    
+\end{proof}
+\end{comment}
+
+
+\begin{proof}[Proof of (1) + (2)] \mbox{} \\
+    \textbf{Claim:} $L := \left\{ \text{limit points of } \overline{E} \right\} = 
+    \overline{\overline{E}} \subseteq \overline{E}$.
+
+    Let $x \in L$, and a neighbourhood $U_x$ of $x$. Then by defn of $L$, we know $\exists x' \in
+    U_x \cap \overline{E}$. This means $x' \in \overline{E}$, and $U_x$ is a neighbourhood of $x'
+    \Rightarrow U_x \cap E \neq \emptyset$. This holds $\forall$ neighbourhood $U_x$ of $x$, so 
+    $x \in \overline{E} \Rightarrow L \subseteq \overline{E} \Rightarrow \overline{E}$ is closed. 
+    
+    Suppose $E \subseteq F$ and $F$ is closed. Let $x \in \overline{E}$, then $\forall$ neighbourhood 
+    $U_x$, $U_x \cap E \neq \emptyset \Rightarrow U_x \cap F \neq \emptyset \Rightarrow 
+    x \in \overline{F} \Rightarrow \overline{E} \subseteq \overline{F} = F$. 
+\end{proof}
+
+\begin{proof}[Proof of (3)] \leavevmode
+    \begin{description}
+        \item[($\Rightarrow$)] Let $E \subseteq X$ be open. Let $x \in \overline{E^c}$.
+    
+        \textbf{Claim:} $x \in E^c$.
+
+        Suppose not, so $x \in E$. So $\exists$ neighbourhood $U_x$ of $x$ s.t. $U_x \subseteq E$.
+        $\Rightarrow U_x \cap E = \emptyset$. So $x \notin \overline{E^c}$. 
+        So, $x \in \overline{E^c} \Rightarrow x \in E^c \Rightarrow \overline{E^c} \subseteq E^c
+        \Rightarrow E^c$ closed.
+        
+        \item[($\Leftarrow$)] Let $E^c$ be closed. Let $x \in E$.
+
+        \textbf{Claim:} $\exists$ neighbourhood $U_x$ s.t. $U_x \subseteq E$.
+        
+        Suppose not, then every neighbourhood $U_x$ we have $U_x \cap E^c \neq \emptyset
+        \Rightarrow x \in \overline{E^c} = E^c$ (contradicts $x \in E$).
+        By claim, $E$ is open.  \qedhere
+    \end{description}
+\end{proof}
+
+\begin{rem}
+    Our proof shows, $A \subseteq B \Rightarrow \overline{A} \subseteq \overline{B}$. 
+\end{rem}
+
+\begin{defn} [Density, Separability]
+    $D \subseteq X$ is \newword{dense} if $\forall $ non-empty open set $U$, $U \cap D \neq \emptyset$.
+    $\iff \overline{D} = X$.
+    
+    $(X, \mathcal{T})$ is \newword{separable} iff $X$ contains a countable dense set.  
+    
+\end{defn}
+
+\begin{prop}
+    Every second countable space is separable.
+\end{prop}
+
+\begin{proof}
+    Let $(X, \mathcal{T})$ be second countable, so $\exists $ base $\mathcal{B} = 
+    \{B_{i}\}_{i=1}^{\infty} $. Pick $x_i \in B_i$ (need axiom of choice).
+    Let $D = \{x_{i}\}_{i=1}^{\infty} $. Then $\forall U \subseteq X$ open, since $\mathcal{B}$
+    is a base, $\exists B_i \subseteq U$, 
+    \[
+        D \cap U \supseteq \left\{ x_i \right\} \cap B_i \neq \emptyset 
+    \] 
+    $\Rightarrow D \cap U \neq \emptyset$, so $D$ is dense.  
+\end{proof}
+
+\begin{defn}[Convergence in Topology]
+    Given $(X, \mathcal{T})$ a topological space, let $\{x_{n}\}_{n=1}^{\infty} \subseteq X$.
+    We say $x_n \to x$ in $\mathcal{T}$ if $\forall$ neighbourhood $U_x$ of $x$, $\exists N$ s.t.
+    $\forall n \geq N$, $x_n \in U_x$.        
+    
+\end{defn}
+
+\begin{prop}
+    Suppose $(X, \mathcal{T})$ is first countable, and $E \subseteq X$. Then, $x \in \overline{E}$
+    iff $\exists \left\{ x_n \right\} \subseteq E$ s.t. $x_n \to x$ in $\mathcal{T}$.      
+\end{prop}
+\begin{comment}
+\begin{proof}
+    $(\Rightarrow)$. Let $\mathcal{B}_x = \{B_{j}\}_{j=1}^{\infty} $ be a neighbourhood base at
+    $x \in \overline{E}$. WLOG, can assume $B_{j + 1} \subseteq B_j \quad \forall j$. Since 
+    $x \in \overline{E}$ and $B_j$ is a neighbourhood of $x$, $B_j \cap E \neq \emptyset \quad \forall j$.
+    Let $x_i \in B_i \cap E$. Then, $\forall$ neighbourhood $U_x$ of $x$, $\exists B_J \in \mathcal{B}_x$
+    s.t. $B_J \subseteq U_x$. But since $\left\{ B_j \right\}$ are nested, $\forall j \geq J$, 
+    \[
+        U_x \supseteq B_j \cap U_x = B_j \supseteq B_i \cap E \supseteq \left\{ x_j \right\} 
+    \]           
+    $\Rightarrow x_j \to x$ in $\mathcal{T}$.
+
+    $(\Leftarrow)$ If $\exists \{x_{j}\}_{j=1}^{\infty} \subseteq E$ s.t. $x_j \to x$ in $\mathcal{T}$,
+    suppose $x \notin \overline{E}$. Then $x \in \overline{E}^c$ and $\overline{E}^c$ open, so $
+    \overline{E}^c$ is a neighbourhood of x s.t. $\{x_{j}\}_{j=1}^{\infty} \cap 
+    \overline{E}^c \neq \emptyset$. Therefore $x_j \not{\to} x$ in $\mathcal{T}$.
+\end{proof}
+\end{comment}
+\begin{proof} \leavevmode
+    \begin{description}
+        \item[($\Rightarrow$)] 
+            Let $\mathcal{B}_x = \{B_{j}\}_{j=1}^{\infty} $ be a neighbourhood base at $x \in \overline{E}$. WLOG, can assume $B_{j + 1} \subseteq B_j \quad \forall j$. 
+            Since $x \in \overline{E}$ and $B_j$ is a neighbourhood of $x$, $B_j \cap E \neq \emptyset \quad \forall j$.
+            Let $x_i \in B_i \cap E$. Then, $\forall$ neighbourhood $U_x$ of $x$, $\exists B_J \in \mathcal{B}_x$ s.t. $B_J \subseteq U_x$. 
+            But since $\left\{ B_j \right\}$ are nested, $\forall j \geq J$, 
+            \[
+                U_x \supseteq B_j \cap U_x = B_j \supseteq B_j \cap E \supseteq \left\{ x_j \right\} 
+            \]           
+            $\Rightarrow x_j \to x$ in $\mathcal{T}$.
+
+        \item[($\Leftarrow$)] 
+            If $\exists \{x_{j}\}_{j=1}^{\infty} \subseteq E$ s.t. $x_j \to x$ in $\mathcal{T}$, suppose $x \notin \overline{E}$. 
+            Then $x \in \overline{E}^c$ and $\overline{E}^c$ open, so $\overline{E}^c$ is a neighbourhood of $x$ s.t. $\{x_{j}\}_{j=1}^{\infty} \cap \overline{E}^c = \emptyset$. 
+            Therefore $x_j \not\to x$ in $\mathcal{T}$. \qedhere
+    \end{description}
+\end{proof}
+
+
+\subsection{Separation Properties}
+
+While $(X, \mathcal{T})$ allows us to consider a very general framework, weird stuff can happen 
+because of it, for example: 
+
+\begin{exmp}
+    Let $\mathcal{T} = \left\{ \emptyset, X \right\}$. So the only non-empty neighbourhood is $X$,
+    so any sequence $\{x_{n}\}_{n=1}^{\infty} \subseteq X$ converges to any point $x \in X$.
+   
+\end{exmp} 
+
+\noindent To avoid cases like this, we require topologies with more structure. 
+
+\begin{defn}[neighbourhood of a set, Separating sets by disjoint neighbourhoods]
+    Let $(X, \mathcal{T})$ be a topological space, and $K, A, B \subseteq X$. A neighbourhood of $K$
+    is an open set $U$ s.t. $K \subseteq U$. We say $A, B$ can be \newword{separated by disjoint neighbourhoods} 
+    if $\exists U \supseteq A, V \supseteq B$ neighbourhoods s.t. $U \cap V = \emptyset$.
+\end{defn}
+
+\begin{defn} [Separation Notions]
+    Let $(X, \mathcal{T})$ be a topological space. $(X, \mathcal{T})$ is
+    \begin{enumerate}
+        \item \newword{Tychonoff} (T1) if $\forall x \neq y \in X$, $\exists $ neighbourhood $U_x$ s.t. 
+        $y \notin U_x$, and $\exists $ neighbourhood $U_y$ s.t. $x \notin U_y$;
+        \item \newword{Hausdorff} (T2) if $\forall x \neq y \in X$, $\left\{ x \right\}, \left\{ y \right\} $,
+        can be separated by disjoint neighbourhoods, i.e. $\exists U_x \supseteq \{x\}, U_y \supseteq \{y\}$
+        s.t. $U_x \cap U_y = \emptyset$;
+        \item \newword{Regular} (T3) if $(X, \mathcal{T})$ is Tychonoff and $\forall x \in X$, $\forall F \subseteq
+        X$ closed, with $x \notin F$, $\left\{ x \right\} $ and $F$ can be separated by disjoint
+        neighbourhoods;
+        \item \newword{Normal} (T4) if $(X, \mathcal{T})$ is Tychonoff and $\forall A, B \subseteq X$ closed and
+        disjoint, $A$ and $B$ can be separated by disjoint neighbourhoods.           
+    \end{enumerate}  
+\end{defn}
+
+\begin{rem}
+    Metric $\subseteq$ Normal $\subseteq$ Regular $\subseteq$ Hausdorff $\subseteq$ Tychonoff.  
+\end{rem} 
+
+
+\begin{exmp}
+    Consider $\R$ and $\mathcal{T} = \left\{ \emptyset, (-\infty, c) \text{ for } c \in \R \right\} $
+    Then, $\forall x \in \R$, a neighbourhood of $x$ is of the form $(-\infty, c)$ for some $c > x$.
+    Let $x \neq y \in \R$, WLOG assume $x < y$. Then $x \in U_y \forall $ neighbourhood $U_y$ of $y$.
+    So $(\R, \mathcal{T})$ is not Tychonoff.   
+\end{exmp}
+\begin{comment}
+\begin{exmp}
+    Let $X = \R$. Let $K := \left\{ \frac{1}{n} : n \in \Z \right\} $. Let 
+    $\mathcal{B} = \left\{ (a, b) : a < b \right\} \cup \left\{ (a, b)\setminus K : a < b \right\}$.
+    We check 
+    \begin{itemize}
+        \item $\R = \cup_{B \in \mathcal{B}} B$
+        \item if $B_1, B_2 \in \mathcal{B}$ and $B_1 \cap B_2 \neq \emptyset$, 
+        $B_1 = (a_1, b_1)$ or $(a_1, b_1) \setminus K$, $B_2 = (a_2, b_2) or (a_2, b_2) \setminus K$  
+        So $B_1 \cap B_2 \neq \emptyset$, $\Rightarrow a_1 < a_2 < b_1 < b_2 \Rightarrow
+        (a_2, b_1) or (a_2, b_1) \setminus K \subseteq B_1 \cap B_2$.
+        So $\mathcal{B}$ is a base for some topology $\mathcal{T}$ on $\R$ called the K-topology.
+        
+        Suppose $x \neq y$ and $ x < y$. $\exists U_x$ and $U_y \in \mathcal{B}$ s.t.
+        $U_x \cap U_y = \emptyset$. $\Rightarrow (X, \mathcal{T})$ is Hausdorff.
+        But, $K \subseteq X$ is closed because $K^c = \R \setminus K = (-\infty, -2) \cup 
+        (-2, 2) \setminus K \cup (2, \infty)$ is open.  
+        But $0 \notin K$. So $\left\{ 0 \right\}, K$ if $U, V$ are neighbourhoods s.t. 
+        $\left\{ 0 \right\}  \in U, K \subseteq V$, $K \subseteq V = \cup (a,b)$. 
+        $\left\{ 0 \right\} \in U = (c, d) \setminus K \Rightarrow V \cap U \neq \emptyset$.
+        
+        $(X, \mathcal{T})$ is thus Hausdorff but not regular. 
+    \end{itemize} 
+\end{exmp}
+\end{comment}
+\begin{exmp}
+    Let $X = \R$ and let $K := \{ \frac{1}{n} : n \in \Z \}$. 
+    Define the collection $\mathcal{B}$ as:
+    \[
+        \mathcal{B} = \{ (a, b) : a < b \} \cup \{ (a, b) \setminus K : a < b \}.
+    \]
+    We verify the properties of this space:
+    \begin{enumerate}
+        \item \textbf{Basis Check:} 
+        Clearly, $\mathbb{R} = \bigcup_{B \in \mathcal{B}} B$. 
+        Now, suppose $B_1, B_2 \in \mathcal{B}$ and $x \in B_1 \cap B_2$. 
+        Since $B_1$ and $B_2$ are intersections of standard intervals with either $\mathbb{R}$ or $\mathbb{R} \setminus K$, their intersection is also of the form $(a, b)$ or $(a, b) \setminus K$. 
+        Thus, there exists a $B_3 \in \mathcal{B}$ such that $x \in B_3 \subseteq B_1 \cap B_2$. 
+        Therefore, $\mathcal{B}$ is a basis for a topology $\mathcal{T}$ on $\mathbb{R}$, called the \textbf{K-topology}.
+
+        \item \textbf{Hausdorff ($T_2$):} 
+        Suppose $x, y \in X$ with $x \neq y$. 
+        Since the standard topology is Hausdorff, there exist standard disjoint intervals $(a, b)$ and $(c, d)$ separating $x$ and $y$. 
+        These intervals are also in $\mathcal{B}$. 
+        Thus, $U_x \cap U_y = \emptyset \implies (X, \mathcal{T})$ is Hausdorff.
+
+        \item \textbf{Not Regular ($T_3$):} 
+        The set $K$ is closed in $X$ because its complement $K^c = \mathbb{R} \setminus K$ is open (every point in $K^c$, including $0$, has a neighborhood disjoint from $K$).
+        
+        However, observe that $0 \notin K$. We claim $0$ and $K$ cannot be separated.
+        Suppose $U$ and $V$ are disjoint open neighborhoods such that $0 \in U$ and $K \subseteq V$.
+        \begin{itemize}
+            \item Since $0 \in U$, there exists a basis element $(-\delta, \delta) \setminus K \subseteq U$.
+            \item Since $K \subseteq V$, for each $n$, there exists an interval $(a_n, b_n)$ containing $\frac{1}{n}$ such that $(a_n, b_n) \subseteq V$.
+        \end{itemize}
+        For sufficiently large $n$, we have $\frac{1}{n} \in (-\delta, \delta)$. The interval $(a_n, b_n)$ around $\frac{1}{n}$ necessarily contains points strictly between terms of $K$. These points are present in $(-\delta, \delta) \setminus K$.
+        
+        Therefore, $U \cap V \neq \emptyset$. Thus $(X, \mathcal{T})$ is Hausdorff but not regular.
+    \end{enumerate}
+\end{exmp}
+
+\begin{prop}
+    If $(X, \mathcal{T})$ is Hausdorff, then for $x_n \to x$ in $\mathcal{T}$, $x$ is unique.
+\end{prop}
+\begin{proof}
+    If $x_n \to x$ and $x_n \to y$ in $\mathcal{T}$ and $x \neq y$, then $\exists U_x 
+    \supseteq \{x\}, U_y \supseteq \{y\}$ s.t. $U_x \cap U_y \neq \emptyset$. So we cannot have
+    $x_n \in U_x \cap U_y$, $\Rightarrow x = y$      
+\end{proof}
+
+\begin{prop}
+    $(X, \mathcal{T})$ is Tychonoff iff $\forall x \in X$, $\left\{ x \right\} $ is closed.  
+\end{prop}
+\begin{comment}
+\begin{proof}
+    $\left\{ x \right\} $ is closed  $ \iff \left\{ x \right\}^c$ is open $\iff \forall y \in
+    \left\{ x \right\} ^c$, $\exists $ neighbourhood $U_y \subseteq \left\{ x \right\} ^c \iff
+    x \notin U_y$ 
+\end{proof}
+\end{comment}
+\begin{proof}
+    \begin{align*}
+        \left\{ x \right\} \text{ is closed } 
+        & \iff \left\{ x \right\}^c \text{ is open} \\
+        & \iff \forall y \in \left\{ x \right\}^c, \exists \text{ neighbourhood } U_y \subseteq 
+        \left\{ x \right\}^c \\
+        & \iff x \notin U_y 
+    \end{align*} \qedhere
+\end{proof}
+
+\begin{rem}
+    $(X, \mathcal{T})$ normal $\Rightarrow (X, \mathcal{T})$ regular.  
+\end{rem}
+
+\begin{prop}[Nested neighbourhood property]
+    Let $(X, \mathcal{T})$ be Tychonoff. Then $X$ is normal iff $\forall F \subseteq X$ closed,
+    $\forall U$ neighbourhood of $F$, $\exists O \subseteq X$ open s.t. 
+    $F \subseteq O \subseteq \overline{O} \subseteq U$.    
+\end{prop}
+
+\begin{proof} \leavevmode
+    \begin{description}
+        \item[($\Rightarrow$)] Suppose $X$ is normal. Consider $F, U^c$ are two closed disjoint sets. 
+        By normality, $\exists O, V$ open s.t. $F \subseteq O$, $U^c \subseteq V$ and 
+        $O \cap V = \emptyset$. $\Rightarrow V^c \subseteq U$ and $\Rightarrow O \subseteq V^c$.
+        \[
+            \Rightarrow F \subseteq O \subseteq V^c \subseteq U
+        \]   
+        Since $O \subseteq V^c \Rightarrow \overline{O} \subseteq \overline{V^c} = V^c$ 
+        because $V$ is open, $\Rightarrow F \subseteq O \subseteq \overline{O} \subseteq V^c \subseteq U$
+        \item[($\Leftarrow$)] Suppose the nested neighbourhood property holds. Let $A, B \subseteq X$ be
+        closed, $A \cap B = \emptyset$.  $\Rightarrow A \subseteq B^c$ and $B^c$ open.
+        By assumption, $\exists O$ open s.t. $A \subseteq O \subseteq \overline{O} \subseteq B^c$,
+        $\Rightarrow B \subseteq \overline{O}^c$. $A \subseteq O, B \subseteq \overline{O}^c$ and
+        $O \cap \overline{O}^c = \emptyset$. \qedhere
+    \end{description}
+\end{proof}
+
+\begin{cor}
+    Every metric space $(X, p)$ is normal. 
+\end{cor}
+
+\begin{proof}
+    By last result, just need to prove the nested neighbourhood property. Let $F \subseteq X$ closed, 
+    $U \subseteq X$ open s.t. $F \subseteq U \implies F \cap U^c = \emptyset$, with $U^c$ closed.
+    Let 
+    \[
+        \dist(F, U^c) = \inf_{x \in F} \dist(x, U^c) = \inf_{x \in F} \inf_{y \in U^c} p(x, y).
+    \]
+    
+    \noindent Observe, 
+    \[
+        \dist(x, U^c) = \begin{cases}
+            0 & x \in U^c \\
+            > 0 & x \notin U^c.
+        \end{cases}
+    \] 
+
+    \noindent For $x \notin U^c$, $\forall \epsilon > 0$, $\exists x' \in U^c$ s.t. $\dist(x, U^c) + 
+    \frac{\epsilon}{2} \geq p(x, x')$. 
+    
+    So, $\forall y$ s.t. $p(x, y) < \frac{\epsilon}{2}$, 
+    \[
+        \dist(y, U^c) - \dist(x, U^c) \leq p(y, x') - p(x, x') + \frac{\epsilon}{2} \leq p(y, x) + 
+        \frac{\epsilon}{2} < \epsilon.
+    \]  
+    
+    A symmetric argument gets that $x \mapsto \dist(x, U^c)$ is continuous. 
+
+    \noindent Since $\dist(x, U^c) \geq 0$, we have $\inf_{x \in F} \dist(x, U^c) \geq 0$.
+    If $\inf_{x \in F} \dist(x, U^c) = 0$, then by continuity and $F$ closed, $F \cap U^c \neq \emptyset$, 
+    which is not possible. Therefore, $\dist(F, U^c) = \epsilon > 0$. 
+    
+    Let $O := \bigcup_{x \in F} B^p\left(x, \frac{\epsilon}{2}\right)$. Then:
+    \begin{align*}
+        \overline{O} &= \overline{\bigcup_{x \in F} B^p\left(x, \frac{\epsilon}{2}\right)} 
+                     = \bigcup_{x \in F} \overline{B^p\left(x, \frac{\epsilon}{2}\right)} \\
+        \implies F &\subseteq O \subseteq \overline{O} \subseteq U. \qedhere
+    \end{align*}
+\end{proof}
+
+ \subsection{Compact Topological Spaces}
+
+ \begin{defn} [Compact Topological Space]
+    $(X, \mathcal{T})$ is a topological space. 
+    \begin{itemize}
+        \item $\left\{ E \right\}_{\lambda \in \Lambda}$ is an \newword{open cover} if 
+        $X \subseteq \bigcup_{\lambda \in \Lambda} E_\lambda$ and each $E_\lambda$ is open.
+        \item $(X, \mathcal{T})$ is a \newword{compact topological space} if every open cover has a 
+        finite subcover.   
+        \item For $K \subseteq X$, $K$ is \newword{compact} if $(K, \mathcal{T}_k)$ is compact where
+        \[
+            \mathcal{T}_k := \left\{ K \cap U : U \in \mathcal{T} \right\} 
+        \]    
+    \end{itemize} 
+ \end{defn}
+
+ \begin{rem}
+    As before, for $K \subseteq X$, by defn of $\mathcal{T}_k$ , $O \in \mathcal{T}_k$ iff $O = 
+    K \cap U$ for $U \in \mathcal{T}$. Therefore, $K \subseteq X$ compact iff $\forall$ open cover
+    of $K$ (in $X$) has a finite subcover.       
+ \end{rem}
+
+\begin{prop} [properties identical to metric spaces]
+    \begin{enumerate}
+        \item If $F \subseteq X$ closed and $(X, \mathcal{T})$ is compact, then $F$ is compact;
+        \item $(X, \mathcal{T})$ compact $\Rightarrow$ $\forall \{F_{k}\}_{k=1}^{\infty} \subseteq X$
+        closed, nested and non-empty, $\bigcap_{k=1}^{\infty} F_k \neq \emptyset$;   
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    In the lecture notes (exercise).
+\end{proof}
+
+In metric spaces, $K $ compact $\Rightarrow$ $K$ is closed and bounded.
+
+\begin{prop}
+    Let $(X, \mathcal{T})$ be Hausdorff. If $K \subseteq X$ is compact, then $K$ is closed in $X$. 
+\end{prop}
+
+\begin{proof}
+    \textbf{Claim:} $K^c$ is open.
+    \newline \noindent Fix $y \in K^c$. $\forall x \in K$, $\exists U_{xy}, O_{xy}$ open, disjoint
+    s.t. $y \in U_{xy}$ and $x \in O_{xy}$. So $\{O_{xy}\}_{x \in K}$ is an open cover of $K$, but
+    $K $ compact, so 
+    \[
+        K \subseteq \bigcup_{i=1}^{N} O_{x_i y} \Rightarrow 
+        \bigcap_{i=1}^{N} O_{x_i y}^c \subseteq K^c
+    \]         
+    Let $E := \bigcap_{i=1}^N U_{x_i y}$ is open. So $E$ is a neighbourhood of y, and 
+    $E \cap O_{xy} = \emptyset \quad \forall i = 1, \dots, N$. $\Rightarrow E \subseteq O_{x_i y}^c
+    \quad \forall i = 1, \dots, N$, $\Rightarrow E \subseteq \bigcap_{i = 1}^N O_{x_i y}^c \subseteq 
+    K^c$. $\Rightarrow K^c $ is open. \qedhere 
+\end{proof}
+
+\begin{defn} [sequential compactness]
+    $(X, \mathcal{T})$ is \newword{sequentially compact} if every sequence in $X$ has a convergent 
+    subsequence, whose limit is in $X$.    
+\end{defn}
+
+\begin{prop}[equivalence of compactness]
+    Let $(X, \mathcal{T})$ be second countable. Then $X$ compact iff $X$ is sequentially compact.  
+\end{prop}
+
+\begin{proof} \leavevmode
+    \begin{description}
+        \item[($\Rightarrow$)] Let $X$ be compact. Let $\{x_{k}\}_{k=1}^{\infty} \subseteq X$.
+        Let $F_n := \overline{\left\{ x_k : k \geq n \right\} }$. So $F_n$ is closed $\forall n$,
+        and $F_n \supseteq F_{n + 1} \supseteq \dots$, so since $X$ is compact $\exists
+        x_o \in \bigcap_{n=1}^\infty F_n$. Observe $X$ second countable $\Rightarrow$ $X$ first 
+        countable. So let $\mathcal{B}_{x_o} = \{B_j\}_{j=1}^{\infty} $ be a neighbourhood base at $x_0$.
+        WLOG assume $B_{j + 1} \subseteq B_j \quad \forall j$. Since $x_0 \in \bigcap_{n=1}^{\infty} F_n$,
+        and $B_j$ is a neighbourhood of $x_0$, then $B_j \cap F_n \neq \emptyset \quad \forall n$.
+        \newline \noindent\textbf{Claim:} $\exists x_k, (k \geq n)$ s.t. $x_k \in B_j \cap F_n$ 
+        (i.e. $B_j \cap \interior(F_n) \neq \emptyset$ )
+        \newline \noindent We know $B_j \cap F_n \neq \emptyset$, so $\exists y \in B_j \cap F_n$. Then
+        $B_j$ is a neighbourhood of $y$ and $y \in F_n$, so by defn of $F_n$ 
+        \[
+            B_j \cap \left\{ x_k : k \geq n \right\} \neq \emptyset 
+        \]     
+        Let this element be $\{ x_{n_j} \} \in B_j$. So $ 
+        \{x_{n_j}\}_{j=1}^{\infty} \subseteq \{x_{k}\}_{k=1}^{\infty}  $ and $x_{n_j} \in B_j$ with
+        $B_j \supseteq B_{j + 1}$. Thus $\forall $ neighbourhood $U_{x_0}$ of $x_0$, $\exists B_N 
+        \subseteq U_{x_0}$ and if $j \geq N$, $x_{n_j} \in B_j \subseteq B_N \subseteq U_{x_0}$.
+        $\Rightarrow x_{n_j} \to x_0$ in $\mathcal{T}$.        
+
+        \item[($\Leftarrow$)] Let $X$ be sequentially compact. $X$ second countable $\Rightarrow$ every
+        open cover has a countable subcover, ($X = \bigcup_{B \in \mathcal{B}} B$ )
+        \newline \noindent \textbf{Claim:} Every countable cover of $X$ has a finite subcover. 
+        \newline \noindent Let $X \subseteq \bigcup_{j=1}^{\infty} E_j$, $E_j$ open $\forall j$. 
+        Assume there is no finite 
+        subcover. So $\forall n$, $\exists m(n) > n$ s.t. $E_{m(n)} \setminus \bigcup_{j=1}^{n} E_j 
+        \neq \emptyset$. Let $x_n \in E_{m(n)} \setminus \bigcup_{j=1}^{n} E_j$. 
+        $X$ sequentially compact means $\exists \{ x_{n_k} \} $ s.t. $x_{n_k} \to x_o \in X$.
+        Since $x_0 \in X$, $\exists E_N$ s.t. $x_o \in E_N$. But $x_{n_k} \in E_{m(n_k)} \setminus 
+        \bigcup_{j=1}^{n_k} E_j$, so $\forall n_k \geq N$, $x_{n_k} \not{\to} x_0$ contradiction.                
+    \end{description}
+\end{proof}
+
+\begin{thm}
+    A compact Hausdorff space is normal
+\end{thm}
+
+\begin{proof}
+    Let $(X, \mathcal{T})$ be compact Hausdorff. 
+    \newline \noindent \textbf{Claim:} $(X, \mathcal{T})$ is regular.
+    \newline \noindent Let $F \subseteq X$ closed, $x \notin F$. Let $y \in F$. Since $X$ is 
+    Hausdorff, $\exists U_{xy}, O_{xy}$ open, disjoint s.t. $y \in U_{xy}$ and $x \in O_{xy}$.
+    So $\{U_{xy}\}_{y \in F}$ is an open cover of $F$, but $F$ closed $\Rightarrow$ $F$ compact.
+    \footnote{Because closed subsets of compact subspaces are themselves compact} 
+    So $F \subseteq \bigcup_{ i = 1}^N U_{x y_i} =: U$. Let $N := \bigcap_{i = 1}^N O_{x y_i}$,
+    so $N$ is open, $x \in N$ and $U \cap N = \emptyset$. $\Rightarrow$ $(X, \mathcal{T})$ is regular.
+    We just rerun the same argument to get that $(X, \mathcal{T})$ is normal.             
+\end{proof}
+
+\subsection{Continuity and Urysohn's Lemma}
+
+\begin{defn} [continuous map]
+    If $(X, \mathcal{T})$ and $(Y, \mathcal{S})$ are topological spaces, then $f : X \to Y$ continuous
+    at $x_0 \in X$ if $\forall $ neighbourhood $O_{f(x_0)} \subseteq Y$, $\exists $ a neighbourhood
+    $U_{x_0} \subseteq X$ s.t. $f(U_{x_0}) \subseteq O_{f(x_0)}$. We say $f$ is \newword{continuous} if
+    $f$ is continuous at every $x \in X$.        
+\end{defn}
+
+
+\begin{prop}
+    \begin{enumerate}
+        \item $f : X \to Y$ continuous iff $\forall $ open set $O \subseteq Y$, $f^{-1}(O)$ is open in $X$;
+        \item Composition of continuous functions is continuous;
+        \item $X$ is compact and $f$ continuous, then $f(X)$ is compact in $Y$;
+        \item If $f: X \to \R$, $X$ compact, $f$ continuous, then max/min of $f(x)$ are achieved.           
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}[Proof of (1)] \leavevmode
+    \begin{description} 
+        \item[($\Rightarrow$)] Let $O \subseteq Y$ be open, and let $ x \in f^{-1}(O) \Rightarrow 
+        f(x) \in O$. Since $f$ is continuous, and $O$ is a neighbourhood of $f(x)$, $\exists U_x 
+        \subseteq X$ s.t. $f(U_x) \subseteq O$. So $U_x \subseteq f^{-1}(O)$ and thus $f^{-1}(O)$
+        is open in $X$.
+        
+        \item[($\Leftarrow$)] Suppose $O \subseteq Y$ open and $f^{-1}(O)$ is open in $X$.
+        Let $U := f^{-1}(O)$. Then $U $ is open and $f(U) \subseteq O$. So $f$ is continuous. \qedhere       
+    \end{description}
+\end{proof}
+
+\begin{defn}[weak-topology induced by $\mathcal{F}$ ]
+    Let \[\mathcal{F} := \left\{ f_\lambda : X \to X_\lambda \right\}_{\lambda \in \Lambda} \] where $(X_\lambda,
+    \mathcal{T}_\lambda)$ is a topological space $\forall \lambda \in \Lambda$. 
+    Let \[S := \left\{ f_\lambda^{-1}(O_\lambda) : f_\lambda \in \mathcal{F}, O_\lambda \in 
+    \mathcal{T}_\lambda \right\} \] Then $\mathcal{T}(S)$ is called the \newword{weak-topology} 
+    induced by $\mathcal{F}$.
+\end{defn}
+
+\begin{rem}
+    $\mathcal{T}(S) = \bigcap \left\{ \text{topologies containing } S \right\} $ and if 
+    $f_\lambda^{-1}(O_\lambda)$ belongs to the topology, then $f_\lambda $ is continuous $\forall 
+    \lambda \in \Lambda$. Thus this topology makes every $f_\lambda$ continuous.
+\end{rem}
+
+\begin{cor}
+    $\mathcal{T}(S)$ is the weakest topology amongst all topologies on $X$ for which
+    $f_\lambda : X \to X_\lambda$ is continuous $\forall \lambda \in \Lambda$.    
+\end{cor}
+
+\begin{exmp}
+    $\Lambda = \{ 1, 2 \}$. Let $(X_1, \mathcal{T}_1)$ and $(X_2, \mathcal{T}_2)$ be topological spaces. 
+    Consider $X := X_1 \times X_2 = \prod_{i = 1}^2 X_i$.
+    Let 
+    \[
+        \mathcal{F} := \left\{
+            \begin{aligned}
+                \pi_1 : X \to X_1, \quad & \pi_1(x_1, x_2) = x_1 \\
+                \pi_2 : X \to X_2, \quad & \pi_2(x_1, x_2) = x_2
+            \end{aligned}
+        \right\}.
+    \] 
+    Let $S = \{ \pi_i^{-1}(O_i) : O_i \in \mathcal{T}_i \}$. 
+    Then $\mathcal{T}(S)$ is called the product topology.
+    \footnote{This is similar to how the product $\sigma$-algebra is the smallest $\sigma$-algebra 
+    that makes $\pi_i$ measurable. The product topology is the weakest topology that makes $\pi_i$ 
+    continuous.}
+
+    Recall, we have learned that 
+    \[
+        \mathcal{T}(S) = \left\{ \emptyset, X, \bigcup \left\{ \text{finite intersections of elements of } S \right\}  \right\}.
+    \]
+    So, a base for $\mathcal{T}(S)$ is given by 
+    \[
+        \mathcal{B} := \left\{ \bigcap_{i = 1}^2 \pi_i^{-1}(O_i) : O_i \in \mathcal{T}_i \right\} 
+    \]
+    and we note that $\pi_1^{-1}(O_1) \cap \pi_1^{-1}(\tilde{O}_1) = \pi_1^{-1}(O_1 \cap \tilde{O}_1)$.
+
+    Also, since $\pi_1^{-1}(O_1) = O_1 \times X_2$ and $\pi_2^{-1}(O_2) = X_1 \times O_2$, we have
+    \begin{align*}
+        \bigcap_{i =1}^2 \pi_i^{-1}(O_i) &= O_1 \times O_2 \\
+        \implies \mathcal{B} &= \left\{ \prod_{i=1}^2 O_i : O_i \in \mathcal{T}_i \right\}
+    \end{align*}
+    is a base for the product topology.
+\end{exmp}
+\begin{exmp}
+    $\Lambda$ infinite.\footnote{Could even be uncountable} Let $(X_\lambda, \mathcal{T}_\lambda)$ 
+    be a topological space. Let $X = \prod_{\lambda \in \Lambda} X_\lambda$ and let $
+    \pi_\lambda : X \to X_\lambda$ be the projection map. Consider the product topology on $X$,
+    and a base is given by
+    \[
+        \mathcal{B} = \left\{ \bigcap_{i = 1}^n \pi_{\lambda_i}^{-1} (O_{\lambda_i}) :
+        O_{\lambda_i} \in \mathcal{T}_{\lambda_i}, n \in \N \right\}
+    \]  
+    which equals
+    \[
+        = \left\{ \prod_{\lambda \in \Lambda} O_\lambda : O_\lambda = X_\lambda \text{ for all but
+        finitely many } \lambda \right\} 
+    \]   
+
+    So open in the product topology means a base is given by finite products of open sets.
+\end{exmp}
+
+\begin{goal}[motivation]
+    Let $(X, p)$ be a metric space. Let $A, B$ closed and disjoint. Let 
+    \[
+        f(x) := \frac{\dist(x, A)}{\dist(x, A) + \dist(x, B)}
+    \]   
+    Note,
+    \[
+        f(x) = \begin{cases}
+            0 &x \in A \\
+            1 &x \in B \\
+        \end{cases}
+    \] 
+    $0 \leq f(x) \leq 1$. $f$ is continuous because $\dist(., A)$ and $\dist(., B)$ are
+    continuous, and denominator is non-zero. Urysohn's lemma does this on any normal topological space.   
+\end{goal}
+
+\begin{lem}[Urysohn's Lemma]
+    Let $(X, \mathcal{T})$ be normal. Let $A, B \subseteq X$ closed and disjoint. Then $
+    \exists f : X \to \R$ s.t. 
+    \begin{itemize}
+        \item $f$ is continuous;
+        \item $0 \leq f(x) \leq 1$;
+        \item $f(x) =   \begin{cases}
+                            0 & x \in A \\
+                            1 & x \in B \\
+                        \end{cases} $
+    \end{itemize}  
+\end{lem}
+
+\begin{rem}
+    Infact, we can replace $\left\{ 0, 1 \right\} \to \left\{ \alpha, \beta \right\} \; 
+    \forall \alpha < \beta$ 
+\end{rem}
+
+\begin{defn}[normally ascending]
+    Let $(X, \mathcal{T})$ and $\Lambda \subseteq \R$. We say $\{O_{\lambda}\}_{\lambda \in \Lambda}$
+    with $O_\lambda$ open is \newword{normally ascending} if $\forall \lambda_1, \lambda_2 \in \Lambda$,
+    $\overline{O_{\lambda_1}} \subseteq O_{\lambda_2}$ whenever $\lambda_1 < \lambda_2$.      
+\end{defn}
+
+\begin{lem}
+    Let $(X, \mathcal{T})$ be normal. Let $F \subseteq X$ be closed, $U$ a neighbourhood of $F$.
+    There exists a dense set $\Lambda \subseteq (0, 1)$ and a normally ascending colleciton of open sets
+    $\{O_\lambda\}_{\lambda \in \Lambda}$ such that
+    \[
+        F \subseteq O_\lambda \subseteq \overline{O_\lambda} \subseteq U \quad \forall \lambda \in \Lambda
+    \]       
+\end{lem}
+\begin{proof}
+    Consider $\Lambda := \left\{ \frac{m}{2^n} : m, n \in \N, 1 \leq m \leq 2^n - 1 \right\} $.
+    Clearly, $\Lambda$ is dense in $(0, 1)$.
+    Let
+    \[
+        \Lambda_n := \left\{ \frac{m}{2^n} : m \in \N, 1 \leq m \leq 2^n - 1 \right\} 
+        \Rightarrow \Lambda = \bigcup_{n=1}^\infty \Lambda_n
+    \]   
+    We will define $\{O_\lambda\}_{\lambda \in \Lambda}$ inductively. Since $X$ is normal,
+    by nested neighbourhood property, let $O_{\frac{1}{2}}$ be s.t.
+    \[
+        F \subseteq O_\frac{1}{2} \subseteq \overline{O_\frac{1}{2}} \subseteq U
+    \]    
+    We now define $O_\frac{1}{4}, O_\frac{3}{4}$ by 
+    \[
+        F \subseteq O_\frac{1}{4} \subseteq \overline{O_\frac{1}{4}} \subseteq O_\frac{1}{2}
+        \subseteq \overline{O_\frac{1}{2} } \subseteq O_\frac{3}{4} \subseteq \overline{O_\frac{3}{4}}
+        \subseteq U.
+    \]  
+    We proceed inductively to build $\{O_\lambda\}_{\lambda \in \Lambda}$, which are necessarily
+    normally ascending.
+\end{proof}
+
+\begin{lem}
+    Let $(X, \mathcal{T})$ be a topological space s.t $\exists \Lambda \subseteq (0, 1)$ and a 
+    normally ascending collection of open sets $\{O_\lambda\}_{\lambda \in \Lambda}$.  
+    Let \[
+        f(x) := \begin{cases}
+            1 &\text{if } x \in (\bigcup_{\lambda \in \Lambda}O_\lambda)^c \\
+            \inf \left\{ \lambda \in \Lambda : x \in O_\lambda \right\} & \text{if } x \in 
+            \bigcup_{\lambda \in \Lambda} O_\lambda \\
+        \end{cases}
+    \] 
+    Then $0 \leq f(x) \leq 1$ and $f$ is continuous.  
+\end{lem}
+
+\begin{proof}
+    Notice $0 \leq f \leq 1$ because $\Lambda \subseteq (0, 1)$.
+    Observe \[
+    \mathcal{D} := \left\{ (-\infty, c), (d, \infty) : c, d \in \R \right\} 
+    \]
+    \[
+        \mathcal{B} := \left\{ \text{finite intersections of elements of } \mathcal{D} \right\} 
+    \]  
+    is a base for $(\R, \mathcal{T}_{\left| . \right| })$.
+    So,
+    \[
+        \mathcal{T}_{\left| . \right| } = \left\{ \emptyset, X, \bigcup B : B \in \mathcal{B} \right\} 
+    \] 
+    So if $f^{-1}(-\infty, c)$ and $f^{-1}(d, \infty)$ are open, then $\forall O \subseteq \R$ open,
+    $f^{-1}(O)$ is open.\footnote{because it is just finite intersections and arbitrary unions}    
+    \newline \noindent \textbf{Claim:} $f^{-1}(-\infty, c)$ and $f^{-1}(d, \infty)$ are open 
+    $\forall c,d \in \R$.
+    \newline \noindent $f(x) < c$ iff $x \in O_\lambda $ for $\lambda < c$ iff $x \in 
+    \bigcup_{\lambda < c} O_\lambda$. $f^{-1}((-\infty, c)) = \bigcup_{\lambda < c} O_\lambda$ is open.
+    
+    Similarly, $f(x) > d$ iff $x \notin O_\lambda$ for some $\lambda > d$ iff $
+    x \notin \overline{O}_{\lambda - \epsilon}$ for some $\lambda - \epsilon > d$ iff
+    $x \in \bigcup_{\lambda > d} (\overline{O}_\lambda)^c$.
+    So, $f^{-1}(d, \infty) = \bigcup_{\lambda > d} (\overline{O}_\lambda)^c$ is open.
+    So, by prior argument, $f$ is continuous. \qedhere            
+\end{proof}
+
+\begin{proof}[Proof of Urysohn's Lemma]
+    Let $(X, \mathcal{T})$ be normal, $A, B \subseteq X$ closed and disjoint. Consider 
+    $A \subseteq B^c $ open. By prior lemma, $\exists \Lambda \subseteq (0, 1)$ dense and 
+    $\left\{ O_\lambda \right\}_{\lambda \in \Lambda}$ normally ascending open sets s.t.
+    \[
+        A \subseteq O_\lambda \subseteq \overline{O_\lambda} \subseteq B^c.
+    \]
+    Let $f$ be as in the last lemma, so $0 \leq f \leq 1$ and $f$ is continuous. 
+    If $x \in B$, $\bigcup_{\lambda \in \Lambda} O_\lambda \subseteq B^c \Rightarrow B \subseteq 
+    (\bigcup_{\lambda \in \Lambda} O_\lambda)^c \Rightarrow f(x) = 1$. 
+    Similarly, if $x \in A$, $x \in O_\lambda \; \forall l\lambda \in \Lambda$, so 
+    $f(x) = \inf \left\{ \lambda \in \Lambda \right\} = 0$. \qedhere  
+\end{proof}
+
+
+\subsection{Connected Topological Spaces} 
+
+\begin{defn}[Separating $X$  by open sets]
+    Two (non-empty) open sets $(O_1, O_2)$ \newword{separate} $(X, \mathcal{T})$ if 
+    $X = O_1 \cup O_2$ and $O_1 \cap O_2 = \emptyset$    
+\end{defn}
+
+\begin{defn}[connected]
+    $(X, \mathcal{T})$ is \newword{connected} if $X$ cannot be separated by non-empty open sets.
+\end{defn}
+
+\begin{rem}
+    On $(X, \mathcal{T})$, if $(O_1, O_2)$ open and separate $X$, then $O_1$ and $O_2$ are also closed.
+    \footnote{b/c $X = O_1 \cup O_2$} So $(X, \mathcal{T})$ is connected iff the only "clopen" sets of
+    $X$ are $X, \emptyset$.  
+    
+    As a consequence of this, we also have that if $(O_1, O_2)$ open and separate $X$, 
+    \[
+        O_1 \cap O_2 = \emptyset \Rightarrow O_1 \cap \overline{O_2} = \overline{O_1} \cap O_2 = \emptyset
+    \]   
+\end{rem}
+
+\begin{rem}
+    Recall
+    \[
+        \mathcal{T}_E := \left\{ E \cap U : U \in \mathcal{T} \right\} 
+    \] 
+    So $E \subseteq X$ is connected if $\not{\exists}$ open, non-empty sets $(O_1, O_2)$ s.t. 
+    $O_1 \cap E \neq \emptyset$, $O_2 \cap E \neq \emptyset$, $E \subseteq O_1 \cup O_2$, 
+    $E \cap O_1 \cap O_2 = \emptyset$, $E = (E \cap O_1) \cup (E \cap O_2)$ and 
+    $(E \cap O_1) \cap (E \cap O_2) = \emptyset$         
+\end{rem}
+\marginnote{Connectedness works best with "contradiction". It also works well with continuous maps.}
+\begin{prop}
+    Let $f : X \to Y$ where $(X, \mathcal{T})$ is connected and $f$ is continuous w.r.t. $(X, \mathcal{T})$
+    and $(Y, \mathcal{S})$. Then $f(X)$ is connected in $(Y, \mathcal{S})$.       
+\end{prop}
+\begin{proof}
+    Suppose $f(X)$ is not connected. Then $\exists (O_1, O_2)$ non-empty open sets in $Y$ s.t.
+    $f(X) \cap O_1 \neq \emptyset, f(X) \cap O_2 \neq \emptyset, f(X) \subseteq O_1 \cup O_2, f(X) \cap
+    O_1 \cap O_2 = \emptyset$.
+    Since $f$ is continuous, $f^{-1}(O_1)$ and $f^{-1}(O_2)$ are open in $(X, \mathcal{T})$, and they are
+    non-empty. 
+
+    So we have $X \cap f^{-1}(O_1) \neq \emptyset$, $X \cap f^{-1}(O_2) \neq \emptyset$, $
+    X \subseteq f^{-1}(O_1) \cup f^{-1}(O_2)$ and $X \cap f^{-1}(O_1) \cap f^{-1}(O_2) = \emptyset$.
+    $\Rightarrow$ $(X, \mathcal{T})$ is not connected. \qedhere    
+\end{proof}
+
+\begin{prop}
+    On $\R$, for $E \subseteq \R$, TFAE:
+    \begin{enumerate}
+        \item $E$ is connected
+        \item $E$  is an interval
+        \item $E$  is convex
+    \end{enumerate}  
+\end{prop}
+
+\begin{defn}[Intermediate Value Property (IVP)]
+    $(X, \mathcal{T})$ has the \newword{intermediate value property} provided $\forall f \in C(X)$, 
+    then $f(X) \subseteq \R$ is an interval.  
+\end{defn}
+
+\begin{prop}
+    $X$ has the IVP iff $X$ is connected.  
+\end{prop}
+
+\begin{proof} \leavevmode
+    \begin{description}
+        \item[($\Leftarrow$)] By last result, $X$ is connected, $f \in C(X) \Rightarrow f(X)$ is connected 
+        $\Rightarrow f(X) $ an interval.
+        \item[($\Rightarrow$)] Suppose $X$ not connected. Then $\exists (O_1, O_2)$ open, non-empty 
+        and disjoint s.t. $X = O_1 \cup O_2$. Let $f : X \to \R$ be s.t.
+        \[
+            f(x) = \mathcal{X}_{O_2}(x) = \begin{cases}
+                1 & x \in O_2 \\
+                0 & x \in O_1 \\
+            \end{cases}
+        \]      
+        $\forall A \subseteq \R$,
+        
+        \[
+            f^{-1}(A) = \begin{cases}
+                \emptyset & \{0, 1\} \notin A \\
+                O_1 & 0 \in A, 1 \notin A \\
+                O_2 & 1 \in A, 0 \notin A \\
+                X & \{0, 1\} \in A \\
+            \end{cases}
+        \] 
+        Note these are all open sets, so $f^{-1}(A)$ is open $\forall A \subseteq \R$ open, therefore
+        $f$ is continuous. But $f(X) = \{0, 1\}$ is not an interval, so $X$ does not have the IVP. \qedhere  
+    \end{description}
+     
+\end{proof}
+
+\begin{defn} [path-connectedness/arcwise connectedness]
+    $X$ is \newword{path-connected} if $\forall x, y \in X$, $\exists f : [0, 1] \to X$ continuous
+    s.t. $f(0) = x, f(1) = y$    
+\end{defn}
+
+\begin{prop}
+    $X$ path-connected $\Rightarrow$ $X$ connected.
+\end{prop}
+
+\begin{proof}
+    Suppose $X$ is not connected. Then $\exists (O_1, O_2)$ non-empty, open, disjoint s.t.
+    $X = O_1 \cup O_2$. Suppose $\exists f : [0, 1] \to X$ s.t. $f$ is continuous, and 
+    $f(0) = x, f(1) = y$. So $f^{-1}(O_1)$ and $f^{-1}(O_2)$ open, non-empty, disjoint and
+    $[f^{-1}(O_1) \cup f^{-1}(O_2) = f^{-1}(X) = [0, 1]$. Thus $[0, 1]$ is not connected, contradiction. \qedhere       
+\end{proof}
+
+\subsection{Stone-Weierstrass Theorem}
+\begin{goal}
+    We want to find sufficient conditions for a collection of sets $\mathcal{A} \subseteq C(X)$ to be 
+    dense in $(C(X), \| . \|_{\infty} )$  
+\end{goal}
+
+Stone-Weierstrass is a generalization of the following result, which will be proved in part 3 of the course.
+
+\begin{thm}[Weierstrass Approximation Theorem]
+    Let $[a, b] \subseteq \R$ and let $f \in C([a, b])$. Then $\forall \epsilon > 0$, 
+    $\exists $ a polynomial $p(x)$ s.t. $\| p - f \|_{\infty} = \sup_{x \in [a,b]} |p(x) - f(x)| < \epsilon$.     
+\end{thm}
+
+In the above, $\mathcal{A} = \{ \text{polynomials} \}$, so $\mathcal{A}$ is dense in $C([a, b])$.
+Stone Weierstrass is for the case when $X$ is compact and Hausdorff $\Rightarrow X$ is normal.
+
+\begin{defn}[algebra of functions, separating points]
+    A collection $\mathcal{A} \subseteq C(X)$ is an \newword{algebra} if 
+    \begin{itemize}
+        \item $\mathcal{A}$ is closed under linear combinations;
+        \item $\mathcal{A}$ is closed under products ($f, g \in \mathcal{A} \Rightarrow fg \in \mathcal{A}$).  
+    \end{itemize} 
+
+    A collection $\mathcal{A} \subseteq C(X)$ \newword{separates points} if $\forall x, y \in X$, $x \neq y$, 
+    $\exists f \in \mathcal{A}$ s.t. $f(x) \neq f(y)$. \footnote{Separating points really only makes sense in $X$ is Hausdorff}
+\end{defn}
+
+
+\begin{exmp}
+    If $X = [a, b]$, then $\mathcal{A} = \{ \text{polys} \}$ is an algebra that separates points.
+    \begin{itemize}
+        \item $\mathcal{A}$ is a linear vector space;
+        \item Product of polynomials is a polynomial;
+        \item Let $f(x) = x \in \mathcal{A}$, then $ x \neq y \Rightarrow f(x) \neq f(y)$.   
+    \end{itemize}
+\end{exmp}
+
+\begin{rem}
+    If $X$ is compact and Hausdorff, how do we generally separate points? Use Urysohn's lemma.
+    
+    Let $\{x\}, \{y \}$ closed, $x \neq y \Rightarrow$ disjoint.
+    By Urysohn's lemma, $\exists f \in C(X)$ s.t. $f(x) = 0$, $f(y) = 1$. 
+    
+    So, $C(X)$ is an algebra that separates points. (in any compact Hausdorff space).
+\end{rem}
+
+\begin{thm} [Stone-Weierstrass]
+    Let $X$ be compact and Hausdorff.\footnote{Hausdorff only used in the only if part} 
+    Suppose $\mathcal{A} \subseteq C(X)$ is an algebra that separates 
+    points and contains the constant functions. Then $\mathcal{A}$ is dense in $(C(X), \| . \|_{\infty} )$.
+    \footnote{This generalizes Weierstrass approximation theorem because if $X = [a, b]$, then 
+    $\mathcal{A} = \{ \text{polys} \}$ is an algebra that separates points and contains the constant 
+    functions.}
+\end{thm}
+
+\begin{rem}
+    If $\mathcal{A} = C(X)$ the result holds true.  
+\end{rem}
+
+\begin{rem}
+    In fact, the theorem is an iff. \footnote{The "only if" part is not important for the course, but it is a nice exercise.}
+\end{rem}
+
+\begin{proof} [Proof Idea]
+Fix $f \in C(X)$. Then $f(X)$ is compact in $\R$, so $f(X)$ is bounded. WLOG assume $0 \leq f \leq 1$.
+We decompose
+\[
+    X = \bigcup_{k = 1}^n \left\{ x : \frac{k-1}{n} \leq f(x) \leq \frac{k}{n} \right\} 
+\]       
+Suppose $\forall 1 \leq k \leq n$, $\exists g_k \in \mathcal{A}$ s.t. 
+\[
+    g_k(x) = \begin{cases}
+        1 & \text{if } f(x) \geq \frac{k}{n} \\
+        0 & \text{if } f(x) \leq \frac{k-1}{n} \\ 
+    \end{cases}
+    = \mathcal{X}_{ \left\{ f \geq \frac{k}{n} \right\} } (x)
+\]   
+We will consider \[g(x) = \frac{1}{n}\sum_{k=1}^n g_k(x)\]
+So if $x \in X$, $\frac{\overline{k} -1}{n} \leq f(x) \leq \frac{\overline{k}}{n}$, then if 
+$\overline{k} - 1 \geq k \Rightarrow g_k(x) = 1$, $\overline{k} \leq k - 1 \Rightarrow g_k(x) = 0$.
+\[
+    \Rightarrow g_k(x) = \begin{cases}
+        1 & k \leq \overline{k} - 1 \\
+        0 & k \geq \overline{k} + 1 \\
+    \end{cases}
+\]      
+\[ \Rightarrow g(x) = \frac{1}{n}\sum_{k=1}^{n} g_k(x) \approx \frac{\overline{k} - 1}{n} \approx f(x) \]
+
+This is how we'll build $g \in \mathcal{A}$ s.t. $g \approx f$.
+The hard part is showing $g_k \in \mathcal{A}$.   
+\end{proof}
+
+\begin{lem}
+    Let $X$ be compact and Hausdorff. Suppose $\mathcal{A} \subseteq C(X)$ is an algebra that separates
+    points and contains constant functions. Then $\forall F \subseteq X$ closed, $x_o \in F^c$,
+    $\exists$ a neighbourhood $U$ of $x_0$ s.t. $U \cap F = \emptyset$, and $\forall \epsilon > 0$,
+    $\exists h \in \mathcal{A}$ s.t. $h < \epsilon$ on $U$, $h > 1 - \epsilon$ on $F$, 
+    and $0 \leq h \leq 1$ on $X$.              
+\end{lem}
+
+\begin{rem}
+    $U$ is independent of $\epsilon$.  
+\end{rem}
+
+\begin{proof} \leavevmode
+    
+    \noindent \textbf{Claim:} $\forall y \in F$, $\exists g_y \in \mathcal{A}$ s.t. $g_y(x_0) = 0$, $g_y(y) >0$, 
+    $0 \leq g_y \leq 1$ on $X$.
+    
+    Since $y \in F$, $x_0 \in F^c$, and $\mathcal{A}$ separates points,
+    $\exists f \in \mathcal{A}$ s.t. $f(y) \neq f(x_0)$\footnote{$f$ is not constant} 
+    Let 
+    \[
+        g_y(x) := \left[\frac{f(x) - f(x_0)}{\| f - f(x_0) \|_{\infty} }\right]^2
+    \] 
+    Since $\mathcal{A}$ is a linear subspace containing constant functions, $f(x) - f(x_0) \in \mathcal{A}$,
+    and since $\mathcal{A}$ is an algebra, $g_y \in \mathcal{A}$. $g_y$ satisfies the properties of the claim. 
+    Since $g_y \in C(X)$, and $g_y(y) > 0$, $\exists $ a neighbourhood $O_y$ of $y$ s.t. 
+    $g_y > 0$ on $O_y$. $g_y(O_y) \subseteq B^p(g_y(y), \frac{g_y(y)}{2})$      
+    
+    Doing this for every $y \in F$, we get \[F \subseteq \bigcup_{y \in F} O_y\]
+
+    Since $F \subseteq X$ is closed, and $X$ is compact, $F$ is compact so $\exists n $ s.t. 
+    \[
+        F \subseteq \bigcup_{k=1}^{n} O_{y_k}
+    \]     
+
+    Let 
+    \[
+        g(x) := \frac{1}{n}\sum_{k=1}^{n} g_{y_k}(x)
+    \]   
+    $g \in \mathcal{A}$ because it is a linear combination of elements of $\mathcal{A}$.
+    Then $g(x_0) = 0$ , $g > 0 $ on $F$, and $0 \leq g \leq 1$ on $X$.
+    
+    Since $F$ is compact and $g$ is continuous, $\exists \eta \in (0, 1)$ s.t. $g \geq \eta$ on $F$.
+    Since $g$ is continuous at $x_0$ and $g(x_0) = 0$, $\exists$ a neighbourhood $U$ of $x_0$ s.t.
+    $0 \leq g|_U < \frac{\eta}{2} \Rightarrow U \cap F = \emptyset$. So we have $g \in \mathcal{A}$ s.t.
+    $g < \frac{\eta}{2}$ on $U$, $g > \eta$ on $F$, $0 \leq g \leq 1$ on $X$.
+    
+    To finish the proof, $\forall \epsilon > 0$, we need to map $(0, \frac{\eta}{2}) \to (0, \epsilon)$
+    and $(\eta, 1) \to (1 - \epsilon, 1)$. We will use Weierstrass approximation.
+    Let $\ell : [0, 1] \to \R$ be piecewise linear. (Look in notes for graph)
+
+    Since $\ell \in C([0, 1])$, by Weierstrass approx, $\exists $ poly p s.t. $\| p - \ell \|_{\infty} <
+    \frac{\epsilon}{4}$. Therefore, $ p|_{[0, \frac{\eta}{2}]} < \epsilon$, $1 - \epsilon \leq
+    p|_{[\eta, 1]} \leq 1$ and $0 \leq p \leq 1$.
+    
+    We now let $h(x) := (p o g)(x)$. Since $p $ is a poly, we get $h \in \mathcal{A}$ and 
+    by construction, $U \cap F \neq \emptyset$ s.t. $h < \epsilon$ on $U$, $h > 1 - \epsilon$ on $F$,
+    $0 \leq h \leq 1$ on $X$. \qedhere        
+\end{proof}
+
+\begin{lem}
+    Let $X$ be compact and Hausdorff. $\mathcal{A} \subseteq C(X)$ as in the previous lemma. Then,
+    $\forall A, B \subseteq X$ closed, disjoint, $\forall \epsilon > 0$, $\exists h \in \mathcal{A}$
+    s.t. $h < \epsilon$ on $A$, $h > 1 - \epsilon$ on $B$, $0 \leq h \leq 1$ on $X$.          
+\end{lem}
+\begin{proof}
+    By last lemma, let $B = F$, and $\forall x \in A$, $\exists$ a neighbourhood $U_x$ of $x$ s.t. 
+    $U_x \cap B = \emptyset$, and $\forall \epsilon > 0 $, $\exists h \in \mathcal{A}$ s.t.
+    $h < \epsilon$ on $U_x$, $h > 1 - \epsilon$ on $B$, and $0 \leq h \leq 1$ on $X$.
+    So, $A \subseteq \bigcup_{x \in A} U_x$, and since $A$ is closed, $A$ is compact.
+    
+    So $\exists N$ s.t. $A \subseteq \bigcup_{i = 1}^N U_{x_i}$ Fix $\epsilon > 0$, and let 
+    $\epsilon_0 < \epsilon$ s.t. $(1 - \frac{\epsilon_0}{N})^N > 1 - \epsilon \Rightarrow 
+    (\frac{\epsilon_0}{N} < \epsilon)$. For every $1 \leq i \leq N$, let $h_i \in \mathcal{A}$ s.t.
+    $h_1 \leq \frac{\epsilon_0}{N}$ on $U_{x_1}$, $H_i > 1 - \frac{\epsilon_0}{N}$ on $B$, 
+    $0 \leq h_i \leq 1$ on $X$. \footnote{This is possible becaise $U_{x_i}$ independent of "$\epsilon$"}
+    
+    Define
+    \[
+        h(x) = \prod_{i = 1}^N h_i(x)
+    \]  
+    $h \in \mathcal{A}$, $0 \leq h \leq 1$ on $X$, and since $h_i > 1 \frac{\epsilon_0}{N}$ on $B$,
+    $h > (1 - \frac{\epsilon_0}{N})^N > 1 - \epsilon$ on $B$.
+    
+    Finally, $\forall x \in A$, $x \in U_{x_i}$ for some $1 \leq i \leq N$, so $h_i(x) < \frac{\epsilon_0}{N}
+    < \epsilon$, and $h_j(x) \leq 1 \quad \forall j \neq i$, so $h(x) < \epsilon$ on $A$. \qedhere       
+\end{proof}
+
+
+\begin{proof}[Proof of Stone-Weierstrass]
+    Let $f \in C(X)$. Let 
+    \[
+        \tilde{f}(x) := \frac{f(x) + \| f \|_{\infty} }{\| f + \| f \|_{\infty}  \|_{\infty} }
+    \]
+    Then $\tilde{f} \in C(X)$ and $0 \leq \tilde{f} \leq 1$. 
+    Consider the statement: 
+    \[
+        \forall \epsilon > 0 \; \exists \tilde{g} \in \mathcal{A} \text{ s.t. }
+        |\tilde{f} - \tilde{g}| < \epsilon \tag{*}
+    \]
+    If (*) holds for $\tilde{f}$, then by the properties of $\mathcal{A}$, $\exists g \in \mathcal{A}$
+    s.t. $\| f - g \|_{\infty} \leq \epsilon$, so $\mathcal{A}$ is dense in $C(X)$. So we prove (*) for $\tilde{f}$.  
+    Fix $n \in \N$ s.t. $\frac{3}{n} < \epsilon$. 
+    Consider a partition $\{ 0, \frac{1}{n}, \frac{2}{n}, \ldots, \frac{n - 1}{n}, 1 \}$ of 
+    $[0, 1]$.
+    
+    For every $1 \leq k \leq n$, let
+    \[
+        A_k := \left\{ x \in X  : \tilde{f}(x) \leq \frac{k - 1}{n} \right\}, \quad
+        B_k := \left\{ x \in X : \tilde{f}(x) > \frac{k}{n} \right\} 
+    \] 
+    Since $\tilde{f} \in C(X)$, $A_k $ and $B_k$ are closed and disjoint. So, by the last lemma,
+    $\exists g_k \in \mathcal{A}$ s.t. $g_k < \frac{1}{n}$ on $A_k$, $g_k > 1 - \frac{1}{n}$ on $B_k$,
+    and $0 \leq g_k \leq 1$ on $X$.
+
+    Let 
+    \[
+        \tilde{g}(x) := \frac{1}{n} \sum_{k = 1}^n g_k(x)
+    \]
+    
+    \noindent \textbf{Claim:} $\| \tilde{f} - \tilde{g} \|_{\infty} < \epsilon$.
+    
+    \noindent Fix $1 \leq \overline{k} \leq n$. If $x \in X$ s.t. 
+    $\tilde{f}(x) \leq \frac{\overline{k}}{n}$, then for $k - 1 \geq \overline{k}$, $x \in A_k$,
+    so
+    \[
+        g_k(x) = \begin{cases}
+            < \frac{1}{n} & \text{if } k - 1 \geq \overline{k} \\
+            \leq 1 & \text{otherwise} \\
+        \end{cases}   
+    \]       
+    $\Rightarrow \tilde{g}(x) = \frac{1}{n}\sum_{k=1}^{n} g_k(x) \leq 
+    \frac{1}{n}[\sum_{k=1}^{\overline{k}}g_k(x) +\sum_{k=\overline{k} + 1}^{n}g_k(x)] $.
+    \[
+        \leq \frac{1}{n} \left[ \overline{k} + \frac{n - \overline{k}}{n} \right] 
+        = \frac{\overline{k}}{n} + \frac{n - \overline{k}}{n^2} \leq \frac{\overline{k} + 1}{n}
+    \]
+    If $x \in X$ s.t. $\tilde{f}(x) \geq \frac{\overline{k} - 1}{n}$, then $\forall k \leq \overline{k} -1$,
+    we have $x \in B_k$, so 
+    \[
+        g_k(x) = \begin{cases}
+            > 1 - \frac{1}{n} & \text{if } k \leq \overline{k} - 1 \\
+            \geq 0 & \text{otherwise}
+        \end{cases}
+    \]   
+
+    Therefore,
+    \[
+        \tilde{g}(x) = \frac{1}{n} \sum_{k=1}^n g_k(x) \geq \frac{1}{n}\sum_{k = 1}^{\overline{k} - 1} g_k(x) \geq \frac{1}{n}(\overline{k} - 1)\left(1 - \frac{1}{n}\right)
+    \]
+    \[
+        > \frac{\overline{k} - 1}{n} - \frac{\overline{k} - 1}{n^2} > 
+        \frac{\overline{k} - 1}{n} - \frac{n - 1}{n^2} > \frac{\overline{k}}{n} - \frac{2}{n}
+    \]
+
+    So if $\frac{\overline{k} - 1}{n} \leq \tilde{f}(x) \leq \frac{\overline{k}}{n}$, then
+    \[
+        \frac{\overline{k}}{n} - \frac{2}{n} \leq \tilde{g}(x) \leq \frac{\overline{k} + 1}{n}
+    \] 
+
+    Therefore, $\| \tilde{f} - \tilde{g} \|_{\infty} < \frac{3}{n} < \epsilon$. \qedhere
+\end{proof}
+
+\noindent In part 3 of the course, we will need a complex version of Stone-Weierstrass, i.e., 
+$f : X \to \mathbb{C}$. So,
+\begin{align*}
+    f(x) &= \real(f) + i\imag(f), \\
+    |f| &= \sqrt{\real(f)^2 + \imag(f)^2}, \\
+    \| f \|_{\infty} &= \sup_{x \in X} |f(x)|.
+\end{align*}
+
+\noindent Complex conjugate $\overline{f(x)} = \real(f) - i\imag(f)$. 
+Note that $f \in C(X, \mathbb{C})$ iff $\real(f), \imag(f) \in C(X, \mathbb{R})$.
+
+\noindent When we define $\mathcal{A}$ as a vector space, it is a vector space over $\mathbb{C}$.
+
+\begin{thm} [Complex Stone-Weierstrass]
+    Let $X$ be compact and Hausdorff. Let $\mathcal{A} \subseteq C(X, \C)$ be an algebra that
+    separates points, contains constant functions, and is closed under complex conjugation. 
+    Then $\mathcal{A}$ is dense in $(C(X, \C), \| . \|_{\infty} )$.  
+    
+\end{thm}
+
+\begin{proof}
+    Since $\real(f) = \frac{f + \overline{f}}{2}$, $\imag(f) = \frac{f - \overline{f}}{2i}$, let
+    \[
+        \mathcal{A}_\R = \left\{ \real|f|, \imag|f| : f \in \mathcal{A} \right\} 
+    \] 
+    Then $\mathcal{A}_\R \subseteq C(X, \R)$ is still an algebra that separates points and contains 
+    constant functions. By real Stone-Weierstrass, $\mathcal{A}_\R$ is dense in 
+    $(C(X, \R), \| . \|_{\infty} )$. Thus $\mathcal{A}$ is dense in $C(X, \C)$ 
+    by definition of the modulus. \qedhere  
+\end{proof}

@@ -1,0 +1,972 @@
+\section{A Taste of Fourier}
+\subsection{Fourier Series}
+
+Fourier analysis for a complex function $f$ that is periodic. We let the torus 
+$\mathbb{T} = [0, 1) \sim \R / \Z$ and we consider 
+\[
+    L^2(\mathbb{T}; \C) = \left\{ f : \mathbb{T} \to \C : \int_0^1 |f(x)|^2 dx < \infty \right\} 
+    \footnote{Note $|f| = \sqrt{\real(f)^2 + \imag(f)^2}$ }
+\] 
+Now, $f : \mathbb{T} \to \C$ is the same as $\tilde{f} : \R \to \C$ with $\tilde{f}$
+being 1-periodic. We will build an inner product
+$(. , .) : L^2(\mathbb{T}; \C) \times L^2(\mathbb{T}; \C) \to \C$.
+
+\begin{defn}[complex inner product]
+    A \newword{complex inner product} on a complex vector space $V$ is a function $(. , .) : V \times V \to \C$ 
+    such that for all $u, v, w \in V$ and $\alpha \in \C$, we have
+    \begin{enumerate}
+         \item $(\alpha u + v, w) = \alpha (u, w) + (v, w)$
+        \item $(u, v) = \overline{(v, u)}$
+        \item $(u, u) \geq 0$ and $(u, u) = 0$ if and only if $u = 0$
+    \end{enumerate}
+\end{defn}
+
+\begin{prop}
+    \[
+        (f, g) := \int_0^1 f(x) \overline{g(x)} \; dx
+    \] 
+    defines a complex inner product on $L^2(\mathbb{T}; \C)$.
+\end{prop}
+\begin{proof} \leavevmode
+    \begin{description}
+        \item[(1)] Let $\alpha \in \C$. Then
+        \[
+            (\alpha f + h, g) = \int_0^1 (\alpha f(x) + h(x)) \overline{g(x)} \; dx = \alpha (f, g) + (h, g)
+        \]  
+        \item[(2)] 
+        \begin{align*}
+            (f, g) = \int_0^1 f(x) \overline{g(x)} \; dx &= \int_0^1 (\real f + i \imag f)(\real g - i \imag g) \; dx \\
+            &= (a + bi) (c - di) \\
+            &= (ac + bd) + i (bc - ad) \\
+            &= \overline{(ac + bd) + i (ad - bc)} \\
+            &= \overline{(a-bi) (c + di)} \\
+            &= \overline{\int_0^1 \overline{(\real f + i \imag f)} (\real g + i \imag g) \; dx} \\
+            &= \overline{(g, f)}
+        \end{align*}
+        \item[(3)] 
+        \[
+            (f, f) = \int_0^1 f(x) \overline{f(x)} \; dx = \int_0^1 |f(x)|^2 \; dx \geq 0  
+        \] 
+        Thus $(f, f) = \| f \|_{L^2(\mathbb{T}; \C)}^2 $ and $(f, f) = 0 $ iff $|f| = 0$ for 
+        a.e. $x$ iff $f = 0$ in $L^2(\mathbb{T}; \C)$. \qedhere   
+    \end{description}
+\end{proof}
+
+\begin{rem}
+    $f \in L^2(\mathbb{T}; \C) \longleftrightarrow \real (f), \imag (f) \in L^2(\mathbb{T}; \R)$.
+    So $\{f_n \}$ is Cauchy in $L^2(\mathbb{T}; \C)$ iff 
+$\{ \real (f_n) \}_{n=1}^\infty$ and $\{ \imag (f_n) \}_{n=1}^\infty$ are Cauchy in $L^2(\mathbb{T}; \R)$.
+
+Also, we know $L^2(\mathbb{T}; \R)$ is complete, so $L^2(\mathbb{T}; \C)$ is a Hilbert space.   
+\end{rem}
+\begin{rem}
+    We still have Cauchy Schwartz, i.e. 
+    \[
+        |(f, g)| \leq \| f \| \| g \|  
+    \] 
+\end{rem}
+
+\begin{thm}
+    Let $e_n(x) := e^{2 \pi i n x} = \cos(2 \pi n x) + i \sin(2 \pi n x)$. Then
+    $\{e_{n}(x)\}_{n \in \Z}$ is an orthonormal basis for $L^2(\mathbb{T}; \C)$. 
+\end{thm}
+\begin{proof}
+    Observe 
+    \[
+        (e_n, e_m) = \int_0^1 e^{2 \pi i n x} e^{-2 \pi i m x} \; dx = \int_0^1 e^{2 \pi i (n - m) x} \; dx
+    \] 
+    If $n = m$, then $\int_0^1 e^0 \; dx  = 1$, therefore $\| e_n \| = 1 \; \forall n$.
+
+    If $n \neq m$, then 
+    \[
+    \int_0^1 e^{2 \pi i (n - m) x} \; dx  = \frac{1}{2 \pi i (n - m)} e^{2 \pi i (n - m)x} \Big|_0^1 = \frac{1}{2 \pi i (n - m)} (e^{2 \pi i (n - m)} - 1)
+    \]
+    But $e^{2 \pi i (n - m)} = \underbrace{\cos(2 \pi (n - m))}_{= 1} + i \underbrace{\sin(2 \pi (n - m))}_{= 0} = 1$.
+    
+    So $\int_0^1 e^{2 \pi i (n - m) x} \; dx = 0$. Thus $\{e_n\}_{n \in \Z}$ is orthonormal.
+    \newline \textbf{Claim:} $\{e_n\}_{n \in \Z}$ is a basis of $L^2(\mathbb{T}; \C)$, i.e. 
+    $\forall f \in L^2(\mathbb{T}; \C)$, $\exists \{\alpha_n \}_{n \in \Z} \subseteq \C$ s.t.
+    \[
+        f = \sum_{n=-\infty}^\infty \alpha_n e_n = \lim_{N \to \infty} \sum_{n=-N}^N \alpha_n e_n
+    \]   
+    To prove the claim we use complex Stone-Weierstrass. Let
+    \[
+        \mathcal{A} = \left\{ \sum_{n = -N}^N \alpha_n e_n : \alpha_n \in \C \right\} 
+    \] 
+    We need that $\mathcal{A}$ is an algebra, which is clear since $e_n e_m = e^{2 \pi i (n + m) x} = e_{n+m}$.
+    We also need that $\mathcal{A}$ contains constants, which is clear since $e_0 = 1$. We also
+    need that $\mathcal{A}$ is closed under conjugates, which is also clear because $\overline{\alpha_n} \in \C$,
+    $\overline{e_n} = e_{-n}$. Finally, we need that $\mathcal{A}$ separates points. 
+    If $x \neq y$, $x, y \in [0, 1)$, then $\forall n$ s.t. $nx - ny \notin \Z$, we have
+    \[
+        e_n(x) = e^{2 \pi i n x} \neq e^{2 \pi i n y} = e_n(y)
+    \]
+    So $\mathcal{A}$ separates points. 
+    
+    Thus by complex Stone-Weierstrass, since $\mathbb{T}$ is compact, $\mathcal{A}$ is dense in $C(\mathbb{T}; \C)$
+    so $\forall \tilde{f} \in C(\mathbb{T}; \C)$, 
+    \[
+        \tilde{f} = \lim_{N \to \infty} \sum_{n=-N}^N \alpha_n e_n \quad \text{ limit in }  \| . \|_\infty
+    \] 
+    Since $\| . \|_\infty \geq \| . \|_{L^2}$, we also have $\tilde{f} = \lim_{N \to \infty} \sum_{n=-N}^N \alpha_n e_n$ in $\| . \|_{L^2}$.
+    Finally, we know $C(\mathbb{T}; \C)$ is dense in $L^2(\mathbb{T}; \C)$.
+    Therefore $\forall \eta > 0$,
+    \[
+        \lim_{N \to \infty} \| f - \sum_{n = -N}^N \alpha_n e_n \|_{2} \leq \| f - \tilde{f} \|_2 + 
+        \| \tilde{f} - \sum_{n = -N}^N \alpha_n e_n \|_2 \leq \eta + 0 = \eta  
+    \]  
+    Therefore $f = \sum_{n = -\infty}^\infty \alpha_n e_n$ in $L^2(\mathbb{T}; \C)$, as desired. \qedhere 
+
+\end{proof}
+
+\begin{rem}
+    Recall that TFAE:
+    \begin{enumerate}
+        \item $\{e_n\}_{n \in \Z}$ is a basis 
+        \item Every $f \in L^2(\mathbb{T}; \C)$, $f = \sum_{n = -\infty}^\infty \alpha_n e_n = \sum_{n=-\infty}^\infty (f, e_n) e_n$
+        \item Completeness: If $(f, e_n) = 0$ for all $n$, then $f = 0$
+        \item Parseval: $\| f \|_2^2 = \sum_{n=-\infty}^\infty |(f, e_n)|^2 $  
+    \end{enumerate}
+\end{rem}
+
+\begin{defn}[Fourier Series]
+    For $n \in \Z$, let
+    \[
+        \hat{f}(n) := (f, e_n) = \int_0^1 f(x) e^{-2 \pi i n x} \; dx
+    \]  
+    Then the (complex) \newword{Fourier series} of $f : \mathbb{T} \to \C$ is defined by
+    \[
+        \sum_{n = -\infty}^\infty \hat{f}(n)e^{2 \pi i n x}
+    \] 
+\end{defn}
+
+\begin{rem}
+    It is possible to define a Fourier series for any periodic function. If $f$ is $L-$periodic,
+    then 
+    \[
+        \hat{f}_L(n) := \frac{1}{L} \int_0^L f(x) e^{-2 \pi i n x / L} \; dx
+    \]   
+    Therefore we get the Fourier series
+    \[
+        \sum_{n = -\infty}^\infty \hat{f}_L(n) e^{2 \pi i n x / L}
+    \] 
+\end{rem}
+\begin{rem}
+    It is also possible to define a real valued Fourier series, using sines and cosines.
+    \[
+        A_0 + \sum_{n = 1}^\infty A_n \cos(\frac{2 \pi n x}{L}) + B_n \sin(\frac{2 \pi n x}{L})
+    \] 
+    for some some $A_n, B_n$, also given by inner products.  
+\end{rem}
+
+\begin{goal}[question]
+    In what sense does 
+    \[
+        \sum_{n = -\infty}^\infty \hat{f}(n) e^{2 \pi i n x} = \lim_{N \to \infty} \sum_{n = -N}^N \hat{f}(n) e^{2 \pi i n x} =: \lim_{N \to \infty} S_N(x)
+    \] 
+    converge?
+\end{goal}
+
+\begin{prop}
+    If $f \in L^2(\mathbb{T}; \C)$, then
+    \[
+        f(x) = \lim_{N \to \infty} S_N(x) \text{ in } L^2(\mathbb{T}; \C)
+    \]  
+\end{prop}
+\begin{proof}
+    Immediate from the basis \qedhere
+\end{proof}
+
+Observe that by Parseval, we have 
+\[
+    \| f \|_2^2 = \sum_{n = -N}^N |(f, e_n)|^2 = \sum_{n=-\infty}^\infty |\hat{f}(n)|^2
+\] 
+Therefore $\lim_{n \to \infty} |\hat{f}(n)|^2 = 0 \iff \lim_{n \to \infty} |\hat{f}(n)| = 0$. 
+\footnote{Can also be seen using Bessel's inequality, $\sum_{n = -\infty}^\infty |\hat{f}(n)|^2 \leq \| f \|_2^2$ }
+This gives us
+
+\begin{prop}[Riemann-Lebesque Lemma]
+    If $f \in L^2(\mathbb{T}; \C)$, then $\lim_{n \to \infty} |\hat{f}(n)| = 0$.
+\end{prop}
+
+\begin{rem}
+    This is very useful for the "real Fourier series" version,
+    \[
+        \lim_{n \to \infty} \int_0^1 f(x) \sin(2 \pi n x) \; dx = \lim_{n \to \infty} \int_0^1 f(x) \cos(2 \pi n x) \; dx = 0
+    \] "Oscillatory integrals" (important in PDEs).
+\end{rem}
+
+What about other notions of convergence?
+\begin{align*}
+    S_N(x) &= \sum_{n=-N}^N \hat{f}(n) e^{2 \pi i n x} \\
+    &= \sum_{n = -N}^N \left( \int_0^1 f(y) e^{-2 \pi i n y} \; dy \right) e^{2 \pi i n x} \\
+    &= \int_0^1 f(y) \left( \sum_{n = -N}^N e^{2 \pi i n (x - y)} \right) dy
+\end{align*}
+Let $D_N(x) := \sum_{n = -N}^N e^{2 \pi i n x}$. $D_N$ is called the \newword{Dirichlet kernel}.
+\[
+    S_N(x) = \int_0^1 f(y) D_N(x - y) \; dy = (f * D_N)(x) \quad \text{ "convolution on the torus"}
+\] 
+
+\underline{Observe:}
+\[
+    D_N(x) = 1 + \sum_{n = 1}^N \underbrace{e^{2 \pi i n x}}_{1-periodic} - \underbrace{e^{-2 \pi i n x}}_{\text{1-periodic}}
+\]  
+Therefore $D_N$ is 1-periodic, and
+\[
+    \int_0^1 D_N(x) \; dx = \int_0^1 1 + (\text{1-periodic}) \; dx = 1
+\]  
+
+\begin{rem}
+    $D_N$ is NOT a good kernel. In particular, 
+    \[
+        \int_0^1 |D_N(x)| \; dx \geq C \log N \to \infty \text{ as } N \to \infty
+    \]  
+    However, we can rewrite $D_N$ as
+    \begin{align*}
+        D_N(x) = \sum_{n = -N}^N e^{2 \pi i n x}  &= \sum_{n = -N}^N \left(e^{2 \pi i x}\right)^n\\
+        &= \sum_{n = 0}^{2N} e^{2 \pi i x (n - N)} \\
+        &= e^{-2 \pi i N x} \underbrace{\sum_{n = 0}^{2N} \left(e^{2 \pi i x}\right)^n}_{\text{finite geometric series}} \\
+        &= e^{-2 \pi i N x} \frac{1 - e^{2 \pi i x (2N + 1)}}{1 - e^{2 \pi i x}} \\
+        &= \frac{e^{-2 \pi i N x} - e^{2 \pi i x (N + 1)}}{1 - e^{2 \pi i x}} \\
+        &= \frac{e^{-2 \pi i x \cdot \frac{1}{2}} \left( e^{-2 \pi i N x } - e^{2 \pi i (N + 1) x } \right)}{e^{-2 \pi i x \cdot \frac{1}{2}}\left(1 - e^{2 \pi i x}\right)} \\
+        &= \frac{e^{-2 \pi i (N + \frac{1}{2}) x} - e^{-2 \pi i (N + \frac{1}{2}) x}}{e^{-2 \pi i \frac{1}{2} x} - e^{2 \pi i \frac{1}{2} x}} \\
+        &= \frac{\sin(2 \pi (N + \frac{1}{2} )x)}{\sin(\pi x)}
+    \end{align*}
+    So $D_N$ is a "rescaled sine function". The sine function is a good kernel, but the rescaling is bad.
+    Using this representation, we have the following theorem.
+\end{rem}
+
+\begin{thm}[pointwise convergence]
+    Let $f \in L^2(\mathbb{T}; \C)$, and $f$ is Lipschitz continuous at $x_0$. Then
+    \[
+        S_N f(x_0) \to f(x_0) \text{ as } N \to \infty
+    \]   
+\end{thm}
+\begin{proof}
+    Proof on the assignment
+\end{proof}
+\begin{thm}[uniform convergence]
+    If $f \in C^2(\mathbb{T}; \C)$ then $S_N f (x) \to f(x)$  on $\mathbb{T}$.   
+\end{thm}
+\begin{proof}
+    Proof on the assignment.
+\end{proof}
+
+\begin{rem}
+    In fact, we see
+    \[
+        \hat{f}(n) = \int_0^1 f(x) e^{-2 \pi i n x} \; dx
+    \]
+    is well defined whenever $f \in L^1(\mathbb{T}; \C)$. \footnote{Since $|e^{-2 \pi i n x}| = 1$}
+    Therefore many Fourier things will be good for $L^1(\mathbb{T}; \C)$, not just $L^2(\mathbb{T}; \C)$. 
+\end{rem}
+
+\subsection{The Fourier Transform}
+Last class, we had $\hat{f} = (f, e_n) = \int_0^1 f(x) e^{-2 \pi i n x} \; dx$ 
+are the fourier coefficients for $f : \mathbb{T} \to \C$, and this quanity is finite $\forall
+f \in L^1(\mathbb{T}; \C)$, $L^2(\mathbb{T}; \C) \subseteq L^1(\mathbb{T}; \C)$. We now introduce:
+
+\begin{defn}[Fourier Transform]
+    Let $f : \R \to \C$. Then $\forall \zeta \in \R$,
+    \[
+        \hat{f}(\zeta) := \int_{\R} f(x) e^{-2 \pi i \zeta x} \; dx
+    \]   
+\end{defn}
+
+\begin{rem}
+    We will reserve $x, y, z$ for variables in the physical space, and $\zeta, \eta, \xi$ for
+    variables in the "Fourier space".  
+\end{rem}
+
+\begin{prop}
+    If $f \in L^1(\R; \C)$, then $\hat{f} \in L^\infty(\R; \C) \cap C(\R; \C)$. 
+    \footnote{We will drop the $\C$ from now on, but everything can be complex valued. }
+\end{prop}
+\begin{proof}
+    We have
+    \begin{align*}
+        |\hat{f}(\xi)| = \left| \int_{\R} f(x) e^{-2 \pi i \xi x} \; dx \right| \leq 
+        \int_{\R} |f(x)| |e^{-2 \pi i \xi x}| \; dx = \int_{\R} |f(x)| \; dx = \| f \|_1
+    \end{align*}
+    Therefore $\| \hat{f} \|_\infty \leq \| f \|_1 $.
+
+    Moreover, $\forall h > 0$,
+    \begin{align*}
+        |\hat{f}(\zeta + h) - \hat{f}(\zeta)| &= \left| \int_{\R} f(x) e^{-2 \pi i (\zeta + h) x} \; dx - \int_{\R} f(x) e^{-2 \pi i \zeta x} \; dx \right| \\
+        &= \left| \int_{\R} f(x) e^{-2 \pi i \zeta x}(e^{-2 \pi i h x} - 1) \; dx \right| \\
+        &\leq \int_{\R} |f(x)| \underbrace{|e^{-2 \pi i \zeta x}|}_{=1} |e^{-2 \pi i h x} - 1| \; dx
+    \end{align*}
+    Also, $\lim_{h \to 0} |e^{-2 \pi i h x} - 1| = 0$, $\forall x \in \R$ and
+    \[
+        |f(x)| |e^{-2 \pi i h x} - 1| \leq |f(x)|(|e^{-2 \pi i h x}| + 1) = 2 |f(x)| \in L^1(\R)
+    \]  
+    Therefore by DCT,
+    \[
+        \lim_{h \to 0} |\hat{f}(\zeta + h) - \hat{f}(\zeta)| = \int_{\R} |f(x)| \underbrace{\lim_{h \to 0} |e^{-2 \pi i h x} - 1|}_{=0} \; dx = 0 \qedhere
+    \] 
+\end{proof}
+
+\begin{prop}
+    Let $f,g \in L^1(\R)$. Then
+    \begin{enumerate}
+        \item $\widehat{f*g} = \hat{f} \cdot \hat{g}$;
+        \item $\int_{\R} f \hat{g} \; dx = \int_{\R} \hat{f} g \; dx$ 
+    \end{enumerate} 
+\end{prop}
+\begin{proof} \leavevmode
+    \begin{description}
+        \item[(a)] 
+        \[
+            \widehat{f * g}(\zeta) = \int (f*g)(x) e^{-2 \pi i \zeta x} \; dx = \int \int f(x-y) g(y) \; dy \; e^{-2 \pi i \zeta x} \; dx
+        \]  
+        Since $f, g \in L^1(\R)$, this integral is finite\footnote{b/c $\leq \| f \|_1 \| g \|_1$ } so 
+        by Fubini,
+        \[
+            = \int \int_{\R} f(x-y) e^{-2 \pi i \zeta (x-y)} \; dx \; g(y) e^{-2 \pi i \zeta y} \; dy
+        \] 
+        Using $z = x-y$, 
+        \[
+            = \int \left( \int_{\R} f(z) e^{-2 \pi i \zeta z} \; dz \right) g(y) e^{-2 \pi i \zeta y} \; dy
+            = \hat{f}(\zeta) \int g(y) e^{-2 \pi i \zeta y} \; dy = \hat{f} \hat{g}
+        \]  
+
+        \item[(b)] 
+        \begin{align*}
+            \int f(x) \hat{g(x)} &= \int f(x) \int g(y) e^{-2 \pi i x y} \; dy \; dx \\
+            &= \int g(y) \underbrace{\int f(x) e^{-2 \pi i x y} \; dx}_{\hat{f}(y)} \; dy \quad \text{by Fubini} \\ 
+            &= \int \hat{f}(y) g(y) \; dy \qedhere \\
+        \end{align*}
+    \end{description}
+\end{proof}
+
+\begin{lem}
+    Let $f(x) = e^{-\pi a x^2}$, $a > 0$. Then
+    \[
+        \hat{f}(\zeta) = \frac{1}{\sqrt{a}}e^{-\pi \zeta^2 / a}
+    \]   
+\end{lem}
+\begin{proof}
+    We compute 
+    \begin{align*}
+        \hat{f'}(\zeta) &= \int_{\R} f'(x) e^{-2 \pi i \zeta x} \; dx \\
+        &= f(x) e^{-2 \pi i \zeta x} \Big|_{-\infty}^\infty - \int_{\R} f(x) (-2 \pi i \zeta) e^{-2 \pi i \zeta x} \; dx \quad \text{by IBP}\\
+        &= e^{-\pi a x^2}e^{-2 \pi i \zeta x} \Big|_{-\infty}^\infty + 2 \pi i \zeta \int_{\R} f(x) e^{-2 \pi i \zeta x} \; dx \\
+        &= 0 - 0 + 2 \pi i \zeta \hat{f}(\zeta)
+    \end{align*}
+    Therefore $\hat{f'}(\zeta) = 2 \pi i \zeta \hat{f}(\zeta)$
+    
+    Also, 
+    \[
+        \frac{d}{d\zeta} \hat{f}(\zeta) = \frac{d}{d \zeta} \left( \int_{\R} f(x) e^{-2 \pi i \zeta x} \; dx \right)
+    \] 
+    To differentiate under the integral, we need to check DCT.
+    \[
+        \left| f(x) \left( \frac{e^{-2 \pi i x (\zeta + h)} - e^{-2 \pi i x \zeta}}{h} \right) \right| \leq |f(x)| \left| \frac{d}{d \zeta} e^{-2 \pi i x \zeta} \right| \Big|_{\zeta = \zeta^*} 
+    \] 
+    where $\zeta^* \in [\zeta, \zeta + h]$. Then
+    \begin{align*}
+        = |f(x)| |-2 \pi i x| |e^{-2 \pi i x \zeta^*}| = 2 \pi |f(x)| |x| = 2 \pi |x| e^{-\pi a x^2} \in L^1(\R)
+    \end{align*}
+    By DCT, 
+    \begin{align*}
+        \frac{d}{d \zeta} \hat{f}(\zeta) &= \int_{\R} f(x) \frac{d}{d \zeta}(e^{-2 \pi i x \zeta}) \; dx \\
+        &= \int_{\R} f(x) (-2 \pi i x) e^{-2 \pi i x \zeta} \; dx \\
+        &= i \int_{\R} (-2 \pi x) e^{-\pi a x^2} e^{-2 \pi i x \zeta} \; dx \\
+        &= \frac{i}{a} \int_{\R} (e^{-\pi a x^2})' e^{-2 \pi i x \zeta} \; dx \\
+        &= \frac{i}{a} \underbrace{\int_{\R} f'(x) e^{-2 \pi i \zeta x} \; dx}_{\hat{f'}(\zeta)} \\
+        &= \frac{1}{a} 2 \pi i \zeta \hat{f}(\zeta) \\
+        &= -\frac{2 \pi \zeta}{a} \hat{f}(\zeta)
+    \end{align*}
+    Thus,
+    \begin{align*}
+        \frac{d}{d \zeta} (e^{\pi \zeta^2 / a} \hat{f}(\zeta)) &= e^{\pi \zeta^2 / a} \frac{d}{d \zeta} \hat{f}(\zeta) + \frac{d}{d \zeta}(e^{\pi \zeta^2 / a}) \hat{f}(\zeta) = 0 \\
+        &= \frac{-2 \pi \zeta}{a} e^{\pi \zeta^2 / a} \hat{f}(\zeta) + \frac{2 \pi \zeta}{a} e^{\pi \zeta^2/a} \hat{f}(\zeta) = 0
+    \end{align*}
+    So $\zeta \mapsto e^{\pi \zeta^2 / a} \hat{f}(\zeta)$ is constant in $\zeta$. Therefore
+    \[
+        e^{\pi \zeta^2/a} \hat{f}(\zeta) = e^{0} \hat{f}(0) = \hat{f}(0) = \int_{\R} e^{-\pi a x^2} \; dx = \frac{1}{\sqrt{a}} \int_{\R} e^{-\pi y^2} \; dy = \frac{1}{\sqrt{a}}
+    \]  
+    Therefore $\hat{f}(\zeta) = \frac{1}{\sqrt{a}} e^{-\pi \zeta^2 / a}$. \qedhere 
+\end{proof}
+
+\begin{defn}[Inverse Fourier Transform]
+    If $f \in L^1(\R)$, then 
+    \[
+        \check{f}(x) := \int_{\R} f(\zeta) e^{2 \pi i x \zeta} d \zeta = \hat{f}(-x)
+    \] 
+\end{defn}
+\begin{proof}
+    If $f \in L^1(\R)$, then $\check{f} \in L^\infty(\R) \cap C(\R)$. The proof is identical to $\hat{f}$.   
+\end{proof}
+
+\begin{rem}
+    We hope that if $f \in L^1(\R)$, then $\check{\hat{f}} = f$. However,
+    \[
+        \check{\hat{f}} = \int \left( \int f(z) e^{-2 \pi i \zeta z} \; dz \right) e^{2 \pi i x \zeta} \; d\zeta
+        \leq \int \int |f(z)| \; dz \; d \zeta = \infty
+    \] 
+\end{rem}
+\begin{thm}[Fourier Inversion]
+    If $f \in L^1(\R)$ and $\hat{f} \in L^1(\R)$, then $\exists f_0 \in C(\R)$ s.t. $f = f_0$ almost everywhere, and
+    $f_0(x) = \hat{\check{f}} = \check{\hat{f}}.$ 
+\end{thm}
+
+\begin{rem}
+    The inversion formula is an analog of convergence of Fourier series, because it says
+    \[
+        f(x) = \int \hat{f}(\zeta) e^{2 \pi i \zeta x} \; d\zeta \approx \sum_{\zeta \in \R} \hat{f}(\zeta) e^{2 \pi i \zeta x}
+    \]  
+
+\end{rem}
+
+\begin{cor}
+    If $ f \in L^1(\R)$, $\hat{f} \equiv 0 \Rightarrow f \equiv 0$ a.e. 
+\end{cor}
+\begin{proof}[Proof of Thm]
+    Let $\epsilon > 0$. Fix $x \in \R$, and define $\phi^\epsilon(\zeta) = e^{2 \pi i x \zeta} - e^{- \pi \epsilon \zeta^2}$ 
+    Then
+    \begin{align*}
+        \hat{\phi^{\epsilon}}(y) &= \int \phi^{\epsilon}(\zeta) e^{-2 \pi i y \zeta} \; d \zeta \\
+        &= \int e^{2 \pi i x \zeta} e^{- \pi \epsilon \zeta^2} e^{-2 \pi i y \zeta} \; d \zeta \\
+        &= \int e^{- \pi \epsilon \zeta^2} e^{- 2 \pi i (y - x) \zeta} \; d \zeta \\
+        &= \widehat{e^{-\pi \epsilon (.)^2}}(y - x) \\
+        &= \frac{1}{\sqrt{\epsilon}} e^{-\pi (y - x)^2 / \epsilon} \quad \text{by lemma}\\
+    \end{align*}   
+    So 
+    \[
+        \int f \hat{\phi^\epsilon} \; dy = \int \hat{f} \phi^\epsilon \; dy
+    \] 
+    Therefore 
+    \[
+        \int f(y) \frac{1}{\sqrt{\epsilon}} e^{-\pi (x-y)^2 / \epsilon} \; dy = \int \hat{f}(y) \phi^\epsilon(y) \; dy
+    \] 
+    Let $K_\epsilon(y) := \frac{1}{\sqrt{\epsilon}} e^{-\pi y^2 / \epsilon}$. We saw that $\{ K_\epsilon\}$ are good kernels,
+    so 
+    \[
+        \int \hat{f}(y) \phi^{\epsilon}(y) \; dy = (K_\epsilon * f)(x)
+    \]   
+    \textbf{Claim:} $K_\epsilon * f \to f$ in $L^1(\R)$.
+    \newline \noindent If the claim holds, then
+    \[
+        f(x) = \lim_{\epsilon \to 0} \int \underbrace{\hat{f}(y) e^{2 \pi i x y} e^{- \pi \epsilon y^2}}_{\leq \|\hat{f}\|_{L^1}} \; dy
+    \]  
+    So by DCT,
+    \[
+        f(x) = \int \hat{f}(y) e^{2 \pi i x y} \; dy 
+    \]  
+    $f(x) = \check{\hat{f}}(x)$, therefore $f = \check{\hat{f}}$ a.e.
+    An identical proof gives $f = \hat{\check{f}}$ a.e. Moreover, $\check{\hat{f}}$ and $\hat{\check{f}}$ are continuous,
+    so $\exists f_0 \in C(\R)$ s.t. $f_0 = f$ a.e.
+    \newline \noindent \textbf{Proof of claim:} 
+    \newline \noindent \begin{align*}
+        |(f * K_\epsilon)(x) - f(x)| &= \left| \int (f(x-y) - f(x)) K_\epsilon(y) \; dy \right| \\
+        &\leq \int |f(x-y) - f(x)| K_\epsilon(y) \; dy \\ 
+    \end{align*}
+    Therefore
+    \begin{align*}
+        \int |(f * K_\epsilon)(x) - f(x)| \; dx &\leq \int \int |f(x-y) - f(x)| K_\epsilon(y) \; dy \; dx \\
+        &= \int \int |f(x-y) - f(x) | \frac{1}{\sqrt{\epsilon}} e^{-\pi (y)^2 / \epsilon} \; dy \; dx \\
+        &= \int \int |f(x - \sqrt{\epsilon}y) - f(x)| \; dx \; e^{-\pi y^2} \; dy
+    \end{align*} 
+    Then by two DCT's, we can take $\epsilon \to 0$ inside the integral. (Finish proof in the posted notes)
+\end{proof}
+
+Let us introduce
+\[
+    C_0(\R) = \left\{ f \in C(\R) : \lim_{|x| \to \infty} |f(x)| = 0 \right\} \footnote{So $C_c(\R) \subseteq C_0(\R)$ }
+\] 
+
+\begin{prop}
+    If $f \in C^1(\R) \cap C_0(\R) \cap L^1(\R)$ and $f' \in L^1(\R)$, then
+    \[
+        \widehat{f'}(\zeta) = (2 \pi i \zeta) \hat{f}(\zeta)
+    \] 
+    Additionally, if $f \in L^1(\R)$, then $\hat{f} \in C_0(\R)$. 
+\end{prop}
+
+\begin{proof}
+    Identical to before. 
+    \begin{align*}
+        \widehat{f'}(\zeta) &= \int_{\R} f'(x) e^{-2 \pi i \zeta x} \; dx \\
+        &= f(x) e^{-2 \pi i \zeta x} \Big|+{x = -\infty}^\infty - \int_{\R} f(x) (-2 \pi i \zeta) e^{-2 \pi i \zeta x} \; dx \\
+        &= 0 - 0 + 2 \pi i \zeta \hat{f}(\zeta)
+    \end{align*}
+    For the second part, if $f \in L^1(\R)$, then $\exists \{f_n\} \subseteq C_c^\infty(\R)$ s.t. $\| f_n - f \|_1 \to 0$.
+    Then $f_n' \in C_c(\R) \; \forall n$, therefore $f_n' \in L^1(\R)$. Therefore $\hat{f_n'} \in L^\infty(\R) \cap C(\R) \; \forall n$.
+    So by the first claim,
+    \[
+        \hat{f_n'}(\zeta) = 2 \pi i \zeta \hat{f_n}(\zeta) \in L^\infty(\R) \cap C(\R) \; \forall n
+    \]    
+    Since $2 \pi i (.) \hat{f_n}(.) \in L^\infty(\R)$, we have
+    \[
+        |2 \pi i \zeta \hat{f_n}(\zeta)| \leq C, \Rightarrow |\zeta| |\hat{f_n}(\zeta)| \leq C \Rightarrow |\hat{f_n}(\zeta)| \leq \frac{C}{|\zeta|} \to 0 \text{ as } |\zeta| \to \infty
+    \]  
+    Therefore $\hat{f_n} \in C_0(\R), \; \forall n$.
+    
+    Moreover, since $\| f_n - f \|_1 \to 0 $, 
+    \begin{align*}
+        \| \hat{f_n} - \hat{f} \|_\infty &= \sup_{\zeta} \left| \int f_n(x) e^{-2 \pi i \zeta x} \; dx - \int f(x) e^{-2 \pi i \zeta x} \; dx \right| \\
+        &= \sup_{\zeta} \left| \int (f_n(x) - f(x)) e^{-2 \pi i \zeta x} \; dx \right| \\
+        &\leq \| f_n - f \|_1 \xrightarrow{n \to \infty} 0    
+    \end{align*} 
+
+    Finally, $\forall \zeta \in \R$,
+    \[
+        |\hat{f}(\zeta)| \leq |\hat{f_n}(\zeta)| + \| \hat{f_n} - \hat{f} \|_\infty 
+    \]  
+    Therefore
+    \[
+        \lim_{|\zeta| \to \infty} |\hat{f}(\zeta)| \leq \underbrace{\lim_{|\zeta| \to \infty} |\hat{f_n}(\zeta)|}_{0 \text{ bc } \hat{f_n} \in C_0(\R)} + \| \hat{f_n} - \hat{f} \|_\infty 
+    \] 
+    Taking $n \to \infty$,
+    \[
+        \lim_{|\zeta| \to \infty} |\hat{f}(\zeta)| = 0 \quad \Rightarrow \quad \hat{f} \in C_0(\R) \qedhere
+    \]  
+\end{proof}
+
+\begin{rem}
+    The second part of the proposition is the analogue of the Riemann-Lebesgue lemma except $f \in L^1(\R)$.
+    \[
+        \left[\lim_{n \to \infty} \int_0^1 f(x) e^{-2 \pi i n x} \; dx = 0 \right]
+    \]      
+\end{rem}
+
+This gives us a good theory of Fourier Transforms for $f \in L^1(\R)$. However we would really like
+to do it for $f \in L^2(\R)$ like before, and there's no easy way to compare $L^2(\R)$ and $L^1(\R)$.
+
+\begin{thm}[Plancherel's Theorem]
+    If $f \in L^1(\R) \cap L^2(\R)$, then $\hat{f} \in L^2(\R)$ and
+    \[
+        \| f \|_2 = \| \hat{f} \|_2 \quad \text{(isometry)}
+    \]   
+\end{thm}
+\begin{rem}
+    Recall Parseval's identity for Fourier series. 
+    \[
+        \| f \|_2^2 - \sum_{n \in \Z} |\hat{f_n}(n)|^2 \quad (\ell^2 \text{ version of Plancherel})
+    \] 
+\end{rem}
+\begin{proof}
+    Let $f \in L^1(\R) \cap L^2(\R)$. Let $g(x) := \overline{f(-x)}$. Then $g \in L^1(\R) \cap L^2(\R)$.
+    Consider $\omega(x) := (f*g)(x)$. Then by Young's inequality,
+    \[
+        \| \omega \|_1 \leq \| f \|_1 \| g \|_1 \quad \Rightarrow \omega \in L^1(\R)
+    \] 
+    \textbf{Claim:} $\omega$ is continuous at $0$.
+    \newline \noindent \begin{align*}
+        |\omega(h) - \omega(0)| &= \left| \int f(h-y)g(y) \; dy - \int f(0 -y) g(y) \; dy \right| \\
+        &= \left| \int (f(h-y) - f(-y))g(y) \; dy  \right| \\
+        &\leq \| f(h - .) - f(.) \|_2 \| g \|_2 \\
+        &= \| f(. - h) - f(.) \|_2 \| g \|_2 = \| \tau_h f - f \|_2 \| g \|_2        
+    \end{align*}  
+    Since $f \in L^2(\R)$, $\forall \eta > 0$, $\exists \tilde{f} \in C_c(\R)$ s.t. $\| \tilde{f} - f \|_2 < \eta$.
+    Then,
+    \[
+        \| \tau_h f - f \|_2 \leq \underbrace{\| \tau_h f - \tau_h \tilde{f} \|_2}_{= \| f - \tilde{f} \|_2 } + \| \tau_h \tilde{f} - \tilde{f} \|_2 + \| \tilde{f} - f \|_2    
+        \leq 2 \eta + \underbrace{\| \tau_h \tilde{f} - \tilde{f} \|_2}_{\tilde{f} \in C_c(\R)}
+    \]    
+    Therefore
+    \[
+        \| \tau_h \tilde{f} - \tilde{f} \|_\infty \xrightarrow{h \to 0} 0 \quad \Rightarrow \quad \| \tau_h \tilde{f} - \tilde{f} \|_2 \xrightarrow{h \to 0} 0 
+    \] 
+    So 
+    \[
+        \lim_{h \to 0} \| \tau_h f  - f \|_2 \leq 2 \eta \quad \forall \eta > 0 \quad \Rightarrow \quad \lim_{h \to 0} \| \tau_h f - f \|_2 = 0 
+    \]  
+    Thus $\lim_{h \to 0} |\omega(h) - \omega(0)| = 0$, and thus $\omega$ is continuous at $0$.
+
+    Since $ \omega = f *g$, we have $\hat{\omega} = \hat{f}\hat{g}$ and 
+    \begin{align*}
+        \hat{g}(\zeta) = \widehat{f(- \cdot)}(\zeta) &= \int_{\R} \overline{f(-x)}e^{-2 \pi i \zeta x} \; dx \\
+        &= \int_{\R} \overline{f(-x)e^{2 \pi i \zeta x}} \; dx \\
+        &= \overline{\int{\R} f(-x) e^{2 \pi i \zeta x} \; dx} \\
+        &= \overline{\int_{\R} f(x) e^{-2 \pi i \zeta x} \; dx} \\
+        &= \overline{\hat{f}(\zeta)}
+    \end{align*}
+    So $\hat{\omega} = \hat{f} \hat{g} = \hat{f} \overline{\hat{f}} = |\hat{f}|^2 \geq 0$
+    Finally, recall the good kernel
+    \[
+        K_\epsilon(y) = \frac{1}{\sqrt{\epsilon}} e^{-\pi y^2 / \epsilon} = \widehat{e^{-\pi \epsilon (.)^2}}(y)
+    \]  
+    Using $\int \hat{\omega} f \; dy = \int \omega \hat{f} \; dy$, we get
+    \begin{align*}
+        \int \hat{\omega}(y) e^{-\pi \epsilon y^2} \; dy &= \int \omega(y) \frac{1}{\sqrt{\epsilon}e^{-\pi y^2 / \epsilon}} \; dy \\
+        &= \int \omega(y) K_\epsilon(y) \; dy \\
+        &= \int \omega(y) K_\epsilon(-y) \; dy \\
+        &= (\omega * K_\epsilon)(0) \quad (*)
+    \end{align*} 
+    On the LHS, $\hat{\omega} \geq 0$, and $\hat{\omega}(y)e^{-\pi \epsilon y^2} \to \hat{\omega}(y) $ as $\epsilon \to 0$.
+    So by MCT, 
+    \[
+        \lim_{\epsilon \to 0} \int \hat{\omega}(y) e^{- \pi \epsilon y^2} \; dy = \int \hat{\omega}(y) \; dy
+    \] 
+    \textbf{Claim:} $\lim_{\epsilon \to 0} (\omega * K_\epsilon)(0) = \omega(0)$
+    \newline \noindent If claim holds, then by $(*)$, 
+    \begin{align*}
+        \int \hat{\omega}(y) \; dy = \omega(0) \quad \Rightarrow \quad \int |\hat{f}(y)|^2 \; dy &= \int f(y) \overline{f(-(0 - y))} \; dy \\
+        &= \int f(y) \overline{f(y)} \; dy \\
+        &= \int |f(y)|^2 \; dy
+    \end{align*}  
+    So $\| f \|_2^2 - \| \hat{f} \|_2^2  $ and we are done.
+    
+    Now to prove the claim. Fix $ \eta > 0$. Since $\omega$ is continuous at $0$, $\exists \delta > 0$ s.t.
+    if $|y| < \delta$, then $|\omega(y) - \omega(0)| < \eta$. Therefore
+    \begin{align*}
+        &\left| \int \omega(0 - y) K_\epsilon(y) \; dy - \omega(0) \right| = \left| \int (\omega(0 -y) - \omega(0))K_\epsilon(y) \; dy \right|  \\
+        &\leq \int_{|y| \leq \delta} |\omega(-y) - \omega(0)| K_\epsilon(y) \; dy  + \int_{|y| > \delta} (|\omega(-y)| _ |\omega(0)|) K_\epsilon(y) \; dy \marginnote{$|\omega(0)| < \infty$ because $\omega$ is continuous at $0$}\\
+        &\leq \underbrace{\int_{|y| \leq \delta} \eta K_\epsilon(y) \; dy}_{\leq \eta} + \underbrace{|\omega(0)|\int_{|y| > \delta} K_\epsilon(y) \; dy}_{\to 0 \text{ as } \epsilon \to 0}  + \int_{|y| > \delta} |\omega(-y)| K_\epsilon(y) \; dy \\
+    \end{align*}      
+    Finally, 
+    \begin{align*}
+        \int_{|y| > \delta} |\omega(-y)| \frac{1}{\sqrt{\epsilon}}e^{- \pi y^2 / \epsilon} \; dy &\leq \int_{|y| > \delta} |\omega(-y)| \frac{1}{\sqrt{\epsilon}} e^{-\pi \delta^2 / \epsilon} \; dy \\
+        &\leq \underbrace{\frac{1}{\sqrt{\epsilon}}e^{- \pi \delta^2 / \epsilon}}_{\to 0 \text{ as } \epsilon \to 0} \underbrace{\int |\omega(-y)| \; dy}_{= \| \omega \|_1 } \\
+    \end{align*}
+    So we've shown $\forall \eta > 0$,
+    \[
+        \lim_{\epsilon \to 0} | (\omega * K_\epsilon)(0) - \omega(0)| \leq \eta
+    \]  
+    Therefore $\lim_{\epsilon \to 0} | (\omega * K_\epsilon)(0) - \omega(0)| = 0$, and we are done. \qedhere
+\end{proof}
+
+\begin{defn}[Fourier Transform on $L^2(\R)$]
+    Let $f \in L^2(\R)$. Then $\exists \{ f_k\} \subseteq C_c^\infty(\R)$ s.t. $f_k \to f$ in $L^2(\R)$.
+    Since $\{f_k\} \subseteq C_c^\infty(\R)$, $f_k \in L^2(\R) \cap L^1(\R), \forall k$. \footnote{Smooth and compact functions are in every single $L^p$ space. }      
+    Since $\{f_k\}$ converge in $L^2(\R)$, they are also Cauchy in $L^2(\R)$, and
+    \[
+        \underbrace{\| f_j - f_k \|_2}_{\in L^2(\R) \cap L^1(\R)} =\footnote{By the Plancherel theorem} \| \widehat{f_j - f_k} \|_2
+        = \| \hat{f_j} - \hat{f_k} \|_2 \footnote{By linearity of Fourier transform} \quad \forall j, k
+    \]    
+    Therefore $\{\hat{f_j}\}$ is Cauchy in $L^2(\R)$, so by the completeness of $L^2(\R)$, 
+    we define
+    \[
+        \hat{f}(\zeta) := \lim_{j \to \infty} \hat{f_j}(\zeta) \text{ in } L^2(\R)
+    \]    
+    \textbf{Claim:} $\hat{f}$ is well-defined.
+    \newline \noindent Suppose $\exists \{f_k\}, \{f_k^*\} $ s.t. $f_k \to f$ and $f_k^* \to f$ in $L^2(\R)$.
+    Then we claim $\| \hat{f} - \hat{f^*} \|_2 = 0$. We have
+    \begin{align*}
+        \| f_k - f_k^* \|_2 &\leq \| f_k - f \|_2 + \| f - f_k^* \|_2 \xrightarrow{k \to \infty} 0 \\  
+    \end{align*}   
+    And by Plancherel
+    \[
+        \| f_k - f_k^* \|_2 = \| \hat{f_k} - \hat{f_k^*} \|_2
+    \] 
+    Therefore $\| \hat{f_k} - \hat{f_k^*} \|_2 \to 0$ as $k \to \infty$. So $\hat{f} = \hat{f^*}$ in $L^2(\R)$, and thus
+    $\hat{f}$ is well-defined.
+\end{defn}
+\begin{prop}
+        Let $f \in L^2(\R) \cap C^1(\R)$. If $f' \in L^2(\R)$, and $(\cdot) \hat{f}(\cdot) \in L^2(\R)$,
+        then $\widehat{f'}(\zeta) = 2 \pi i \zeta \hat{f}(\zeta)$. \footnote{Before, we had the same result but with $f \in L^1(\R)$ and $f \in C_0(\R)$.}   
+\end{prop}
+\begin{proof}
+    Let $g_n(x) := (p_{1/n} * f)(x)$. Then $g_n \in C^\infty(\R)$, and $g_n \to f$ in $L^2(\R)$.
+    Since $f \in C^1(\R)$, we have $f' \in C(\R)$. Then
+    \[
+        g_n'(x) = \frac{d}{dx} \left( \int p_{1/n}(y)f(x-y) \; dy \right)
+    \] 
+    By DCT, 
+    \begin{align*}
+        \left| p_{1/n}(y) \frac{f(x + h - y) - f(x-y)}{h}\right| &\leq p_{1/n}(y) |f'(x^*)| \quad \text{for some } x^* \in (x-h, x+h) \footnote{By the mean value theorem}\\
+        &\leq \underbrace{\sup_{B(x^*, 1)} |f'| p_{1/n}(y)}_{\in L^1(\R)} \\
+    \end{align*}  
+    Thus $\forall x$,
+    \[
+        g_n'(x) = \int p_{1/n}(y)f'(x-y) \; dy
+    \]  
+    and since $f' \in L^2(\R)$, $\lim_{n \to \infty} \| g_n' - f' \|_2 = 0$.
+    So $g_n$ are not in $C_0(\R)$, so we do one more level of approximation. 
+    
+    Let $\gamma \in C_c^\infty(\R)$ s.t. 
+    \[
+        \gamma(x) = \begin{cases}
+        1 & \text{ if } |x| \leq 1 \\
+        0 & \text{ if } |x| \geq 2
+        \end{cases}
+    \]  
+    Let $\gamma_n(x) := \gamma(\frac{x}{n})$. Then $|\gamma_n| \leq 1$, $|\gamma_n'| \leq \frac{1}{n}|\gamma'| \leq \frac{c}{n}$.
+    \textbf{Claim:} $\| \gamma_n f - f \|_2 \to 0 $.
+    \newline \noindent 
+    \[
+        \int \left| \gamma_n f(x) - f(x) \right|^2 \; dx
+    \]
+    $\gamma_n f \to f$ pointwise, and $\left| \gamma_n f(x) - f(x) \right|^2 \leq 2 |\gamma_n f|^2 + 2|f|^2 \leq 4|f|^2 \in L^1(\R)$.
+    So by DCT, $\lim_{n \to \infty} \| \gamma_n f - f \|_2 = 0$ 
+    
+    Finally, let $f_n := \gamma_n g_n$. Then $f_n \in C_c^\infty(\R)$, and
+    \begin{align*}
+        \| f_n - f \|_2 = \| \gamma_n g_n - f \|_2 &\leq \| \gamma_n g_n - \gamma_n f \|_2 + \| \gamma_n f - f \|_2 \\
+        &= \| \gamma_n (g_n - f) \|_2 + \| \gamma_n f - f \|_2 \\
+        &\leq \| g_n - f \|_2 + \| \gamma_n f - f \|_2 \xrightarrow{n \to \infty} 0        
+    \end{align*}   
+    Finally, $f_n'(x) = \gamma_n(x) g_n'(x) + \gamma_n'(x) g_n(x)$.
+    \begin{align*}
+        \| f_n' - f' \|_2 &= \| \gamma_n g_n' + \gamma_n' g_n - f' \|_2 \\
+        &\leq \| \gamma_n' g_n \|_2 + \| \gamma_n g_n' - \gamma_n f' \|_2 + \| \gamma_n f' - f' \|_2 \\
+        &\leq \| \gamma_n' \|_\infty \| p_{1/n} * f \|_2 + \| \gamma_n \|_\infty \| g_n' - f' \|_2 + \| \gamma_n f' - f' \|_2 \\
+        &\leq \frac{c}{n} \| f \|_2 \| p_{1/n} \|_1 + \| g_n' - f' \|_2 + \| \gamma_n f' - f' \|_2 \xrightarrow{n \to \infty} 0            
+    \end{align*} 
+    So we have $\{f_n\} \subseteq C_c^\infty(\R)$ s.t. $f_n \to f$ and $f_n' \to f'$ in $L^2(\R)$.
+    Since $f_n \in C_c^\infty(\R)$, $f_n \in L^1(\R) \cap C_0(\R)$, by a previous proposition,
+    \[
+        \widehat{f_n'}(\zeta) = 2 \pi i \zeta \hat{f_n}(\zeta) \text{ for all } n
+    \]   
+    So by defn,
+    \[
+        \lim_{n \to \infty} \| \widehat{f_n'} - \widehat{f'} \|_2 = 0 
+    \] 
+    This implies that $\{\widehat{f_n'}\}$ Cauchy in $L^2(\R)$. Therefore
+    \[
+        \{2 \pi i (\cdot) \hat{f_n}(\cdot)\}_{n=1}^{\infty} \text{ is also Cauchy in } L^2(\R) 
+    \]   
+    Hence, $\exists h \in L^2(\R)$ s.t. $2 \pi i \zeta \hat{f_n}(\zeta) \xrightarrow{n \to \infty} h(\zeta)$ in $L^2(\R)$.
+    \newline \textbf{Claim:} $h(\zeta) = 2 \pi i \zeta \hat{f}(\zeta)$.
+    \newline \noindent We have $2 \pi i \zeta \hat{f_n}(\zeta) \rightharpoonup h(\zeta)$ in $L^2(\R)$.
+    So $\forall g \in L^2(\R)$,
+    \[
+        \int 2 \pi i \zeta \hat{f_n}(\zeta) g(\zeta) \; d\zeta \to \int h(\zeta) g(\zeta) \; d\zeta
+    \]   
+    We claim that $\forall \phi \in C_c^\infty(\R)$,
+    \[
+        \int 2 \pi i \zeta \hat{f_n}(\zeta) \phi(\zeta) \; d\zeta \to \int 2 \pi i \zeta \hat{f}(\zeta) \phi(\zeta) \; d\zeta
+    \]  
+    To prove this,
+    \begin{align*}
+        \left| \int 2 \pi i \zeta (\hat{f_n}(\zeta) - \hat{f}(\zeta)) \phi(\zeta) \; d\zeta \right| &\leq |2 \pi | \int |\hat{f_n} - \hat{f}| \underbrace{|\zeta \phi(\zeta)|}_{\in C_c^\infty(\R) \Rightarrow L^2(\R)} \; d \zeta  \\
+        &\leq |2 \pi | \| \hat{f_n} - \hat{f} \|_2 \underbrace{\| \zeta \phi(\zeta) \|_2}_{= C}  \\
+        &= |2 \pi | \| f_n - f \|_2 \| (\cdot) \phi(\cdot) \|_2 \xrightarrow{n \to \infty} 0  
+    \end{align*}
+    So $\forall g \in L^2(\R)$, $\forall \eta > 0$, $\exists \phi \in C_c^\infty(\R)$ s.t. $\| g - \phi \|_2 < \eta $.
+    \begin{align*}
+        &\left| \int 2 \pi i \zeta \hat{f_n}(\zeta) g(\zeta) \; d\zeta - \int 2 \pi i \zeta \hat{f}(\zeta) g(\zeta) \; d\zeta \right| \\
+         &\leq \left| \int 2 \pi i \zeta \hat{f_n}(\zeta)(g(\zeta) - \phi(\zeta))  \; d \zeta \right| + \left| \int 2 \pi i \zeta (\hat{f_n}(\zeta) - \hat{f}(\zeta)) \phi(\zeta) \; d\zeta \right| + \left| \int 2 \pi i \zeta \hat{f}(\zeta) (\phi(\zeta) - g(\zeta)) \; d\zeta \right| \\
+         &\leq \| 2 \pi i (\cdot) \hat{f_n}(\cdot) \|_2 \| g - \phi \|_2 + \| 2 \pi i (\cdot) \hat{f}(\cdot) \|_2 \| g - \phi \|_2 \\
+         &\leq 2 C \eta + \lim_{n \to \infty} "" = 0   
+    \end{align*}    
+    Thus by uniqueness of limits, $h(\zeta) = 2 \pi i \zeta \hat{f}(\zeta)$ which proves $\widehat{f'}(\zeta) = 2 \pi i \zeta \hat{f}(\zeta)$. \qedhere  
+\end{proof}
+
+\begin{rem}
+    Why is it important to extend the Fourier transform to $L^2(\R)$? 
+    Sobolev spaces - a type of weak derivative which belongs to $L^2(\R)$.
+    \[
+        H'(\R) = \left\{ f \in L^2(\R) \text{ s.t. } f' \text{(weak deriv)} \in L^2(\R) \right\} 
+        = \left\{ f \in L^2(\R) : 2 \pi i (\cdot) \hat{f}(\cdot) \in L^2(\R) \right\} 
+    \]   
+\end{rem}
+
+\subsection{Poisson Summation Formula}
+We saw that the Fourier transform is basically some continuous version of Fourier coefficients in
+Fourier series. 
+All Fourier Transform stuff is consistent with Fourier series. For example, let $f : [0, 1) \to \R$,
+and $f \in L^2([0, 1)) \Rightarrow L^1([0, 1))$. Then
+\[
+    \tilde{f}(x) = f(x) \chi_{[0, 1)}(x) \in L^1(\R)
+\] 
+Let's periodize $\tilde{f}$ by defining 
+\[
+    g(x) = \sum_{k \in \Z} \tilde{f}(x - k) = \sum_{k \in \Z} f(x-k) \chi_{[0, 1)}(x-k) = \sum_{k \in \Z} f(x-k) \chi_{[k, k+1)}(x)
+\]  
+Then
+\begin{align*}
+    \widehat{\tilde{f}}(k) = \int_{\R} \tilde{f}(x) e^{-2 \pi i k x} \; dx &= \int_0^1 f(x) e^{-2 \pi i k x} \; dx \\
+    &= \int_0^1 g(x) e^{-2 \pi i k x} \; dx \\
+    &= \hat{f}(k) \quad \text{(Fourier coefficients of $f$)}
+\end{align*}
+Now our goal is to start with a function $f \in L^1(\R)$ and periodize it and compare to Fourier series.
+
+The first method is shifting:
+
+Consider
+\[
+    \sum_{k \in \Z} f(x-k) = \sum_{k \in \Z} \tau_k f(x) := Pf(x)
+\]  
+If the series converges, then
+\[
+    Pf(x \pm 1) = \sum_{k \in \Z} f( x \pm 1 - k) = \sum_{k \in \Z} f(x - \tilde{k}) = Pf(x)
+\] 
+Therefore $Pf$ is $\mathbb{T}$ periodic.   
+
+Alternatively, 
+\[
+    \hat{f}(n) = \int_{\R} f(x) e^{-2 \pi i n x} \; dx
+\] 
+Then define
+\[
+    F f(x) = \sum_{n = -\infty}^\infty \hat{f}(n) e^{2 \pi i n x}
+\] 
+If this series converges, then it is a Fourier series, so it is automaticaly $\mathbb{T}$-periodic.
+
+We will see that the Poisson summation formula relates these two methods of periodization, and thus
+relates Fourier series and Fourier transforms.
+\begin{thm}
+    Let $f \in L^1(\R)$. Then $Pf : \mathbb{T} \to \C$, given by
+    \[
+        Pf(x) =\footnote{converges pointwise a.e. and in $L^1(\mathbb{T})$} \sum_{k \in \Z} f(x-k)
+    \]   
+    and $\| Pf \|_1 = \int_0^1 |Pf(x)| \; dx \leq \| f \|_1 = \int_{\R} |f(x)| \; dx$ 
+\end{thm}
+\begin{proof}
+    Let $Q := [-\frac{1}{2}, \frac{1}{2}] \subseteq \R$. Then $\R = \bigcup_{j \in \Z} Q + j$ (disjoint).
+    \begin{align*}
+        \infty > \int_{\R} |f(x)| \; dx &= \sum_{j \in \Z} \int_{Q + j} |f(x)| \; dx \\
+        &= \sum_{j \in \Z} \int_Q \underbrace{|f(x - j)|}_{\geq 0, \text{ Tonnelli }} \; dx \\
+        &= \int_Q \sum_{j \in \Z} |f(x-j)| \; dx
+    \end{align*}
+    $\Rightarrow \sum_{j \in \Z} |f(x-j)| \in L^1(Q) = L^1(\mathbb{T})$ by periodicity. $(*)$ 
+    
+    \noindent Thus 
+    \[
+        \int_Q |Pf(x)| \; dx = \int_Q \left| \sum_{j \in \Z} f(x-j) \right| \; dx \leq \int_Q \sum_{j \in \Z} |f(x-j)| \; dx = \| f \|_1
+    \] 
+    So we have $\| Pf \|_1 \leq \| f \|_1 $.
+
+    By $(*)$ we have for a.e. $x$, $\sum_{j \in \Z} |f(x-j)| < \infty$. So for a.e. $x$,
+    \[
+        \lim_{N \to \infty} \sum_{|j| > N} |f(x-j)| = 0
+    \]  
+    Therefore $Pf(x) = \sum_{j \in \Z} f(x-j)$ pointwise a.e.
+    
+    By $(*)$, 
+    \[
+        \int_Q \sum_{j \in \Z} |f(x-j)| \; dx = \sum_{j \in \Z} \int_Q |f(x-j)| \; dx < \infty
+    \]  
+    Therefore
+    \begin{align*}
+        \lim_{N \to \infty} \sum_{|j| > N} \int_Q |f(x-j)| \; dx &= \lim_{N \to \infty} \int_Q \underbrace{\sum_{|j| > N} |f(x-j)|}_{\leq \sum_{j \in \Z} |f(x-j)| \in L^1(\R)} \; dx \\
+        &= \int_Q \underbrace{\lim_{N \to \infty} \sum_{|j| > N} |f(x-j)|}_{= 0} \; dx = 0 \quad \footnote{by dominated convergence theorem}\\
+    \end{align*}
+    Therefore
+    \[
+        0 = \lim_{N \to \infty} \int_Q \sum_{|j| > N} |f(x-j)| \; dx \geq \lim_{N \to \infty} \int_Q |Pf - \sum_{j = -N}^N f(x-j)| \; dx
+    \] 
+    So $Pf = \sum_{j \in \Z} f(x-j)$ in $L^1(Q) = L^1(\mathbb{T})$. \qedhere  
+\end{proof}
+
+\begin{lem}
+    Let $f \in L^1(\R)$, $Pf \in L^1(\mathbb{T})$. Then $\forall k \in \Z$,
+    \[
+        \int_{\R} f(x) e^{-2 \pi i k x} \; dx = \hat{f}(k) = \widehat{Pf}(k) = \int_0^1 Pf(x) e^{-2 \pi i k x} \; dx
+    \]  
+\end{lem}
+\begin{proof}
+    We check that 
+    \[
+        \widehat{Pf}(k) = \int_0^1 \sum_{j \in \Z} \underbrace{f(x-j) e^{-2 \pi i k x}}_{\leq |f(x-j)|} \; dx
+    \] 
+    and $\int_0^1 \sum_{j \in \Z} |f(x-j)| \; dx < \infty$. Therefore by Fubini,
+    \[
+        \widehat{Pf}(k) = \sum_{j \in \Z} \int_0^1 f(x-j) e^{-2 \pi i k x} \; dx = \sum_{j \in \Z} \int_{-j}^{1-j} f(\tilde{x}) e^{-2 \pi i k (\tilde{x}+j)} \; d\tilde{x}
+    \]  
+    and $e^{-2 \pi i k j} = cos(-2 \pi k j) + i sin(-2 \pi k j) = 1$. So
+    \[
+        \widehat{Pf}(x) = \sum_{j \in \Z} \int_{-j}^{1-j} f(\tilde{x})e^{-2 \pi i k \tilde{x}} \; d \tilde{x} = \int_{\R} f(\tilde{x})e^{-2 \pi i k \tilde{x}} \; d \tilde{x} = \hat{f}(k) \qedhere
+    \]  
+\end{proof}
+
+\begin{thm}[Poisson Summation Formula]
+    Let $f \in C(\R)$, and assume $\exists C, \epsilon > 0$ s.t. $|f(x)| \leq C(1 + |x|)^{-(1 + \epsilon)}$. As a consequence of
+    this, $f \in L^1(\R)$. Assume $|\hat{f}(\zeta)| \leq C(1 + |\zeta|)^{-(1 + \epsilon)} \Rightarrow \hat{f} \in L^1(\R)$.
+    Then $\forall x \in \mathbb{T}$,
+    \[
+        Pf(x) = \sum_{k \in \Z} f(x-k) = \sum_{k \in \Z} f(x + k) = \sum_{k \in \Z} \hat{f}(k) e^{2 \pi i k x} = Ff(x)
+    \]       
+    where both series converge absolutely and uniformly on $\mathbb{T}$. 
+    In particular, at $x = 0$,
+    \[
+        \sum_{k \in \Z} f(k) = \sum_{k \in \Z} \hat{f}(k)
+    \]  
+\end{thm}
+\begin{proof}
+    Fix $x \in \mathbb{T}$. Check
+    \[
+        \sum_{|k| > N} |f(x + k)| \leq C \sum_{|k| > N} \frac{1}{(1 + |x + k|)^{1 + \epsilon}}
+    \]  
+    Now, $|x + k| = |k - (-x)| \geq |k| - |x| \geq |k| - 1$. So
+    \begin{align*}
+        C \sum_{|k| > N} \frac{1}{(1 + |x + k|)^{1 + \epsilon}} &\leq C \sum_{|k| > N} \frac{1}{|k|^{1 + \epsilon}} \\
+        &\leq 2C \int_N^\infty \frac{1}{y^{1 + \epsilon}} \; dy \\
+        &= 2C y^{-\epsilon} \Big|_N^\infty = \frac{2C}{N^{\epsilon}} \xrightarrow{N \to \infty} 0
+    \end{align*} 
+    Therefore
+    \[
+        \sup_{x \in \mathbb{T}} \left| \sum_{|k| > N} f(x + k) \right| \xrightarrow{N \to \infty} 0
+    \] 
+    Therefore $\sum_{k \in \Z} f(x + k)$ converges absolutely and uniformly on $\mathbb{T}$.  
+    
+    Let $P_N f(x) = \sum_{k = -N}^N f(x + k)$. So $P_N f \to P f$ uniformly on $\mathbb{T}$ and $P_N f$ is 
+    continuous for all $N$, so $Pf \in C(\mathbb{T}) \Rightarrow Pf \in L^2(\mathbb{T})$. Since $L^2(\mathbb{T})$ is
+    a Hilbert space, 
+    \[
+        Pf \stackrel{\footnote{in $L^2(\mathbb{T})$} }{=}\sum_{k \in \Z} \widehat{Pf}(k) e^{2 \pi i k x}
+    \]     
+    But by the previous lemma, $\widehat{Pf}(k) = \hat{f}(k)$, so
+    \[
+        Pf(x) \stackrel{\footnote{in $L^2(\mathbb{T})$}}{=} \sum_{k \in \Z} \hat{f}(k) e^{2 \pi i k x}
+    \] 
+    By the exact same computation, since $|\hat{f}(\zeta)| \leq \frac{C}{(1 + |\zeta|)^{1 + \epsilon}}$,
+    \[
+        \underbrace{\sum_{k \in \Z} \hat{f}(k) e^{2 \pi i k x}}_{= F f(x)} \text{ converges absolutely and uniformly on } \mathbb{T} 
+    \]  
+    So $F_N f(x) = \sum_{k = -N}^N \hat{f}(k) e^{2 \pi i k x}$ and $F_n f \to F f$ uniformly on $\mathbb{T}$. 
+    $x \mapsto e^{2 \pi i k x}$ is continuous, so $F_N f$ is continuous for all $N$, and thus $F f \in C(\mathbb{T})$.
+    Therefore $F_n f \xrightarrow{L^2(\mathbb{T})} F f$.
+    So we have 
+    \[
+        P_N f = F_N f \xrightarrow{L^2(\mathbb{T})} Pf = F f
+    \] 
+    Therefore $P f = F f$ a.e.
+    
+    Finally, since $P f$ and $F f$ are continuous, $P f \equiv F f$ everywhere on $\mathbb{T}$. \qedhere  
+\end{proof}
+
+\begin{rem}
+    \underline{Application of Poisson Summation:}
+    \newline Recall $f(x) = e^{-\pi a x^2} \Rightarrow \hat{f}(\zeta) = e^{- \frac{\pi^2 \zeta^2}{a}}$
+    So 
+    \[
+        \sum_{n \in \Z} e^{\pi a n^2} = \frac{1}{\sqrt{a}} \sum_{n \in \Z} e^{- \frac{\pi^2 n^2}{a}}
+    \] 
+    If $a$ is small, then the LHS converges slowly, but the RHS converges quickly. So we can use the Poisson summation
+    formula to accelerate the rate of convergence of the series. (Useful for computers). 
+
+    In number theory, one considers
+    \[
+        \mathcal{O}(t) = \sum_{n \in \Z} e^{- \pi n^2 t} \quad \text{ called the (Jacobi) theta function}
+    \] 
+    By Poisson summation, we get
+    \[
+        \mathcal{O}(t) = \frac{1}{\sqrt{t}}\mathcal{O}\left(\frac{1}{t}\right)
+    \] 
+    This property is crucial in the proof of the functional equation of the Riemann zeta function.
+\end{rem}
+
+\section{Practice Problems}
+Question 1: Let $f \in C_c(\R)$, and suppose $\exists \overline{C} > 0$ and $\alpha \in (0, 1)$ s.t.
+$\forall \zeta \in \R$, 
+\[
+    |\hat{f}(\zeta)| \leq \frac{\overline{C}}{|\zeta|^{1 + \alpha}}
+\]     
+Prove that $f$ is $\alpha$-Holder continuous, i.e. $\exists L $ s.t.
+\[
+    |f(x+ h) - f(x) | \leq L |h|^\alpha
+\]    
+Solution:
+
+Since $f \in C_c(\R)$, $f \in L^1(\R)$ and by the decay on $\hat{f}$, we have $\hat{f} \in L^1(\R)$. Thus by the Fourier inversion formula,
+for a.e. $x$,
+\[
+    f(x) = \int_{\R} \hat{f}(\zeta) e^{2 \pi i \zeta x} \; d\zeta
+\]      
+But since $f \in C_c(\R)$, the above holds for all $x$. Thus
+\begin{align*}
+    |f(x+ h) - f(x)| &= \left| \int_{\R} \hat{f}(\zeta) e^{2 \pi i \zeta (x + h)} - \hat{f}(\zeta) e^{2 \pi i \zeta x} \; d\zeta \right| \\
+    &= \left| \int_{\R} \hat{f}(\zeta) e^{2 \pi i \zeta x} (e^{2 \pi i \zeta h} - 1) \; d\zeta \right| \quad \footnote{Apply change of variables, $\tilde{\zeta} = \zeta h$ }\\
+    &= \left| \int \hat{f}(\frac{\tilde{\zeta}}{h}) e^{2 \pi i \frac{\tilde{\zeta}}{h} x} (e^{2 \pi i \tilde{\zeta}} - 1) \frac{1}{h}\; d\tilde{\zeta} \right|  \\
+    &\leq \int_{\R} \left| \hat{f}(\frac{\tilde{\zeta}}{h}) \right| (1 + 1) \frac{1}{|h|} \; d\tilde{\zeta} \\
+    &\leq 2 \overline{C} \int \frac{1}{|\frac{\tilde{\zeta}}{h}|^{1 + \alpha}} \frac{1}{|h|} \; d\tilde{\zeta} \\
+    &= 2 \overline{C} |h|^{\alpha} \int_{\R} \frac{1}{|\tilde{\zeta}|^{1 + \alpha}} \; d\tilde{\zeta} \leq L |h|^\alpha \qedhere
+\end{align*} 
+Therefore $f$ is $\alpha$-Holder continuous.
+
+
+ 

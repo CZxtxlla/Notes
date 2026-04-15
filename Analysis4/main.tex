@@ -1,0 +1,77 @@
+%\documentclass{tufte-handout} 
+\documentclass[11pt]{report}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{standalone}
+
+% Load your custom package
+\usepackage{mcgillnotes3}
+
+%----------------------------------------------------------------------------------------
+%   SELECTIVE COMPILATION
+%   Uncomment ONE of the lines below to compile only that section:
+%----------------------------------------------------------------------------------------
+%\includeonly{abstract_metric_topological}
+%\includeonly{functional_analysis}
+%\includeonly{fourier_analysis}
+
+%----------------------------------------------------------------------------------------
+%   DOCUMENT CONTENT
+%----------------------------------------------------------------------------------------
+\begin{document}
+
+% --- Combined Title Page & Table of Contents ---
+\thispagestyle{empty}
+\newgeometry{margin=1in}
+
+\vspace*{1cm}
+
+\begin{center}
+{\small\sffamily\color{gray} McGill University \,|\, Winter 2026}
+
+\vspace{0.8cm}
+
+{\Huge\bfseries\sffamily\color{MidnightBlue} MATH 455}\\[0.4cm]
+{\LARGE\sffamily Lecture Notes}
+
+\vspace{1.2cm}
+
+{\large Charles Zitella}\\[0.3cm]
+{\small\color{gray} \today}
+
+\vspace{0.8cm}
+
+{\small\itshape Based on lectures by Prof.\ Jessica Lin}
+\end{center}
+
+\vspace{1.0cm}
+
+\noindent{\large\bfseries\sffamily\color{MidnightBlue} Contents}
+\vspace{0.3cm}
+
+\noindent\hrule height 0.5pt
+\vspace{0.3cm}
+
+{\small\makeatletter\@starttoc{toc}\makeatother\par}
+
+\restoregeometry
+
+\include{abstract_metric_topological}
+\include{functional_analysis}
+\include{fourier_analysis}
+
+% ---------------------------------------------------------
+% This command prints the generated index at the end
+% ---------------------------------------------------------
+\newpage
+% 1. Switch to a symmetric, full-page layout
+\newgeometry{margin=1in} 
+
+% 2. Turn off the fancy headers (which have the side-margin offset)
+%    and just use a simple page number at the bottom.
+\pagestyle{plain}
+
+% 3. Print the index
+\printindex
+
+\end{document} 

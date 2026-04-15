@@ -1,0 +1,1617 @@
+\documentclass[11pt]{article}
+\usepackage{titlesec}
+\titleformat{\section}[hang]{\normalfont\scshape}{\thesection.}{1em}{}
+\titleformat{\subsection}[hang]{\normalfont\scshape}{\thesubsection.}{1em}{}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amssymb} 
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[normalem]{ulem} 
+\usepackage{enumitem} 
+\setlist[enumerate]{itemsep=0mm}
+\usepackage{xcolor}
+\setenumerate{label=(\arabic*)}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{thmtools}
+\usepackage{etoolbox}
+\usepackage{fancybox}
+\usepackage{framed}
+\usepackage{tcolorbox}
+\usepackage{xcolor} 
+% open 
+\newcommand{\open}[0]{\mathcal{O}}
+\newcommand{\topo}[0]{\mathcal{T}}
+\newcommand{\hood}[0]{\mathcal{U}}
+\newcommand{\base}[0]{\mathcal{B}} 
+% example environmentq
+\theoremstyle{definition} 
+\newtheorem{exmp}{Example}[section]
+
+% linear operators
+\newcommand{\lop}[2]{\mathcal{L}(#1, #2)}
+
+% question environment
+\theoremstyle{definition}
+\newtheorem{question}{Question}
+
+%rd 
+\newcommand{\rd}[0]{\mathbb{R}^d}
+\newcommand{\R}[0]{\mathbb{R}}
+\newcommand{\N}[0]{\mathbb{N}} 
+% let E in R be measurable 
+\newcommand{\EinR}[0]{Let $E \subseteq \R$ be measurable}
+
+%integral 
+\newcommand{\idx}[2]{\int_{#1}^{#2}}
+
+% weak convergence 
+\newcommand{\warrow}[0]{\rightharpoonup}
+\newcommand{\fcvw}[0]{ \{f_n \} \warrow f \text{ in } L^p(E)} 
+
+% Probability 
+\DeclareRobustCommand{\bbone}{\text{\usefont{U}{bbold}{m}{n}1}}
+\newcommand{\Var}[1]{\mathrm{Var[#1]}}			% variance
+\newcommand{\EX}[1]{\mathbb{E}\mathrm{[#1]}}	 % expected value 
+\newcommand{\seq}[1]{\{ #1_n	\}_{n \in \bb{N}}} % sequence of events
+\newcommand{\pspace}[0]{( \Omega, F, P)}		% probability space
+\newcommand{\msp}[0]{( \Omega, F)}		% measurable space
+	
+% Exercise environment 
+\newenvironment{myleftbar}{%
+\def\FrameCommand{\hspace{0.6em}\vrule width 2pt\hspace{0.6em}}%
+\MakeFramed{\advance\hsize-\width \FrameRestore}}%
+{\endMakeFramed}
+\declaretheoremstyle[
+spaceabove=6pt,
+spacebelow=6pt
+headfont=\normalfont\bfseries,
+headpunct={} ,
+headformat={\cornersize*{2pt}\ovalbox{\NAME~\NUMBER\ifstrequal{\NOTE}{}{\relax}{\NOTE}:}},
+bodyfont=\normalfont,
+]{exobreak}
+
+\declaretheorem[style=exobreak, name=Exercise,%
+postheadhook=\leavevmode\myleftbar, %
+prefoothook = \endmyleftbar]{exo}
+
+% Solution environment 
+\newenvironment{mysolbar}{%
+\def\FrameCommand{\hspace{0.6em}\vrule width 2pt\hspace{0.6em}}%
+\MakeFramed{\advance\hsize-\width \FrameRestore}}%
+{\endMakeFramed}
+\declaretheoremstyle[
+spaceabove=6pt,
+spacebelow=6pt
+headfont=\normalfont\bfseries,
+headpunct={} ,
+headformat={\cornersize*{2pt}\ovalbox{\NAME~\NUMBER\ifstrequal{\NOTE}{}{\relax}{\NOTE}:}},
+bodyfont=\normalfont,
+]{solbreak}
+
+\declaretheorem[style=solbreak, name=Solution,%
+postheadhook=\leavevmode\mysolbar, %
+prefoothook = \endmysolbar]{sol}
+
+% HEADERS
+\usepackage{fancyhdr}
+ 
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Page \thepage}
+\fancyhead[RE,LO]{Math 358: Advanced Calculus}
+\fancyhead[CE,CO]{Winter 2026 -- Final Summary}
+\fancyfoot[LE,RO]{}
+
+% Definitions
+\newcommand{\dfn}[1]{\underline{\textbf{#1}}}
+\newcommand{\im}[1]{\textbf{\textcolor{red}{#1}}}
+
+% lower integral
+\usepackage{accents}
+
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+\def\avint{\mathop{\,\rlap{-}\!\!\int}\nolimits} 
+
+% custom commands 
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\vc}[1]{\mathbf{#1}}
+\newcommand{\step}[1]{\textbf{#1}\textbf{. Step:}}
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\sets}[2]{ \left\{ #1\ |\ #2 \right\}}
+\DeclareMathOperator{\Tr}{Tr}
+
+% Custom operators for Advanced cal
+\DeclareMathOperator{\Vol}{Vol}
+\DeclareMathOperator{\Content}{Content}
+\DeclareMathOperator{\Area}{Area}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\dive}{div}
+
+% Proofs
+\newcommand{\claim}[1]{\textbf{#1}\textbf{. Claim:}}
+
+	% iff proofs
+	\newcommand{\rhs}[0]{(\Rightarrow )}
+	\newcommand{\lhs}[0]{(\Leftarrow )}
+
+% sequence of functions
+\newcommand{\funcseqx}{(f_n(x))_{n \in \bb{N}}}
+\newcommand{\funcseq}{(f_n)_{n \in \bb{N}}}
+
+% measurable sets 
+\newcommand{\measurable}{f^{-1}([-\infty, c[)} 
+
+% heat equation 
+\newcommand{\pbdry}[2]{C^{(#1, #2)} (\Omega_T) \cap C (\overline{\Omega_T})}
+\DeclareMathOperator\erf{erf}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+
+% Laplace Equation 
+\newcommand{\lapbdry}[1]{C^{#1} (\Omega) \cap C (\overline{\Omega})}
+
+
+% math environments 
+\usepackage[utf8]{inputenc}
+\newtheorem{theorem}{\textcolor{blue}{Theorem}}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{\textcolor{OliveGreen}{Definition}}
+\newtheorem{prop}{\textcolor{red}{Proposition}}
+\newtheorem{ex}{\textcolor{Maroon}{Example}}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+% cookbook proofs 
+\newcommand{\cb}[3]{\underline{(#1 #2): #3:}}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+
+% theorems 
+\newtcbtheorem[number within=section]{mytheo}{Theorem}%
+{colback=blue!5,colframe=blue!35!black,fonttitle=\bfseries}{th}
+
+% definitions 
+\newtcbtheorem[number within=section]{defn}{Definition}%
+{colback=black!5,colframe=black!35!black,fonttitle=\bfseries}{th}
+
+% axioms
+\newtcbtheorem[number within=section]{ax}{Axioms}%
+{colback=OliveGreen!5,colframe=black!35!OliveGreen,fonttitle=\bfseries}{th}
+
+
+% important examples
+\newtcbtheorem[number within=section]{examp}{Example}%
+{colback=Mahogany!5,colframe=black!35!Mahogany,fonttitle=\bfseries}{th}
+
+% upper and lower riemann integrals
+\newcommand{\upRiemannint}[2]{
+  \overline{\int_{#1}^{#2}}
+}
+\newcommand{\loRiemannint}[2]{
+  \underline{\int_{#1}^{#2}}
+}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\begin{document}
+
+\begin{center}
+	\textbf{Math 358: Advanced Calculus Summary} \\
+	\textbf{Final Exam Date: 22 April 2026 6.30 - 9.30} \\
+	\textbf{Key Results, Theorems, Definitions, etc.} \\
+	\textbf{Charles Zitella}
+\end{center}
+
+\begin{abstract}
+	This document contains a summary of all the key definitions, results, and theorems from class before the final exam. Point-set topology in Euclidean space; continuity and differentiability of functions in several variables. Implicit and inverse function theorems, Lagrange multipliers,
+    Integrals in several variables, Fubini, change of variables, line and surface integrals, Green's theorem, etc...
+\end{abstract}
+
+\tableofcontents
+
+\section{Continuity and Differentiability}
+
+\subsection{Differentiability}
+
+\begin{definition}[Differentiation]
+    $f : \Omega \to \R^m$ where $\Omega \subset \R^n$ is a domain\footnote{Open, Connected}, 
+    $f := (f_1, \dots, f_m), 
+    f_i : \Omega\subset \R^n \to \R$ is \textbf{differentiable} at $x_0 \in \Omega$ if 
+    there exists a linear map $L : \R^n \to \R^m$ such that
+    \[
+        \lim_{x \to x_0} \frac{\|f(x) - f(x_0) - L(x - x_0)\|}{\|x - x_0\|} = 0
+    \] 
+    Equivalently, $\forall \epsilon > 0 \; \exists \delta > 0$ such that for any $x \in \R$
+    with $\|x - x_0\| < \delta$ \footnote{Here, $\| \cdot \|$ is the standard Euclidean norm on
+     $\R^m$ and $\R^n$.} we have
+    \[
+        \| f(x) - f(x_0) -L(x - x_0)\| \leq \epsilon \|x - x_0\|
+    \]   
+\end{definition}
+
+\begin{theorem}
+    If $f : \Omega \to \R^m$ is differentiable at $x_0 \in \Omega$, then the linear map $L$ is unique.
+\end{theorem}
+
+\begin{definition}
+    If $f$ differentiable at $x_0 \in \R$, with $f : \Omega \subset \R^n \to \R^m$ we write the 
+    differential map of $f$ at $x_0 \in \Omega$ as $L = Df(x_0)$      
+\end{definition}
+
+\begin{prop}
+    If $f$ is differentiable at $x_0 \in \Omega$, then $f$ is continuous at $x_0 \in \Omega$.
+    In fact, it is Lipschitz continuous at $x_0$, i.e. $\exists k > 0$ and $\delta > 0$
+    such that if $\| x - x_0 \| < \delta$, then $\| f(x) - f(x_0) \| \leq k \|x - x_0\|$       
+\end{prop}
+
+\begin{prop}
+    If $f : \Omega \subset \R^n \to \R^m$ differentiable at $x_0 \in \Omega$, and 
+    $f = (f_1, \dots, f_m)$, $f_i : \Omega \to \R$, then $f$ differentiable at $x_0 \in \Omega$
+    iff $f_j : \Omega \to \R$ is differentiable at $x_0 \in \Omega$ for all $j = 1, \dots, m$.        
+\end{prop}
+
+\begin{definition}[Partial Derivatives]
+    Let $f : \Omega \subset \R^n \to \R^m$, $f(x_1, \dots, x_m) = (f_1(x_1, \dots, x_n), \dots, 
+    f_m(x_1, \dots, x_n))$.
+    Then
+    \[
+    \pdv{f_j}{x_i} (x_0) := \lim_{h \to 0} \frac{[f_j(x_1, \dots, x_i + h, \dots, x_n) - 
+    f_j(x_1, \dots, x_i, \dots, x_n)]}{h}
+    \]
+    if the limit exists. We call $\pdv{f_j}{x_i} (x_0)$ the \textbf{partial derivative} of $f_j$ 
+    with respect to $x_i$ at $x_0$.
+\end{definition}
+
+\begin{prop}
+    Let $f: \Omega \subset \R^m \to \R^m$, $f = (f_1, \dots, f_m)$, $f_j : \Omega \to \R$, 
+    be differentiable at $x_0 \in \Omega$. Then all partial derivatives $\pdv{f_j}{x_i} (x_0)$ exist and
+    \[
+        L = Df(x_0) = \begin{bmatrix}
+            \pdv{f_1}{x_1} (x_0) & \pdv{f_1}{x_2} (x_0) & \dots & \pdv{f_1}{x_n} (x_0) \\
+            \pdv{f_2}{x_1} (x_0) & \pdv{f_2}{x_2} (x_0) & \dots & \pdv{f_2}{x_n} (x_0) \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \pdv{f_m}{x_1} (x_0) & \pdv{f_m}{x_2} (x_0) & \dots & \pdv{f_m}{x_n} (x_0)
+        \end{bmatrix}
+    \]   
+    called the Jacobian of $f$ at $x_0$\footnote{also called the derivative of $f$ at $x_0\in \Omega$}.  
+\end{prop}
+
+\begin{remark}
+    $f$ differentiable at $x_0 \in \Omega \Rightarrow \pdv{f_j}{x_i} (x_0)$ exists for all $i, j$.
+    However, the converse need not be true, for example the classic example of $f : \R^2 \to \R$,
+    \[
+        f(x, y) = \begin{cases}
+            \frac{x^2 y}{x^2 + y^2} & (x, y) \neq (0, 0) \\
+            0 & (x, y) = (0, 0)
+        \end{cases}
+    \]    
+    Both partial derivatives of $f$ at $(0, 0)$ exist and are equal to $0$, but $f$ is not 
+    differentiable at $(0, 0)$.
+
+    Steps to solve: Find candidate for $Df(0, 0)$ using the partial derivatives, then show
+    that the limit in the definition of differentiability does not go to $0$ for this candidate. 
+\end{remark}
+
+\begin{theorem}
+    Let $f = (f_1, \dots, f_m) : \Omega \subset \R^n \to \R^m$. Suppose that all partial
+    derivatives $\pdv{f_j}{x_i}$ exist and are continuous at $x_0 \in \Omega$. 
+    Then $f$ is differentiable at $x_0$.
+\end{theorem}
+
+\begin{definition}
+    Suppose $f : \Omega \subset \R^n \to \R$ has continuous partial derivatives 
+    $\pdv{f}{x_i}$, $i = 1, \dots, n$ at all points $x \in \Omega$. Then $f$ is 
+    continuously differentiable on $\Omega$, and we write $f \in C^1(\Omega)$.     
+\end{definition}
+
+\begin{remark}
+    Continuity of partial derivatives is a sufficient condition for differentiability, but 
+    it is not necessary. For example, the function $f : \R^2 \to \R$
+    \[
+        f(x, y) = \begin{cases}
+            \frac{x^2y^2}{x^2 + y^2} & (x, y) \neq (0, 0) \\
+            0 & (x, y) = (0, 0)
+        \end{cases}
+    \]  
+    Then $\pdv{f}{x}(0, 0) = \pdv{f}{y}(0, 0) = 0$, however, along the line $x = y^2, x = t, y = t^2$,
+    $\pdv{f}{x}(t^2, t) = \frac{1}{2} \neq 0$. But, $f$ is differentiable at 
+    $(0, 0)$ with $Df(0, 0) = 0$.
+\end{remark}
+
+\begin{prop}[Basic Properties of Differentiation]
+    \leavevmode
+    \begin{enumerate}
+        \item $f, g : \Omega \subset \R^n \to \R^m$ both differentiable at $x_0 \in \Omega$,
+        then so is $F = f + g$. Moreover, $DF(x_0) = Df(x_0) + Dg(x_0)$.
+        \item $f, g : \Omega \subset \R^n \to \R$ both differentiable at $x_0 \in \Omega$,
+        then so is $F = f \cdot g : \Omega \to \R$. Moreover,
+        $DF(x_0) = f(x_0) \cdot Dg(x_0) + g(x_0) \cdot Df(x_0)$.
+        \item  $f, g : \Omega \subset \R^n \to \R$ both differentiable at $x_0 \in \Omega$,
+        and $g(x_0) \neq 0$, then so is $F = \frac{f}{g} : \Omega \to \R$. Moreover,
+        \[
+            DF(x_0) = \frac{g(x_0) \cdot Df(x_0) - f(x_0) \cdot Dg(x_0)}{g(x_0)^2}
+        \]  
+        \item $f : \Omega \subset \R^n \to \tilde{\Omega} \subset \R^m$, 
+        $g : \tilde{\Omega} \subset \R^m \to \R^k$ with $f$ differentiable at $x_0 \in \Omega$,
+        and $g$ differentiable at $y_0 = f(x_0) \in \tilde{\Omega}$. Then 
+        $H = g \circ f$ is differentiable at $x_0 \in \Omega$ and
+        \[
+            DH(x_0) = Dg(y_0) \cdot Df(x_0)
+        \]       
+    \end{enumerate}
+\end{prop}
+
+\begin{theorem}[Chain Rule]
+    Let $f : \Omega \subset \R^n \to \tilde{\Omega} \subset \R^m$, $\tilde{\Omega} = f(\Omega)$,
+    $g : \tilde{\Omega} \subset \R^m \to R^k$. If $f$ is differentiable at $x_0 \in \Omega$ and 
+    $g$ is differentiable at $y_0 = f(x_0) \in \tilde{\Omega}$, then 
+    $H = g \circ f : \Omega \subset \R^n \to R^k$ is differentiable at $x_0 \in \Omega$, and
+    \[
+        DH(x_0) = Dg(y_0) \cdot Df(x_0)
+    \]      
+\end{theorem}
+
+\begin{exmp}
+    Given $f$ differentiable in $R^2$ and $g(r, \theta) = (r\cos \theta, r\sin \theta)$, 
+    with $(r, \theta) \in (0, \infty) \times [0, 2\pi]$. Set $F(r, \theta) = f(g(r, \theta))$,
+    compute $\pdv{F}{r}(r, \theta)$ and $\pdv{F}{\theta}(r, \theta)$ in terms of the partial 
+    derivatives of $f$, using the chain rule.
+
+    To solve, the multivariable chain rule gives us
+    \[
+        \pdv{F}{r} = \pdv{f}{x} \cdot \pdv{x}{r} + \pdv{f}{y} \cdot \pdv{y}{r} = \pdv{f}{x} \cos \theta + \pdv{f}{y} \sin \theta
+    \] 
+    and
+    \[
+        \pdv{F}{\theta} = \pdv{f}{x} \cdot \pdv{x}{\theta} + \pdv{f}{y} \cdot \pdv{y}{\theta} = -r \pdv{f}{x} \sin \theta + r \pdv{f}{y} \cos \theta
+    \] 
+
+\end{exmp}
+
+\subsection{Tangent Planes and Directional Derivatives}
+
+\begin{definition}[Gradient]
+Let $f : \Omega \subset \R^n \to \R$ be differentiable on $\Omega$. Then 
+$Df(x) = (\pdv{f}{x_1}(x), \dots, \pdv{f}{x_n}(x)) = \nabla f(x)$ is called the \textbf{gradient} of 
+$f$ at $x \in \Omega$. 
+\end{definition}
+
+\begin{definition}[Tangent Planes]
+Let $f : \Omega \subset \R^n \to \R$ be differentiable on $\Omega$. 
+$S := \operatorname{graph}f = \left\{ (x, z) \in \Omega \times \R : z = f(x) \right\} $.
+Then for $x_0 \in \Omega$, $T_{x_0}S = \left\{ (x, z) \in \R^n \times \R :
+z = f(x_0) + Df(x_0) \cdot (x - x_0) \right\} $  
+\end{definition}
+
+\begin{definition}[Directional Derivative]
+    Let $f : \Omega \subset \R^n \to \R$ be differentiable on $\Omega$. Then for $x_0 \in \Omega$ and 
+    $v \in \R^n$, the directional derivative of $f$ at $x_0$ in the direction of $v$ is defined as
+    \[
+        D_vf(x_0) = \langle \nabla f(x_0), v \rangle
+    \] 
+    
+\end{definition}
+
+\begin{prop}
+    Suppose $\nabla f(x) \neq 0$. Then $\nabla f(x)$ points in the direction of the steepest
+    increase of $f$. \footnote{Proof follows from the Cauchy-Schwarz inequality, $<a, b> = \|a\| \cdot \|b\| \cos \theta$  }   
+\end{prop}
+
+\subsection{Clairaut's Theorem}
+
+\begin{theorem}[MVT in $\R^n$]
+    Let $B \subset \R^n$ be a ball, $B = \left\{ x \in \R^n  : \| x - x_0 \| < p \text{ for some } x_0
+    \right\} $, and $f : B \to \R$ differentiable on $B$. Then, for any $x, y \in B$ there exists
+    $z \in B$ such that     
+    \[
+        f(y) - f(x) = Df(z) \cdot (y - x)
+    \] 
+    As a consequence, $\| f(y) - f(x) \| \leq \| Df(z) \| \cdot \| y - x \|$.   
+\end{theorem}
+
+\begin{definition}
+We say $f$ twice differentiable at $x \in \Omega$ if $Df$ exists locally near $x \in \Omega$ and
+$Df : \Omega \subset \R^n \to \R^{n \times m}$ is differentiable at $x \in \Omega$. Then
+$D^2f = D(Df)$ at $x \in \Omega$. Similarly, for all $k \geq 2$, $D^kf = D(D^{k - 1}f)$.          
+\end{definition}
+
+\begin{definition}
+    Given $f : \Omega \subset \R^n \to \R$, we say that $f \in C^k(\Omega)$ if all the partial
+    derivatives up to order $k$ are continuous on $\Omega$.    
+\end{definition}
+
+\begin{definition}(Hessian)
+    Given $f : \Omega \subset \R^n \to \R$, the \textbf{Hessian} matrix of $f$ at $x \in \Omega$ is
+    \[
+        Hf(x) = \begin{bmatrix}
+            \pdv{^2f}{x_1 \partial x_1} (x) & \pdv{^2f}{x_1 \partial x_2} (x) & \dots & \pdv{^2f}{x_1 \partial x_n} (x) \\
+            \pdv{^2f}{x_2 \partial x_1} (x) & \pdv{^2f}{x_2 \partial x_2} (x) & \dots & \pdv{^2f}{x_2 \partial x_n} (x) \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \pdv{^2f}{x_n \partial x_1} (x) & \pdv{^2f}{x_n \partial x_2} (x) & \dots & \pdv{^2f}{x_n \partial x_n} (x)
+        \end{bmatrix}
+    \]    
+
+    For $f(x, y)$, $Df = (\pdv{f}{x}, \pdv{f}{y})$ and 
+    \[
+        D^2f = Hf = \begin{bmatrix}
+            \pdv{^2f}{x \partial x} & \pdv{^2f}{x \partial y} \\
+            \pdv{^2f}{y \partial x} & \pdv{^2f}{y \partial y}
+        \end{bmatrix}
+    \]    
+\end{definition}
+
+\begin{theorem}[Clairaut's Theorem]
+    Let $f : \Omega \subset \R^n \to \R$ be twice differentiable at $x \in \Omega$. Then,
+    \[
+        \pdv{^2f}{x_i \partial x_j} (x) = \pdv{^2f}{x_j \partial x_i} (x)
+    \]   
+    for all $i, j = 1, \dots, n$. Moreover, if $f \in C^2(\Omega)$, then the above holds for all
+    $x \in \Omega$. 
+\end{theorem}
+
+\begin{corollary}
+If $\pdv{^2f}{x_i \partial x_j} (x)$ are all continuous at $x \in \Omega$ for all $i, j = 1, \dots, n$, 
+then $\pdv{^2f}{x_i \partial x_j} (x) = \pdv{^2f}{x_j \partial x_i} (x)$ for all $i, j = 1, \dots, n$.  
+\end{corollary}
+
+\subsection{Inverse Function Theorem and Implicit Function Theorem}
+
+\begin{theorem}[Banach Fixed Point]
+Let $(X, d)$ be a complete metric space, and $f : X \to X$ be a contraction mapping with
+$d(f(x), f(y)) \leq \alpha d(x, y)$ for some $0 < \alpha < 1$. Then $\exists$ unique 
+$x_0 \in X$ such that $f(x_0) = x_0$.       
+\end{theorem}
+
+\begin{definition}
+    Let $M_n := \left\{ n \times n \text{ matrices} \right\} \cong \R^{n^2}$ and 
+    $\| A \| := \sqrt{\sum_{i,j} a_{ij}^2}$ for $A = (a_{ij}) \in M_n$.
+
+    Let $GL_n := \left\{ A \in M_n : \det A \neq 0 \right\}  = \det ^{-1}(\R \setminus \{0\})$ 
+    Thus since $\det : M_n \to \R$ is continuous, $GL_n$ is an open subset of $M_n$.
+
+\end{definition}
+
+\begin{theorem}[Inverse Function]
+    Let $f : \Omega \subset \R^n \to \R^n$ be $C^1$. Let $x_0 \in \Omega$ and assume $Df(x_0) 
+    \in GL_n$. Then there exists neighbourhoods $U$ and $V$ of $x_0$ and $f(x_0)$ respectively
+    such that $f(U) = V$ and $f|_{U}$ has a $C^1$ inverse map $f^{-1} : V \to U$.
+    Moreover, for any $y \in V$, and $x = f^{-1}(y)$, we have $Df^{-1}(y) = [Df(x)]^{-1}$.             
+\end{theorem}
+
+\begin{remark}
+    If $f \in C^k$, $k \geq 1$, then the inverse map $f^{-1}$ is also in $C^k$.  
+\end{remark}
+
+\begin{exmp}
+    IFT is local. For example, $f(x, y) = (e^y \cos x, e^y \sin x)$. Then 
+    $Df(x, y) = \begin{bmatrix}
+        -e^y \sin x & e^y \cos x \\
+        e^y \cos x & e^y \sin x
+    \end{bmatrix}$, and $\det Df(x, y) = -(\cos ^2 x + \sin ^2 x) e^{2y} = -e^{2y} \neq 0$ for all 
+    $(x, y) \in \R^2$. However, $f(x + 2k \pi, y) = f(x, y)$ for all $k \in \mathbb{Z}$, so $f$ is not 
+    injective globally on $(x, y)$. 
+\end{exmp}
+
+\begin{theorem}[Implicit Function Theorem]
+    $F : \Omega \subset \R^n \times \R^m \to \R^m$ $C^k$ map, $X = (x, y) \in R^n \times \R^m$ and
+    $X_0 = (x_0, y_0)$ with $F(X_0) = 0$. Writing $F = (F_1, \dots, F_m)$, assume that
+    \[
+        D_yF(X_0) = \begin{bmatrix}
+            \pdv{F_1}{y_1} & \pdv{F_1}{y_2} & \dots & \pdv{F_1}{y_m} \\
+            \pdv{F_2}{y_1} & \pdv{F_2}{y_2} & \dots & \pdv{F_2}{y_m} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \pdv{F_m}{y_1} & \pdv{F_m}{y_2} & \dots & \pdv{F_m}{y_m} 
+        
+        \end{bmatrix} (X_0) \in GL_m
+    \]       
+    Then there exists neighbourhoods $U$ and $V$ of $x_0 \in \R^n$ and $y_0 \in \R^m$ and 
+    a unique $C^k$ map $f : U \to V$ such that $F(x, f(x)) = 0$, for all $x \in U$.         
+\end{theorem}
+
+\begin{corollary}
+    Let $F : \Omega \subset \R^n \to \R$ be $C^k(\Omega)$. Let $x = (x', y) \in \R^{n - 1} \times \R$
+    and suppose $(x_0', y_0) \in \Omega$ with $\pdv{f}{y}(x_0', y_0) \neq 0$. Then there exists
+    neighbourhoods $U$, $V$ of $x_0' \in \R^{n -1}$ and $y_0 \in \R$ and a unique function 
+    $f : U \to V$, $f \in C^k(U)$ such that $\left\{ F(x', y) = 0 \right\} = \left\{ y = f(x') \right\}
+    \forall x' \in U$.            
+\end{corollary}
+
+\begin{theorem}[Morse Lemma]
+    $f : \Omega \subset \R^n \to \R$ a $C^k$ function $k \geq 3$. Let $0 \in \Omega$ be a 
+    critical point, i.e. $\nabla f(0) = 0$, and assume $f(0) = 0, \nabla f(0) = 0, Hf(0) \in GL_n$. 
+    Then there exists open sets $U$ and $V$ of $0 \in U \cap V$ and $g \in C^{k -2}(U)$, $g : U \to V$
+    with $g^{-1} : U \to V$, $g^{-1} \in C^2(V)$ such that $f(g(y)) = 
+    y_{\ell + 1}^2 + \dots + y_n^2 - (y_1^2 + y_2^2 + \dots y_\ell^2)$. Here $\ell \in \mathbb{Z}$,
+    $\ell \in [0, n]$.            
+\end{theorem}
+
+\subsection{Taylor's Theorem}
+
+\begin{theorem}[Taylor's Theorem in $\R^n$ ]
+    Let $f : \Omega \subset \R^n \to \R$, $f \in C^{k + 1}(\Omega)$. Then, for any 
+    $x^0 \in \Omega$,
+    \[
+        f(x) = f(x^0) + \sum_{j = 1}^k \frac{1}{j!} \left[\sum_{i_1 = 1}^n \dots \sum_{i_j = 1}^n 
+        \pdv{^jf}{x_{i_1} \dots \partial x_{i_j}} (x^0) (x_{i_1} - x_{i_1}^0) 
+        \dots (x_{i_j} - x_{i_j}^0)\right] + R_k(f)(x)
+    \]  
+    where $\frac{|R_k(f)(x)|}{\| x - x^0 \|^k } \leq M_k \| x - x^0 \| $ as $x \to x^0$.  
+\end{theorem}
+
+\begin{remark}
+    The k-th order Taylor polynomial of $f$ at $x^0$ is the sum of the first two terms 
+    in the above expansion, i.e. \[P_k(f)(x) = f(x^0) + \sum_{j = 1}^k \frac{1}{j!} 
+    \left[\sum_{i_1 = 1}^n \dots \sum_{i_j = 1}^n 
+        \pdv{^jf}{x_{i_1} \dots \partial x_{i_j}} (x^0) (x_{i_1} - x_{i_1}^0) 
+        \dots (x_{i_j} - x_{i_j}^0)\right]\]
+         This is a good approximation to $f(x)$ near $x^0$
+        provided $\lim_{x \to x^0} \frac{|R_k(f)(x)|}{\| x - x^0 \|^k } = 0$.   
+\end{remark}
+
+\begin{theorem}
+    Let $f : \Omega \subset \R^n \to \R$ be $C^{k-1}(\Omega)$ and assume $D^{k-1}f$ is differentiable
+    at $x^0 \in \Omega$. Then the $k$-th order Taylor expansion in the previous theorem still holds,
+    but with the only assumption of the remainder term being
+    $\lim_{x \to x^0} \frac{|R_k(f)(x)|}{\| x - x^0 \|^k } = 0$. 
+\end{theorem}
+
+\begin{exmp}
+    Let $f(x, y) = e^x + sin(xy)$. Compute the second order Taylor expansion of $f$ around $(0, 0)$.
+    
+    To solve this problem, we first recognize that $f \in C^\infty(\R^2)$, 
+    so we can apply Taylor's theorem. We compute the first and second order partial derivatives of 
+    $f$ at $(0, 0)$:
+    \[
+        f_x = \pdv{f}{x} = e^x + y\cos(xy), \quad f_y = \pdv{f}{y} = x\cos(xy)
+    \] 
+    Therefore $f_x(0, 0) = 1$ and $f_y(0, 0) = 0$. Next, we compute the second order partial derivatives:
+    \[
+        f_{xx} = \pdv{^2f}{x^2} = e^x - y^2\sin(xy), \quad f_{yy} = \pdv{^2f}{y^2} = -x^2\sin(xy), 
+        \quad f_{xy} = \pdv{^2f}{x\partial y} = \pdv{^2f}{y\partial x} = \cos(xy) - xy\sin(xy)
+    \] 
+    Therefore, $f_{xx}(0, 0) = 1$, $f_{yy}(0, 0) = 0$, and $f_{xy}(0, 0) = 1$. 
+    Thus, the second order Taylor expansion of $f$ around $(0, 0)$ is
+    \[
+        f(x, y) = f(0, 0) + f_x(0, 0)x + f_y(0, 0)y + \frac{1}{2!}\left[f_{xx}(0, 0)x^2 + 
+        2f_{xy}(0, 0)xy + f_{yy}(0, 0)y^2\right] + R_2(f)(x, y)
+    \] 
+    which simplifies to
+    \[
+        f(x, y) = 1 + x + \frac{x^2}{2} + xy + R_2(f)(x, y)
+    \] 
+    and the remainder term satisfies $\frac{|R_2(f)(x, y)|}{x^2 + y^2} \leq M \sqrt{x^2 + y^2}$ as 
+    $(x, y) \to (0, 0)$.
+\end{exmp}
+
+\subsection{Lagrange Multipliers}
+
+\begin{theorem}[Lagrange Multiplier]
+    Let $f, g : \Omega \subset \R^n \to \R$ be $C^1$ functions in $\R$. Let $\Sigma = 
+    \left\{ x \in \Omega : g(x) = 0 \right\} $ and assume that $Dg(x_0) \neq 0$ for all
+    $x_0 \in \Sigma$. Then if $f|_\Sigma$ has a max or min at $x_0 \in \Sigma$, then there
+    exists $\lambda \in \R$ such that 
+    \[
+        \nabla f(x_0) = \lambda g(x_0)
+    \]         
+\end{theorem}
+
+\begin{theorem}[Max/Min]
+    Let $\tilde{\Omega} \supset \Omega$ be a slightly larger domain and assume $f, g \in C^1(\Omega)$,
+    where $\partial \Omega = \left\{ x \in \tilde{\Omega} : g(x) = 0 \right\} $, $\nabla g(x) \neq 0
+    \forall x \in \partial \Omega$.
+    Then,
+    \begin{enumerate}
+        \item If $x_0 \in \partial \Omega$ is a local max/min of $f|_{\partial \Omega}$, then
+        $\nabla f(x_0) = \lambda \nabla g(x_0)$ for some $\lambda \in \R$.
+        \item If $x_0 \in \operatorname{Int}(\Omega)$ is a local max/min of $f$ in 
+        $\operatorname{Int}(\Omega)$, then $\nabla f(x_0) = 0$.
+        \item Global max/min of $f|_{\tilde{\Omega}}$ is largest/smallest value of $f$ at all points
+        in 1 and 2.         
+    \end{enumerate}   
+\end{theorem}
+
+\begin{theorem}[Multiple Constraints]
+    $f : \Omega \subset \R^n \to \R$, $g_i : \Omega \subset \R^n \to \R$, $i = 1, \dots, k$ are $C^1$ 
+    functions. Let $\Gamma_0 = \left\{ x \in \Omega : g_i(x) = 0, i = 1, \dots, k \right\} $
+    and assume that $\left\{ \nabla g_1(x), \dots, \nabla g_k(x) \right\} $ are linearly
+    independent for all $x \in \Gamma_0$. Then if $f_{\Gamma_0}$ has a max/min at
+    $x_0 \in \Gamma_0$, then there exists $\lambda_1, \dots, \lambda_k \in \R$ such that
+    \[
+        \nabla f(x_0) = \sum_{i = 1}^k \lambda_i \nabla g_i(x_0)
+    \]     
+    
+\end{theorem}
+
+\begin{exmp}
+    Find the absolute max and min of $f(x_1, \dots, x_n) = x_1 + x_2$ on 
+    $B_1(0) = \left\{ |x|^2 \leq 1 \right\} = \left\{ x_1^2 + \dots + x_n^2 \leq 1 \right\} $,
+    $\partial B_1(0) = \left\{ x_1^2 + \dots + x_n^2 = 1 \right\} $.
+    
+    To solve, first observe $f \in C^k(\R^n)$ for all $k \geq 1$. Thus we will apply the max/min
+    theorem with $g(x) = |x|^2 - 1 = x_1^2 + \dots + x_n^2 - 1$. Then, since
+    $\nabla f(x) = (1, 1, 0, \dots, 0) \neq 0$, there are no critical points in $\operatorname{Int}
+    (B_1(0)) = \left\{ |x|^2 < 1  \right\} $. So the global max/min must occur on 
+    $\partial B_1(0)$.
+    
+    By Lagrange multiplier theorem, at max/min $x_0 \in \partial B_1(0)$, 
+    there exists $\lambda \in \R$ such that 
+    \begin{align}
+        \nabla f(x_0) = \lambda \nabla g(x_0) &\Leftrightarrow (1, 1, 0, \dots, 0) = \lambda 
+        (2x_{1}^0, 2x_{2}^0, 2x_{3}^0, \dots, 2x_{n}^0) \\
+        &\Leftrightarrow x_{1}^0 = x_{2}^0 = \frac{1}{2\lambda}, x_{3}^0 = \dots = x_{n}^0 = 0
+    \end{align}
+    Also, 
+    \[
+        (x_1^0)^2 + (x_2^0)^2 = 1 \Leftrightarrow \frac{1}{4\lambda^2} + \frac{1}{4\lambda^2} = 1
+        \Leftrightarrow \lambda = \pm \frac{1}{\sqrt{2}}
+    \] 
+
+    Thus, the candidates for max/min are $x_0 = \left( \frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}, 0, \dots, 0 \right) $
+    and $x_0 = \left( -\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}, 0, \dots, 0 \right) $. Evaluating $f$ at these points, we get
+    \[
+        f\left( \frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}, 0, \dots, 0 \right) = \sqrt{2}, \quad f\left( -\frac{1}{\sqrt{2}}, -\frac{1}{\sqrt{2}}, 0, \dots, 0 \right) = -\sqrt{2}
+    \]
+    Thus, the absolute max of $f$ on $B_1(0)$ is $\sqrt{2}$ and the absolute min is $-\sqrt{2}$.
+\end{exmp}
+
+
+\section{Riemann Integration}
+\subsection{Integration over Box domains}
+
+\begin{definition}[Partition]
+    Let $B = [a_1, b_1] \times \dots \times [a_n, b_n]$. A \textbf{partition} of $B$ is an ordered set 
+    \[
+        \mathcal{P} = \left\{ P_1 = \{ x_1^0, x_1^1, \dots, x_1^n\}, \dots, P_n = \{ x_n^0, x_n^1, \dots, x_n^m \} \right\} \quad \footnote{The lower index denotes the dimension, and the upper index denotes the parition index.} 
+    \]   
+    Here, for any given $j$, $P_j$ is the set of $x_j^i$ parition of $[a_j, b_j]$  s.t.  
+    \[
+        a_j = x_j^0 < x_j^1 < \dots < x_j^{m_j - 1} < x_j^{m_j} = b_j
+    \]  
+\end{definition}
+\begin{definition}[Refinement]
+    Given two partitions $\mathcal{P}$ and $\tilde{\mathcal{P}}$, we say that $\tilde{\mathcal{P}}$ is a \textbf{refinement} of $\mathcal{P}$,
+    i.e. $\tilde{\mathcal{P}} \supset \mathcal{P}$, if for each $j = 1, \dots, n$,
+    \[
+        P_j = \left\{ x_j^0, x_j^1, \dots, x_j^{m_j} \right\} \subset \left\{ \tilde{x}_j^0, \tilde{x}_j^1, \dots, \tilde{x}_j^{m_j} \right\} = \tilde{P}_j 
+    \]       
+\end{definition}
+\begin{definition}[Sub-box]
+    Given partition $\mathcal{P}$ of $B$, $\mathcal{P} = \left\{ P_1, \dots, P_j \right\} $, let
+    \[
+        B_{i_1, i_2, \dots, i_n} = [x_1^{i_1 - 1}, x_1^{i_1}] \times \dots \times [x_n^{i_n - 1}, x_n^{i_n}] 
+    \]    
+    be a \textbf{sub-box} of $B$ for some $\{i_1, \dots, i_n\}$ partition indices, i.e. $1 \leq i_j \leq m_j$ for all $j = 1, \dots, n$.
+    Then define the length of the $j$th side of the sub-box as 
+    \[
+        \Delta x_j^{i_j} := x_j^{i_j} - x_j^{i_j - 1} \quad \forall j
+    \] 
+    Thus the volume is intuitively defined as
+    \[
+    \Delta V_{i_1, \dots, i_n} := \Delta x_1^{i_1} \cdot \dots \cdot \Delta x_n^{i_n} = \prod_{j = 1}^n (x_j^{i_j} - x_j^{i_j - 1})
+    \] 
+
+\end{definition}
+
+\begin{definition}[Upper and Lower Riemann Sums]
+    Let $f : B \to \R$ be bounded and $\mathcal{P}$ a partition of $B$. Define the \textbf{lower} and \textbf{upper} Riemann sums of $f$ with respect to $\mathcal{P}$ as
+    \[
+        L(f, \mathcal{P}) = \sum_{i_1 = 1}^{m_1} \dots \sum_{i_n = 1}^{m_n} \left(\inf_{x \in B_{i_1, \dots, i_n}} f(x)\right) \cdot \Delta V_{i_1, \dots, i_n}
+        \quad \text{and} \quad U(f, \mathcal{P}) = \sum_{i_1 = 1}^{m_1} \dots \sum_{i_n = 1}^{m_n} \left(\sup_{x \in B_{i_1, \dots, i_n}} f(x)\right) \cdot \Delta V_{i_1, \dots, i_n}
+    \]    
+\end{definition}
+
+\begin{lemma}
+    Let $f : B \to \R$ be bounded, and $\tilde{\mathcal{P}} \supset \mathcal{P}$ be a refinement. Then
+    \[
+        L(f, \mathcal{P}) \leq L(f, \mathcal{\tilde{P}}) \leq U(f, \mathcal{\tilde{P}}) \leq U(f, \mathcal{P})
+    \] 
+\end{lemma}
+
+\begin{definition}
+    Let $f : B \to \R$ be bounded, i.e. $\exists m, M$ s.t. $m \leq f(x) \leq M$, $\forall x \in \R$. Then define
+    \[
+        U(f) := \inf_{\mathcal{P}} U(f, \mathcal{P}) \quad \text{and} \quad L(f) := \sup_{\mathcal{P}} L(f, \mathcal{P})
+    \]   
+\end{definition}
+
+\begin{definition}
+    Let $f : B \to \R$ be bounded. Then we say $f$ \textbf{Riemann integrable} over $B$ provided $L(f) = U(f)$, and we define
+    \[
+        \int_B f(x) \; dV := L(f) = U(f)
+    \]   
+\end{definition}
+
+\begin{lemma}
+    Let $f : B \to \R$ be bounded. Then $f$ is Riemann integrable over $B$ iff $\forall \epsilon > 0$, $\exists \mathcal{P}$ partition
+    of $B$ such that $U(f, \mathcal{P}) - L(f, \mathcal{P}) \leq \epsilon$.    
+\end{lemma}
+
+\begin{theorem}
+    Let $f : B \to \R$ be $C(B)$. Then $f$ is Riemann integrable over $B$. (Continuity implies integrability)  
+\end{theorem}
+
+\begin{lemma}[MVT for Integrals]
+    Let $f : B \to \R$ be continuous. Then $\exists x_0 \in B$ s.t. $\int_B f(x) \; dV = f(x_0) \cdot \Vol(B)$, where
+    $\Vol(B) = \int_B 1 \; dV$. 
+\end{lemma}
+
+\subsection{Integration over General Domains}
+
+\begin{definition}
+    Given $\Omega \subset \R^n$ bounded, $f : \Omega \to \R$ bounded, we let $B \subset \R^n$ be a box.
+    We define $F : B \to \R$ as 
+    \[
+        F(x) := \begin{cases}
+            f(x) & x \in \Omega \\
+            0 & x \in B \setminus \Omega
+        \end{cases}
+    \]     
+    Then
+    \[
+        \int_{\Omega} f \; dV = \int_B F \; dV \quad \text{ when the latter exists}
+    \] 
+\end{definition}
+
+\begin{definition}[Content Zero]
+    $\Gamma \subset \R^n$ is of \textbf{Content 0} if $\forall \epsilon > 0$, there exists open box domains $B_1^0, \dots, B_N^0$
+    s.t.
+    \begin{enumerate}
+        \item $\Gamma \subset \bigcup_{i = 1}^N B_i^0$
+        \item $\sum_{i = 1}^N \Vol(B_i^0) < \epsilon$
+    \end{enumerate}  
+\end{definition}
+
+\begin{exmp}
+    If $\Gamma_1, \dots, \Gamma_n$ are all content 0, then $\Content(\Gamma_1 \cup \dots \cup \Gamma_N) = 0$  
+
+    To solve, let $\epsilon > 0$. Since $\Gamma_i$ is of content 0 for all $i = 1, \dots, N$, there exists open box domains $B_1^i, \dots, B_{M_i}^i$ s.t. $\Gamma_i \subset \bigcup_{j = 1}^{M_i} B_j^i$ and $\sum_{j = 1}^{M_i} \Vol(B_j^i) < \frac{\epsilon}{N}$ for all $i$. Then we have
+    \[
+    \Gamma_1 \cup \dots \cup \Gamma_N \subset \bigcup_{i = 1}^N \bigcup_{j = 1}^{M_i} B_j^i
+    \]
+    and
+    \[
+    \sum_{i = 1}^N \sum_{j = 1}^{M_i} \Vol(B_j^i) < \sum_{i = 1}^N \frac{\epsilon}{N} = \epsilon
+    \] 
+\end{exmp}
+
+\begin{theorem}
+    Suppose $f : B \subset \R^n \to \R$ bounded. Let $\Gamma(f) = \text{discontinuity set of } f$. 
+    
+    Then $\Content(\Gamma(f)) = 0$ iff $f$ is Riemann integrable over $B$.   
+\end{theorem}
+
+\begin{exmp}
+    $\Omega \subset \R^{n + 1}$ compact. $g : \Omega \to \R $ continuous. Then the graph of $g$, 
+    $\Gamma = \left\{ (x', g(x')) : x' \in \Omega \right\} $, satisfies $\Content(\Gamma) = 0$.
+    
+    To solve, 
+\end{exmp}
+
+\begin{corollary}
+    Suppose $f : B \to \R$ is bounded and $\Gamma(f)$ is the union of finitely many graphs of continuous functions over closed
+    domains in $\R^{n-1}$. Then $f$ is Riemann integrable over $B$.   
+\end{corollary}
+
+\begin{corollary}
+    $\Omega \subset \R^n$ closed and bounded, $\partial \Omega$ is the union of finitely many graphs of
+    $C^0$ functions over closed domains in $\R^{n - 1}$. Suppose $f : \Omega \to \R$ bounded and
+    $\Content(\Gamma(f) \cap \Omega) = 0$. Then $f$ is Riemann integrable over $\Omega$.      
+\end{corollary}
+
+\begin{corollary}
+    Suppose $\Omega$ closed and bounded, $\Omega \subset \tilde{\Omega}$ with $G \in C^1(\tilde{\Omega})$ s.t.
+    $\Omega = \{G(x) \leq 0 : x \in \tilde{\Omega} \}$ and $\partial \Omega = \{G(x) = 0 \}$ with $\nabla G(x) \neq 0$ 
+    for all $x \in \partial \Omega$. Suppose $f : \Omega \to \R$ is bounded and $\Content(\Gamma(f) \cap \Omega) = 0$.
+    Then $f$ is Riemann integrable over $\Omega$.  
+\end{corollary}
+
+
+\subsection{Basic Properties of Integrals}
+
+\begin{prop}
+    Assume $\Omega \subset \R^n$ bounded and $f, g : \Omega \to \R$ are both Riemann integrable over $\Omega$.
+    Then,
+    \begin{enumerate}
+        \item $\int_{\Omega} (f + g) \; dV = \int_{\Omega} f \; dV + \int_{\Omega} g \; dV$;
+        \item $\int_{\Omega} \alpha f \; dV = \alpha \int_{\Omega} f \; dV$ for any $\alpha \in \R$;
+        \item $f \leq g \quad \Rightarrow \quad \int_{\Omega} f \; dV \leq \int_{\Omega} g \; dV$;
+        \item If $\Omega = \Omega_1 \cup \Omega_2$, $\Omega$ bounded and $\Content(\Omega_1 \cap \Omega_2) = 0$.
+        Then $\int_{\Omega} f \; dV = \int_{\Omega_1} f \; dV + \int_{\Omega_2} f \; dV$.     
+    \end{enumerate}   
+\end{prop}
+
+\subsection{Fubini's Theorem}
+
+\begin{definition}
+    Given $f : B \to \R$ bounded, we define the iterated integrals as
+    \[
+        \int_a^b \int_c^d f(x,y) \; dy \; dx = \int_a^b \left( \int_c^d f(x,y) \; dy \right) dx \quad \text{ and } \quad \int_c^d \int_a^b f(x,y) \; dx \; dy = \int_c^d \left( \int_a^b f(x,y) \; dx \right) dy
+    \] 
+\end{definition}
+
+\begin{theorem}[Fubini for box domains]
+    Suppose $f : B \to \R$ is Riemann integrable over $B$, where $B = [a,b] \times [c,d]$.
+    \begin{enumerate}
+        \item Assume $\int_c^d f(x,y) \; dy$ exists $\forall x \in [a,b]$. Then $\int_a^b \int_c^d f(x,y) \; dy \; dx$ exists and equals $\int_B f(x,y) \; dV$.
+        \item Assume $\int_a^b f(x,y) \; dx$ exists $\forall y \in [c,d]$. Then $\int_c^d \int_a^b f(x,y) \; dx \; dy$ exists and equals $\int_B f(x,y) \; dV$.  
+    \end{enumerate}   
+    
+\end{theorem}
+
+\subsection{Fubini for General Domains}
+
+\begin{definition}[y-simple, x-simple domains]
+    A domain $\Omega \subset \R^2$ is called \textbf{$y$-simple} if it is of the form
+    \[
+        \Omega = \left\{ a \leq x \leq b : \varphi_1(x) \leq y \leq \varphi_2(x) \right\} 
+    \]   
+    where $\varphi_1, \varphi_2 \in C^0([a,b])$.
+    
+    Similarly, $\Omega \subset \R^2$ is called \textbf{$x$-simple} if it is of the form
+    \[
+        \Omega = \left\{ c \leq y \leq d : \psi_1(y) \leq x \leq \psi_2(y) \right\} 
+    \]    
+    where $\psi_1, \psi_2 \in C^0([c,d])$.
+    $\Omega \subset \R^2$ is called \textbf{simple} if it is both $y$-simple and $x$-simple. 
+\end{definition}
+
+\begin{theorem}[Fubini]
+    Suppose $\Omega \subset \R^2$ bounded and $f$ integrable over $\Omega$. Then,
+    \begin{enumerate}
+        \item If $\Omega$ is $y$-simple and $\forall x \in [a,b]$, $\int_{\varphi_1(x)}^{\varphi_2(x)} f(x,y) \; dy$ exists, then
+        \[
+            \int_{\Omega} f(x,y) \; dV = \int_a^b \int_{\varphi_1(x)}^{\varphi_2(x)} f(x,y) \; dy \; dx
+        \] 
+        \item If $\Omega$ is $x$-simple and $\forall y \in [c,d]$, $\int_{\psi_1(y)}^{\psi_2(y)} f(x,y) \; dx$ exists, then
+        \[
+            \int_{\Omega} f(x,y) \; dV = \int_c^d \int_{\psi_1(y)}^{\psi_2(y)} f(x,y) \; dx \; dy
+        \]     
+    \end{enumerate} 
+    If $\Omega$ is simple, then both hold. 
+\end{theorem}
+
+\begin{definition}
+    $\Omega \subset \R^2$ is \textbf{elementary} if $\Omega$ is $x$-simple or $y$-simple.
+\end{definition}
+
+\begin{exmp}
+    Compute $\iint_{\Omega} x \; dA$ where $\Omega = \{(x,y) \in \R^2 : 0 \leq x \leq \sqrt{\pi}, 0 \leq y \leq \sin x^2 \}$
+    
+    To solve, first note that $f(x,y) = x$ is $C^0$ on $\Omega$. Since $\Omega$ is bounded, $\iint_{\Omega} x \; dV$ exists. Also,
+    $\Omega$ is $y$-simple with $\varphi_1(x) = 0, \varphi_2(x) = \sin x^2$, $\varphi_1, \varphi_2 \in C^0([0, \sqrt{\pi}])$.
+    By Fubini,
+    \[
+        \iint_{\Omega} x \; dA = \int_0^{\sqrt{\pi}} \int_0^{\sin x^2} x \; dy \; dx = \int_0^{\sqrt{\pi}} x \sin x^2 \; dx = \frac{1}{2} \int_0^{\pi} \sin u \; du = \frac{1}{2} \left[ -\cos u \right]_0^{\pi} = 1
+    \]     
+\end{exmp}
+
+\begin{exmp}
+    Compute $I = \int_0^1 \int_y^1 e^{x^2} \; dx \; dy$.
+
+    To solve, first note $\int_y^1 e^{x^2} \; dx$ doesn't exist in closed-form. But since $e^{x^2} \in C^0(\Omega)$, $\iint_{\Omega} e^{x^2} \; dA$ exists.
+    Since $\Omega$ is simple, by Fubini,
+    \[
+        \iint_{\Omega} e^{x^2} \; dA = \int_0^1 \int_0^x e^{x^2} \; dy \; dx = \int_0^1 x e^{x^2} \; dx = \frac{1}{2} \int_0^1 e^u \; du = \frac{1}{2}(e - 1)
+    \]   
+\end{exmp}
+
+\begin{definition}
+    Some notation: Given a box domain $B \subset \R^n$, write
+    \[
+        \underline{\int_{B}} f \; dV := L(f) = \sup_{\mathcal{P}} L(f, \mathcal{P}) \quad \text{and} \quad \overline{\int_{B}} f \; dV := U(f) = \inf_{\mathcal{P}} U(f, \mathcal{P})
+    \]  
+\end{definition}
+
+\begin{theorem}
+    Let $B = B_1 \times B_2$ box domain where $B_1 \subset \R^k$ and $B_2 \subset \R^{n - k}$ also a box.
+    Suppose $f : B \to \R$ is Riemann integrable. Set
+    \[
+        \ell(x) = \underline{\int_{B_2}} f(x,y) \; dV(y) \quad u(x) = \overline{\int_{B_2}} f(x,y) \; dV(y) \quad \forall x \in B_1 \subset \R^k
+    \]      
+    and 
+    \[
+        \tilde{\ell}(y) = \underline{\int_{B_1}} f(x,y) \; dV(x) \quad \tilde{u}(y) = \overline{\int_{B_1}} f(x,y) \; dV(x) \quad \forall y \in B_2 \subset \R^{n-k}
+    \] 
+    Then $\ell(x), u(x)$ are Riemann integrable over $B_1$. Also $\tilde{\ell}(y), \tilde{u}(y)$ are Riemann integrable over $B_2$.
+    Moreover,
+    \begin{align*}
+        \int_B f(x,y) \; dV &= \int_{B_1} \ell(x) \; dV(x) = \int_{B_1} u(x) \; dV(x) \\
+        \int_B f(x,y) \; dV &= \int_{B_2} \tilde{\ell}(y) \; dV(y) = \int_{B_2} \tilde{u}(y) \; dV(y)
+    \end{align*}
+\end{theorem}
+
+\begin{definition}[$z$-simple]
+    A bounded domain $W \subset \R^3$ is called \textbf{$z$-simple} if $\exists $ an elementary region $\Omega \subset \R^2$
+    and $\eta_1, \eta_2 \in C^0(\Omega)$ s.t.
+    \[
+        W = \{ (x,y,z) \in \R^3 : (x,y) \in \Omega  \text{ and } \eta_1(x,y) \leq z \leq \eta_2(x,y) \}
+    \]       
+    It is possible to permute the coordinates and define $x$-simple and $y$-simple domains in $\R^3$ similarly.
+\end{definition}
+
+\begin{theorem}[Fubini in $\R^3$]
+    Suppose $W \subset \R^3$ is bounded, $z$-simple, and $f : W \to \R$ os Riemann integrable over $W$. Assume
+    $\forall (x,y) \in \Omega$, 
+    \[
+        \int_{\eta_1(x,y)}^{\eta_2(x,y)} f(x,y,z) \; dz \quad \text{exists}
+    \]     
+    Then it is Riemann integrable over $\Omega$, and
+    \[
+        \iiint f \; dV = \int_{\Omega} \left( \int_{\eta_1(x,y)}^{\eta_2(x,y)} f(x,y,z) \; dz \right) dV(x,y)
+    \]   
+    The same holds for $x$-simple and $y$-simple.  
+\end{theorem}
+
+\subsection{Change of Variables}
+
+\begin{definition}[Regular Partition]
+    Let $\Omega \subset \R^n$ be a domain with $\Content(\partial \Omega) = 0$. A \textbf{regular partition},
+    $\mathcal{P}_{reg} = \{D_{k}\}_{k=1}^{N} $ is a collection of subdomains $D_k \subset \Omega$; $k = 1, \dots, N$ s.t.
+    \begin{enumerate}
+        \item $\Omega = \bigcup_{k = 1}^N D_k$, $\Content(\partial D_k) = 0 \quad \forall k = 1, \dots, N$.
+        \item $\Content(D_k \cap D_\ell) = 0 \quad \forall k \neq \ell$.   
+    \end{enumerate}     
+\end{definition}
+
+\begin{definition}
+    Suppose $f : \Omega \to \R$ is bounded, where $\Omega \subset \R^n$ is a bounded domain, and $\mathcal{P}_{reg} = \{D_k\}_{k = 1}^N$.
+    Define 
+    \[
+        U(f, \mathcal{P}_{reg}) = \sum_{k = 1}^N (\sup_{D_k} f) \cdot \Vol(D_k) \quad L(f, \mathcal{P}_{reg}) = \sum_{k = 1}^N (\inf_{D_k} f) \cdot \Vol(D_k)
+    \]    
+\end{definition}
+
+\begin{lemma}
+    $f : B \subset \R^n \to \R$ is Riemann integrable over box $B$ iff $\forall \epsilon > 0$, $\exists \mathcal{P}_{reg}$ regular partition of $B$ s.t.
+    \[
+        U(f, \mathcal{P}_{reg}) - L(f, \mathcal{P}_{reg}) \leq \epsilon
+    \]   
+\end{lemma}
+
+\begin{theorem}[Change of Variables]
+    Let $\Omega, \Omega' \subset \R^n$ be bounded domains. Let $T : \Omega' \to \Omega$ be a $C^1$ map that is bijective from $\Omega' $ onto $\Omega$.
+    Then, for any $f : \Omega \to \R$ Riemann integrable over $\Omega$,
+    \[
+        \int_{\Omega} f \; dV = \int_{\Omega'} (f \circ T) \cdot |\det DT| \; dV
+    \]       
+\end{theorem}
+
+\begin{exmp}[Polar Coordinates]
+    Let $x = r \cos \theta$ and $y = r \sin \theta$. $\Omega = \{ (x, y) \in \R^2 : x^2 + y^2 \leq a^2 \}$, $\Omega' = \{(r, \theta) \in (0, a] \times [0, 2 \pi)\}$
+    Then $T : \Omega' \to \Omega$ defined by $T(r, \theta) = (r \cos \theta, r \sin \theta)$ is a $C^1$ bijection. Also, $DT = \begin{bmatrix}
+        \cos \theta & -r \sin \theta \\
+        \sin \theta & r \cos \theta
+    \end{bmatrix} $ and $\det DT = r$. Thus, for any $f : \Omega \to \R$ Riemann integrable over $\Omega$,
+    \[
+        \iint_{\{x^2 + y^2 \leq a^2\}} f(x,y) \; dA = \int_{0}^{a} \int_{0}^{2\pi} f(r \cos \theta, r \sin \theta) \cdot r \; d\theta \; dr
+    \]   
+\end{exmp}
+\begin{remark}
+    Change of variables still holds if we only assume $T : \Omega' \setminus \Gamma' \to \Omega$ is a $C^1$ bijection, where $\Content(\Gamma') = 0$  
+\end{remark}
+
+\begin{exmp}
+    Compute $\iint_{\Omega} (y-x) \cos xy \; dA$ where $\Omega$ is the region defined by $x + y = 1, x + y = 4$, $xy = -1, xy =-4$, $y \geq x$.
+    
+    To solve, first note that $f(x,y) = (y-x) \cos xy$ is $C^0$ on $\Omega$, thus it is Riemann integrable over $\Omega$.
+    Now to solve, we will perform a change of variables with $u = x + y$ and $v = xy$. Then
+    $T : \Omega' \to \Omega$ defined by $T(u, v) = (x, y)$ is a $C^1$ bijection, where $\Omega' = \{(u,v) : 1 \leq u \leq 4, -4 \leq v \leq -1\}$.
+    Also, $|\det (DT^{-1})| |\det \begin{bmatrix}
+        1 & 1 \\
+        y & x
+    \end{bmatrix}| = |x - y| = \sqrt{u^2 - 4v} = \frac{1}{|\det DT|}$. Thus by change of variables,
+    \begin{align*}
+        \iint_{\Omega} (y-x) \cos xy \; dA &= \int_{1}^{4} \int_{-4}^{-1} \sqrt{u^2 - 4v} \cos v \cdot \frac{1}{\sqrt{u^2 - 4v}} \; dv \; du \\
+        &= \int_{1}^{4} \int_{-4}^{-1} \cos v \; dv \; du = \int_{1}^{4} \left[ \sin v \right]_{-4}^{-1} du = 3(\sin (-1) - \sin(-4))
+    \end{align*}
+\end{exmp}
+
+\begin{exmp}
+    Compute $\iint_D e^{-(x^2 + y^2)} \; dA$ where $D = \{x^2 + y^2 \leq R^2\}$.
+    
+    To solve, first note that $f(x,y) = e^{-(x^2 + y^2)}$ is $C^0$ on $\Omega$, thus it is Riemann integrable over $\Omega$.
+    Now we perform a change of variables with $x = r \cos \theta$ and $y = r \sin \theta$. Then $T : \Omega' \to \Omega$ is defined as
+    $T(r, \theta) = (r \cos \theta, r \sin \theta)$. Then $T$ is a $C^1$ bijection, where $\Omega' = \{(r, \theta) : 0 \leq r \leq R, 0 \leq \theta \leq 2\pi\}$.
+    Also, $DT = \begin{bmatrix}
+        \cos \theta & -r \sin \theta \\
+        \sin \theta & r \cos \theta
+    \end{bmatrix} $ and $\det DT = r$. Thus by change of variables,
+    \[
+        \iint_{D} e^{-(x^2 + y^2)} \; dA = \int_{0}^{R} \int_{0}^{2\pi} e^{-r^2} \cdot r \; d\theta \; dr = 2\pi \int_0^R r e^{-r^2} \; dr = \pi (1 - e^{-R^2})
+    \]    
+\end{exmp}
+
+\begin{exmp}[spherical coordinates]
+    Let $x = p \sin \varphi \cos \theta$, $y = p \sin \varphi \cos \theta$, $z = p \cos \theta$
+    Let $\Omega = \{(x, y, z) : x^2 + y^2 + z^2 \leq R^2\}$ and $\Omega' = \{(p, \varphi, \theta) : 0 \leq p \leq a, 0 \leq \varphi \leq \pi, 0 \leq \theta \leq 2 \pi\}$.
+    Then for any $f : \Omega \to \R$ Riemann integrable over $\Omega$,
+    \[
+        \iiint_{\Omega} f \; dV = \iint_{\Omega'} f(p \sin \varphi \cos \theta, p \sin \varphi \sin \theta, p \cos \varphi) \cdot p^2 \sin \varphi \; dp \; d\theta \; d\varphi
+    \] 
+\end{exmp}
+
+\subsection{Improper Integrals}
+
+
+\begin{definition}
+    Suppose $A \subset \R^n$ a region, $f : A \to \R$, $f(x) \geq 0 \quad \forall x \in A$.
+    Suppose $\forall r > 0$, $f$ is bounded and integrable over $A \cap B_r(0)$. Then we define
+    \[
+        \int_{A} f \; dV := \lim_{r \to \infty} \int_{B_r(0) \cap A} f \; dV
+    \]      
+    If it exists, is is the \textbf{improper integral} of $f$ over $A$.
+\end{definition}
+
+\begin{definition}
+    Consider $\{A_k\}_{k = 1}^\infty$, $A_k \subset A$, $A_k \uparrow$. Then $\{A_k\}_{k =1}^\infty$ are
+    \textbf{exhausting regions} of $A$ if 
+    \begin{enumerate}
+        \item $A_k$ compact for all $k$;
+        \item $\Content(\partial A_k) = 0$;
+        \item $\forall r > 0$, $\exists k_0(r)$ s.t. $B_r(0) \cap A \subset A_k$, $\forall k \geq k_0(r)$.     
+    \end{enumerate} 
+
+    For example, $\{B_k(0) \cap A\}_{k = 1}^\infty$ are exhausting regions of $A$.
+\end{definition}
+
+\begin{theorem}
+    Assume $f \geq 0$ bounded and integrable on $B_r(0) \cap A$, $\forall r > 0$. Then for any exhausting regions
+    $\{A_k\}$ of $A$, 
+    \[
+        \lim_{k \to \infty} \int_{A_k} f \; dV = \lim_{r \to \infty} \int_{B_r(0) \cap A} f \; dV
+    \]      
+\end{theorem}
+
+\begin{exmp}
+    Evaluate $\int_0^\infty e^{-x^2}$.
+    
+    To solve, first note that $f(x) = e^{-x^2}$ is bounded and integrable over $[0, r]$ for all $r > 0$. Thus $\int_0^\infty e^{-x^2}$ exists. 
+    Also, $\{[0, k]\}_{k = 1}^\infty$ are exhausting regions of $[0, \infty)$. Thus,
+    \begin{align*}
+        \left(\int_0^\infty e^{-x^2} \; dx \right)^2 = \int_0^\infty e^{-x^2} \; dx \cdot \int_0^\infty e^{-y^2} \; dy &= \lim_{k \to \infty} \iint_{[0, k]^2} e^{-(x^2 + y^2)} \; dA \\
+        &= \lim_{k \to \infty} \int_0^k \int_0^k e^{-(x^2 + y^2)} \; dy \; dx = \lim_{k \to \infty} \frac{\pi}{2} \int_0^k r e^{-r^2} \; dr = \frac{\pi}{4}
+    \end{align*}
+    Therefore $\int_0^\infty e^{-x^2} \; dx = \frac{\sqrt{\pi}}{2}$.
+\end{exmp}
+
+\begin{definition}
+    Given $f : A \to \R$, define $f^+ = \max\{f, 0\}$ and $f^- = \max\{-f, 0\}$. Then $f = f^+ - f^-$ and $|f| = f^+ + f^-$. 
+    iF both $\int_A f^+ \; dV$ and $\int_A f^- \; dV$ exist, then f integrable over $A$ and 
+    \[
+        \int_{A} f \; dV = \int_A f^+ \; dV - \int_A f^- \; dV
+    \] 
+\end{definition}
+
+\section{Vector Fields, Curves, and Surfaces}
+
+\subsection{Path Integrals/ Line Integrals}
+
+\begin{definition}
+    A mapping $\gamma : [a,b] \to \R^n$ is called $C^1([a,b])$ if $\gamma \in C^1(a,b)$ and
+    \[
+        \lim_{t \to a^+} \frac{\gamma(t) - \gamma(a)}{t - a} = \gamma'(a^+) \quad \text{and} \quad \lim_{t \to b^-} \frac{\gamma(t) - \gamma(b)}{t - b} = \gamma'(b^-)
+    \]  
+
+    $\gamma : [a,b] \to \R^n$ is a \textbf{parameteric curve} in $\R^n$ if $\gamma \in C^1([a,b])$.
+    Then
+    \[
+        \gamma(t) = (x_1(t), x_2(t), \dots, x_n(t)) \quad \text{ and } \quad \gamma'(t) = (x_1'(t), x_2'(t), \dots, x_n'(t)) \text{ is the tangent vector}
+    \] 
+\end{definition}
+
+\begin{definition}
+    Let $\gamma : [a,b] \to \R^n$ be a continuous map. Then $\gamma$ is \text{piecewise} $C^1$ if it is $C^1$ on each subinterval of a partition of $[a,b]$.
+    i.e. it has finitely many "corners"/non-differentiable points.
+
+    We say $\gamma $ is \textbf{regular} if $\gamma \in C^1([a,b])$ and $\gamma'(t) \neq 0$
+    for all $t \in [a,b]$. We say $\gamma$ is \textbf{piecewise regular} if it is regular on each subinterval of a partition of $[a,b]$.    
+\end{definition}
+
+\begin{prop}
+    Let $\gamma :[a,b] \to \R^n$ be regular. Then there exists a partition $a = t_0 < t_1 < \dots < t_N = b$
+    s.t. on each $[t_{i -1}, t_i]$, $i = 1, \dots, N$, there is a $j$ s.t. $t \mapsto x_{j_i}(t)$ is $C^1$ invertible
+    and for $t \in [t_{i -1}, t_i]$, $\gamma(t) = (x_1(x_{j_i}(t)), \dots, x_{j_{i - 1}}(x_{j_i}(t)), x_{j_i}(t), x_{j_{i + 1}}(x_{j_i}(t)),
+     \dots, x_n(x_{j_i}(t)))$. i.e. $\gamma$ is a graph over $x_{j_i}$.           
+\end{prop}
+
+\begin{definition}
+    For each piecewise $C^1$ curve $\gamma$, we define the \textbf{length} of $\gamma$ as
+    \[
+        L(\gamma) := \sum_{i = 1}^n \int_{a_{i-1}}^{a_i} \| \gamma'(t) \| \; dt = \sum_{i =1}^n \int_{a_{i-1}}^{a_i} \sqrt{(x_1'(t))^2 + \dots + (x_n'(t))^2} \; dt \quad \footnote{Proof follows from MVT} 
+    \]   
+\end{definition}
+
+\begin{definition}[Reparameterization]
+    Let $\gamma : [a,b] \to \R^n$ be $C^1$. $\tilde{\gamma} : [c,d] \to \R^n$ is a \textbf{reparameterization} of $\gamma$
+    if there exists a $C^1$ bijection $h : [c,d] \to [a,b]$ s.t. $\tilde{\gamma}(t) = \gamma(h(t))$.
+    
+    Note then $\tilde{\gamma}'(t) = h'(t) \cdot \gamma'(h(t))$. Thus, if $\gamma$ is regular and $h'(t) > 0$ for all $t$, then $\tilde{\gamma}$ is also regular.
+\end{definition}
+
+\begin{theorem}
+    Suppose $\gamma :[a,b] \to \R^n$ is a $C^1$ curve, and $\tilde{\gamma} : [c,d] \to \R^n$ is a $C^1$ reparameterization.
+    Then $L(\gamma) = L(\tilde{\gamma})$.    
+\end{theorem}
+
+\begin{definition}[arc-length parameterization]
+    Let $\gamma : [a,b] \to \R^n$ be a $C^1$ regular parameterized curve. Then define
+    \[
+        s(t) = \int_a^t \| \gamma'(u) \| \; du \in C^1([a,b]) \quad \text{and} \quad s'(t) = \| \gamma'(t) \| > 0 \quad \forall t \in [a,b] 
+    \]   
+    Then $s : [a,b] \to [0, L]$ is a $C^1$ monotone increasing bijection where $L = L(\gamma) = \int_a^b \| \gamma'(t) \| \; dt$. Thus, $s$ has a $C^1$ inverse $t(s) : [0, L] \to [a,b]$. Then $\tilde{\gamma}(s) = \gamma(t(s))$ is a reparameterization of $\gamma$ and is called the \textbf{arc-length parameterization} of $\gamma$. Note that $\|\tilde{\gamma}'(s)\| = 1$ for all $s$.  
+\end{definition}
+
+\begin{definition}
+    Let $f$ be $C^0$ in a neighbourhood of $\gamma$. The \textbf{path integral} of $f$ along $\gamma$ is defined as
+    \[
+        \int_{\gamma} f \; ds := \int_a^b f(\gamma(t)) \cdot \| \gamma'(t) \| \; dt
+    \]     
+    If we instead use arc-length to parameterize the curve, then
+    \[
+        \int_{\gamma} f \; ds = \int_0^L f(\gamma(t(s))) \; ds 
+    \] 
+    by the change of variables formula, since $s'(t) = \| \gamma'(t) \|$ 
+\end{definition}
+
+\subsection{Vector Fields and Line Integrals}
+
+\begin{definition}[Vector Field]
+    A \textbf{vector field} on $\Omega \subset \R^n$ is a map $\vec{F} : \Omega \to \R^n$. 
+\end{definition}
+
+\begin{definition}
+    The \textbf{total work} done by $\vec{F}$ along $\gamma$ is defined as
+    \[
+        \int_{\gamma} \vec{F} \; ds := \lim_{N \to \infty} \sum_{i = 1}^N \vec{F}(\gamma(t_i)) \; \Delta s_i 
+        \quad \text{ and } \quad = \int_a^b \vec{F}(\gamma(t)) \cdot \gamma'(t) \; dt \quad \text{assuming the integral exists.}
+    \] 
+\end{definition}
+
+\begin{definition}[Line Integral]
+    Let $\gamma \subset \R^n$ be a piecewise smooth path and let $\vec{F}$ be a vector field defined on a neighbourhood of $\gamma$.
+    The \textbf{line integral} of $\vec{F}$ along $\gamma$ is defined as
+    \[
+        \int_{\gamma} \vec{F} \cdot \vec{ds} = \int_a^b \vec{F}(\gamma(t)) \cdot \gamma'(t) \; dt \quad \text{if } \gamma \text{ is regular.}
+    \]     
+    Note if we let $\vec{T}(t) = \frac{\gamma'(t)}{\| \gamma'(t) \| }$ be the unit tangent field, then 
+    \[
+        \int_{\gamma} \vec{F} \cdot \vec{ds} = \int_{\gamma} \vec{F}(\gamma(t)) \cdot \vec{T}(t) \; ds \quad \text{where } ds = \| \gamma'(t) \| dt
+    \]  
+\end{definition}
+
+\begin{definition}
+    Let $\gamma :[a,b] \to \R^n$ be a piecewise $C^1$ path and $\tilde{\gamma} : [c,d] \to \R^n$ a reparameterization of
+    $\gamma$ with a bijective $C^1$ map $h : [c,d] \to [a,b]$ s.t. $\tilde{\gamma}(t) = \gamma(h(t))$. Then
+    \begin{enumerate}
+        \item $\tilde{\gamma}$ is \textbf{orientation-preserving} if $\tilde{\gamma}(c) = \gamma(a)$ and $\tilde{\gamma}(d) = \gamma(b)$;
+        \item $\tilde{\gamma}$ is \textbf{orientation-reversing} if $\tilde{\gamma}(c) = \gamma(b)$ and $\tilde{\gamma}(d) = \gamma(a)$.
+    \end{enumerate}     
+\end{definition}
+
+\begin{lemma}
+    Let $\gamma : [a,b] \to \R^n$ be a piecewise smooth path and $\tilde{\gamma} : [c,d] \to \R^n$ a reparameterization 
+    of $\gamma$. Let $\vec{F}$ be a $C^0$ vector field. Then
+    \[
+        \int_{\gamma} \vec{F} \cdot \vec{ds} = \epsilon \int_{\tilde{\gamma}} \vec{F} \cdot \vec{ds} \quad \text{where } \epsilon = 1 \text{ if } \tilde{\gamma} \text{ is orientation-preserving and } \epsilon = -1 \text{ otherwise.}
+    \]    
+\end{lemma}
+
+\subsection{Conservative Vector Fields}
+
+\begin{definition}[Conservative Vector Field]
+    $\vec{F} \in C^1(\Omega, \R^n)$ is \textbf{conservative} if $\exists f \in C^1(\Omega)$ s.t.
+    $\vec{F} = \nabla f$. 
+\end{definition}
+
+\begin{exmp}
+    $\vec{F}(x,y) = (x,y)$, $(x, y) \in \R^2$ is the Radial Vector Field. Here, set $f(x,y) = \frac{1}{2}(x^2 + y^2)$.
+    Then $\nabla f = (x, y) = \vec{F}$, so $\vec{F}$ is conservative.       
+\end{exmp}
+
+\begin{theorem}
+    Suppose $\vec{F}$ is conservative in a neighbourhood of a piecewise smooth path $\gamma$.
+    Then 
+    \[
+        \int_{\gamma} \vec{F} \cdot \vec{ds} = f(\gamma(b)) - f(\gamma(a))
+    \]   
+\end{theorem}
+\begin{corollary}
+    If $\vec{F}$ is conservative in a neighbourhood of a closed piecewise smooth path $\gamma$, then $\int_{\gamma} \vec{F} \cdot \vec{ds} = 0$.
+\end{corollary}
+
+\begin{theorem}
+    Assume $\vec{F} = (F_1, F_2, \ldots, F_n) \in C^1(\Omega, \R^n)$ is conservative. Then
+    \[
+        \frac{\partial F_i}{\partial x_j}(x) = \frac{\partial F_j}{\partial x_i}(x) \quad \forall i, j = 1, \dots, n, \forall x \in \Omega
+    \]   
+\end{theorem}
+
+\subsection{Poincaré's Lemma}
+
+\begin{lemma}
+    Suppose $g(x,y)$ is continuous defined in $\Omega \times A$, where $\Omega \subset \R^n$ open and
+    $A \subset \R^m$ compact. Assume in addition that $g \in C^1(\Omega \times A)$. Then
+    \[
+        \frac{\partial}{\partial x_i}\left(\int_{A} g(x,y) \; dy \right) = \int_A \frac{\partial }{\partial x_i}g(x,y) \; dy \quad \forall i = 1, \dots, n
+    \]      
+\end{lemma}
+
+\begin{definition}
+    $\Omega \subset \R^n$ is \textbf{star-shaped} if $\exists p_0 \in \Omega$ s.t. the line $\ell(p_0, x)$ is
+    contained in $\Omega$ for all $x \in \Omega$. i.e. $\forall x \in \Omega$, $\{(1 - t)p_0 + tx : t \in [0, 1]\} \subset \Omega$.   
+\end{definition}
+
+\begin{theorem}[Poincaré's Lemma]
+    Suppose $\Omega \subset \R^n$ is star shaped and $\vec{F} \in C^1(\Omega, \R^n)$. Then $\vec{F}$ is conservative
+    iff 
+    \[
+        \frac{\partial F_i}{\partial x_j}(x) = \frac{\partial F_j}{\partial x_i}(x) \quad \forall i, j = 1, \dots, n, \forall x \in \Omega
+    \]    
+\end{theorem}
+
+
+\subsection{Surfaces and Surface Integrals}
+
+
+\begin{definition}[Parameterized Surface]
+    A \textbf{parameterized surface} $S \subset \R^3$ is the image of a map $\Phi : D \to \R^3 $,
+    \[
+        S = \left\{ (x(u,v), y(u,v), z(u,v)) = \Phi(u,v) : (u,v) \in D \right\} 
+    \]   
+    Where $D \subset \R^2$ is some bounded domain. If $\Phi$ is $C^k$, we call $S$ a $C^k$ surface. Note that:
+    \[
+        \Phi_u = (\frac{\partial x}{\partial u}, \frac{\partial y}{\partial u}, \frac{\partial z}{\partial u}) \quad \text{and} \quad \Phi_v = (\frac{\partial x}{\partial v}, \frac{\partial y}{\partial v}, \frac{\partial z}{\partial v})
+    \]     
+    are the tangent vectors of $S$ at $\Phi(u,v)$. The tangent plane of $S$ at $\Phi(u,v)$ is the plane spanned by $\Phi_u$ and $\Phi_v$.
+\end{definition}
+
+\begin{definition}[Regular Surface]
+    We say $S$ is a \textbf{regular surface} if $\vec{\Phi_u} \times \vec{\Phi_v} \neq \vec{0}$ for all $(u,v) \in D$. 
+
+\end{definition}
+
+\begin{definition}[Area of a Surface]
+    Let $S$ be a regular $C^1$ surface parameterized by $\Phi : D \to S$. Then the area of $S$ is defined as
+    \[
+        \operatorname{area}(S) := \iint_{D} \| \vec{\Phi_u} \times \vec{\Phi_v} \| \; dA
+    \] 
+    Here,
+    \[
+        \| \vec{\Phi_u} \times \vec{\Phi_v} \| = \sqrt{\left| \frac{\partial(x,y)}{\partial(u,v)} \right|^2 + \left| \frac{\partial(y,z)}{\partial(u,v)} \right|^2 + \left| \frac{\partial(x,z)}{\partial(u,v)} \right|^2}
+    \] 
+    
+\end{definition}
+
+\begin{definition}
+    Let $S = \Phi(D)$ be a $C^1$ parameterized surface and suppose $f \in C^0(S)$, i.e. $f$ is $C^0$ in a neighbourhood of $S$ in $\R^3$, i.e. $f \circ \Phi \in C^0(D, \R^3)$.
+    Then the \textbf{surface integral} of $f$ over $S$ is defined as
+    \[
+        \iint_S f \; dS := \iint_{D} f(\Phi(u,v)) \cdot \| \vec{\Phi_u} \times \vec{\Phi_v} \| \; du \; dv
+    \]        
+\end{definition}
+
+\begin{exmp}
+    There is an important special case. Suppose $S = \left\{ (x, y, g(x,y)) : (x,y) \in D \text{ and } g \in C^1(D) \right\} $.
+    Here $(x,y) = (u,v)$, $\Phi(u,v) = (u, v, g(u,v))$, $\Phi \in C^1(D, \R^3)$. In this case
+    \[
+        \vec{\Phi_x} = (1, 0, g_x) \quad \text{and} \quad \vec{\Phi_y} = (0, 1, g_y) \quad \text{and} \quad \| \vec{\Phi_x} \times \vec{\Phi}_y \| = \sqrt{1 + g_x^2 + g_y^2} 
+    \]    
+    Then $dS = \sqrt{1 + g_x^2 + g_y^2} \; dx \; dy$ and so
+    \[
+        \iint_S f \; dS = \iint_D f(x, y, g(x,y)) \sqrt{1 + g_x^2 + g_y^2} \; dx \; dy
+    \] 
+\end{exmp}
+
+\begin{exmp}[Helicoid]
+    $D = \{0 \leq \theta \leq 2 \pi , 0 \leq r \leq 1\}$. $\Phi(r, \theta) = (r \cos \theta, r \sin \theta, \theta)$ is a $C^1$ parameterization of the helicoid. Then
+    \[
+        \vec{\Phi_r} = (\cos \theta, \sin \theta, 0) \quad \text{and} \quad \vec{\Phi_\theta} = (-r \sin \theta, r \cos \theta, 1) \quad \text{and} \quad \| \vec{\Phi_r} \times \vec{\Phi_\theta} \| = \sqrt{1 + r^2}
+    \] 
+\end{exmp}
+
+\begin{definition}
+    Let $S = \Phi(D)$ be a $C^1$ parameterized surface. We say that $S$ is \textbf{regular} if $(\vec{\Phi_u} \times \vec{\Phi_v})(u,v) \neq \vec{0}$ for all $(u,v) \in D$.
+    If $S$ is regular, then we can define the \textbf{unit normal} 
+    \[
+        \vec{n} = \frac{\pm (\Phi_u \times \Phi_v)}{\|\Phi_u \times \Phi_v\|}
+    \]  
+    The choice of $\pm$ is called the \textbf{orientation} of $S$. Note that if $S$ is regular, then $\vec{n}$ is well-defined and continuous on $S$.
+\end{definition}
+
+\begin{exmp}
+    $S$ is the graph of $g$, i.e. $S = \{(x, y, g(x,y)): (x,y) \in D \text{ and } g \in C^1(D) \}$. Then
+    \[
+        \vec{n} = \frac{\pm (-g_x, -g_y, 1)}{\sqrt{1 + g_x^2 + g_y^2}}
+    \]
+\end{exmp}
+
+\begin{definition}[Surface Integral of a Vector Field]
+    Let $F$ be a $C^0$ vector field on an oriented regular parameterized surface. Then
+    \[
+        \iint_S \vec{F} \cdot \vec{dS} := \iint_D \vec{F}(\Phi(u,v)) \cdot \vec{n} \; ds = \iint_D \vec{F}(\Phi(u,v)) \frac{\Phi_u \times \Phi_v}{\|\Phi_u \times \Phi_v\|} \cdot \| \Phi_u \times \Phi_v \|  \; du \; dv = \iint_D \vec{F}(\Phi(u,v)) \cdot (\Phi_u \times \Phi_v) \; du \; dv
+    \] 
+\end{definition}
+
+\begin{remark}
+    The definition is independent of the choice of parameterization, modulo the choice of oerientation.
+\end{remark}
+
+\begin{definition}[reparameterization of a surface]
+    Let $\Phi : D \subset \R^2 \to S$ be a regular $C^1$ parameterization, $\tilde{\Phi} : \tilde{D} \subset \R^2 \to S$ another regular $C^1$ parameterization.
+    We say $\tilde{\Phi}$ is a \textbf{reparameterization} of $\Phi$ if there exists a $C^1$ bijection $h : \tilde{D} \to D$ s.t. $\tilde{\Phi}(u,v) = \Phi(h(u,v))$. Then
+    $\tilde{\Phi}$ is \textbf{orientation-preserving} (+) if 
+    \[
+        \frac{\Phi_u \times \Phi_v (h(s,t))}{\| \Phi_u \times \Phi_v \| \cdot (h(s,t)) } = \frac{\tilde{\Phi}_s \times \tilde{\Phi}_t(s,t)}{\| \tilde{\Phi}_s \times \tilde{\Phi}_t \| (s,t)} \quad \forall (s,t) \in \tilde{D}
+    \] 
+    and \textbf{orientation-reversing} (-) if 
+    \[
+        \frac{\Phi_u \times \Phi_v (h(s,t))}{\| \Phi_u \times \Phi_v \| \cdot (h(s,t)) } = -\frac{\tilde{\Phi}_s \times \tilde{\Phi}_t(s,t)}{\| \tilde{\Phi}_s \times \tilde{\Phi}_t \| (s,t)} \quad \forall (s,t) \in \tilde{D}
+    \] 
+    
+\end{definition}
+
+\begin{lemma}
+    Let $\tilde{\Phi}$ and $\Phi$ be as above with $h : D \to \tilde{D}$ such that 
+    $h(s,t) = (u(s,t), v(s.t)) \in C^1(\tilde{D}, D)$. Then $h$ is orientation-preserving
+    iff $\det (\frac{\partial (u,v)}{\partial (s,t)}) > 0$, and $h$ is orientation-reversing iff
+    $\det (\frac{\partial (u,v)}{\partial (s,t)}) < 0$.
+\end{lemma}
+
+\begin{prop}
+    Let $S$ be an oriented $C^1$ regular parameterized surface $S = \Phi(D)$ and 
+    $\vec{F} \circ \Phi \in C^0(D, \R^3)$. Then $\iint_S \vec{F} \cdot \vec{dS}$ is well defined
+    independent of the choice of parameterization, modulo the choice of orientation, (+) or (-).    
+\end{prop}
+
+\begin{corollary}
+    $S = \Phi(D)$ an oriented regular parameterized surface. Then 
+    \[
+        \iint_{S^\mp} \vec{F} \cdot \vec{dS} = - \iint_{S^\pm} \vec{F} \cdot \vec{dS}
+    \]  
+\end{corollary}
+
+\subsection{Green's Theorem}
+
+\begin{definition}[Regular Surface]
+    $S \subset \R^3$ is a \textbf{regular surface} with $C^1$ boundary if $S \subset \R^3$ is
+    compact and if $\forall p \in S$, $\exists r, \delta > 0$, $B_r(p) \subset \R^3$, and
+    $D = \{ -\delta < u < \delta, -\delta < v < \delta\} \subset \R^3$ and a regular map
+    $\Phi : D \to \R^3$ such that either
+    \begin{enumerate}
+        \item $S \cap B_r(p) = \Phi(D)$;
+        \item $S \cap B_r(p) = \Phi(D^+)$, where $D^+ = \{ -\delta < u < \delta, 0 \leq v < \delta\}$   
+    \end{enumerate}       
+    Points in (1) are called \textbf{interior points} of $S$ and points in (2) are called \textbf{boundary points} of $S$.
+    $\partial S := \{\text{all boundary points of } S\}$    
+\end{definition}
+
+\begin{exmp}[orientability]
+    Let $S_+^2 = \{x^2 + y^2 + z^2 = 1, z \geq 0\}$. We say that a regular surface $S$ is \textbf{orientable}
+    if there exists a unit normal $\vec{n}(p)$ at each $p \in S$ with $\vec{n} \in C^0(S, \R^3)$.     
+\end{exmp}
+
+\begin{definition}
+    We say a bounded planar domain $D \subset \R^2$ is (+) \textbf{positively oriented} if
+    $\partial D$ is oriented counter-clockwise, i.e. if the unit normal is $\vec{k} = (0,0,1)$. 
+\end{definition}
+
+\begin{theorem}[Green's Theorem]
+    Let $D \subseteq \R^2$ be a domain with piecewise $C^1$ boundary $\partial D$, and
+    $\vec{F} = (P, Q) : D \to \R^2$ a $C^1$ vector field on $D$. Then
+    \[
+        \int_{\partial D} \vec{F} \cdot \vec{ds} = \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) \; dA
+    \]      
+\end{theorem}
+
+\begin{corollary}
+    \[
+        \int_{\partial D} x \; dy = - \int_{\partial D} y \; dx = \frac{1}{2}\int_{\partial D} x \; dy - y \; dx = \operatorname{area}(D)
+    \] 
+\end{corollary}
+
+\begin{exmp}
+    Compute the area of the ellipse $\left\{ \frac{x^2}{a^2} + \frac{y^2}{b^2} \leq 1 \right\} $ using Green.
+
+    To solve, notice the boundary $\partial D$ is the ellipse $\left\{ \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1 \right\}$. We can parameterize $\partial D$ by $\gamma(t) = (a \cos t, b \sin t)$, $t \in [0, 2\pi]$. Then
+    \[
+        \int_{\partial D} x \; dy = \int_{0}^{2\pi} a \cos t \cdot b \cos t \; dt = ab \int_0^{2\pi} \cos^2 t \; dt = ab \pi
+    \]  
+\end{exmp}
+
+\begin{corollary}
+    Let $D = D_1 \setminus D_2$ and $\partial D_1$, $\partial D_2$ piecewise $C^1$ with orientations
+    induced from $D_1 + D_2$. Then if $\vec{F} = (P, Q)$ is a $C^1$ vector field on $D$ with 
+    $\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} = 0$ on $D$, then
+    \[
+        \int_{\partial D_1} \vec{F} \cdot \vec{ds} = \int_{\partial D_2} \vec{F} \cdot \vec{ds}
+    \] 
+\end{corollary}
+
+\begin{theorem}
+    If $\vec{F} = (P, Q) \in C^1$, then 
+    \[
+        \int_{\partial D} \vec{F} \cdot \vec{n} \; ds = \iint_D \left( \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} \right) \; dA
+    \]  
+\end{theorem}
+
+\subsection{Harmonic Functions}
+
+\begin{definition}[Harmonic Function]
+    Let $\Delta = \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}$ be the Laplacian. $u \in C^2(D)$ is 
+    \textbf{harmonic} if $\Delta u = 0$ on $D$.  
+\end{definition}
+
+\begin{corollary}
+    $u$ harmonic on domain $D \subset \R^2$ with piecewise $C^1$ boundary $\partial D$. Then  
+    \[
+        \iint_{D} \Delta u \; dA = \int_{\partial D} \Delta u \cdot \vec{n} \; ds = 0
+    \]  
+\end{corollary}
+
+\begin{corollary}[Green's Identities]
+    Let $\varphi, \psi \in C^2(D)$, $\partial D$ piecewise $C^1$ with positive orientation. Then
+    \begin{itemize}
+        \item \[ \iint_D \varphi \Delta \psi \; dA = - \int_{\partial D} \nabla \varphi \cdot \nabla \psi \; dA + \iint_{\partial D} \varphi \nabla \psi \cdot \vec{n} \; dA \]
+        \item \[ \iint_D \left[ \varphi \Delta \psi- \psi \Delta \varphi \right] \; dA = \int_{\partial D} \left( \varphi \nabla \psi - \psi \nabla \varphi \cdot \vec{n} \right) ds \]
+    \end{itemize}    
+    
+\end{corollary}
+
+\subsection{Stokes' Theorem}
+
+
+\begin{definition}
+    Let $\vec{F} = (F_1, F_2, F_3): \Omega \subset \R^3 \to \R^3$ be a $C^1$ vector field. Then the \textbf{curl} of $\vec{F}$ is defined as
+    \[
+        \curl \vec{F} = \nabla \times \vec{F} = \det \begin{bmatrix}
+        \vec{i} & \vec{j} & \vec{k} \\
+        \frac{\partial}{\partial x_1} & \frac{\partial}{\partial x_2} & \frac{\partial}{\partial x_3} \\
+        F_1 & F_2 & F_3
+        \end{bmatrix}
+        = \left( \frac{\partial F_3}{\partial x_2} - \frac{\partial F_2}{\partial x_3}, \frac{\partial F_1}{\partial x_3} - \frac{\partial F_3}{\partial x_1}, \frac{\partial F_2}{\partial x_1} - \frac{\partial F_1}{\partial x_2} \right)
+    \]    
+\end{definition}
+
+\begin{theorem}[Stokes]
+    Let $S$ be a compact regular oriented surface with (+) orientation and piecewise $C^1$ boundary $\partial S$. Let $F : S \to \R^3$ be a $C^1$ vector field.
+    Then
+    \[
+        \iint_S \curl \vec{F} \cdot \vec{dS} = \int_{\partial S} \vec{F} \cdot \vec{ds}
+    \]      
+\end{theorem}
+
+\begin{remark}
+    Note, 
+    \[
+        \iint_S \curl \vec{F} \cdot \vec{dS} = \iint_S \curl \vec{F} \cdot \vec{n} \; dS
+    \] 
+\end{remark}
+
+\begin{exmp}
+    $\vec{F} = (P, Q, 0)$. Then $F_3 = 0$ and $P = P(x, y), Q = Q(x, y)$, so $\curl \vec{F} = \left( 0, 0, \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right)$.
+    Then we can see Green's theorem is a really just a special case of Stokes' theorem, since
+    \[
+        \left( 0, 0, \frac{\partial Q}{ \partial x} - \frac{\partial P}{\partial y} \right) \cdot \vec{k} = \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}
+    \]    
+\end{exmp}
+
+\begin{corollary}
+    Suppose $S_1, S_2$ are two oriented surfaces with $\partial S_1 = \partial S_2 = \gamma$, and suppose $S_1$ and $S_2$ induce 
+    opposite orientations on $\gamma$. Then, for any $\vec{F} \in C^1$,
+    \[
+        \iint_{S_1} \curl \vec{F} \cdot \vec{dS} = - \iint_{S_2} \curl \vec{F} \cdot \vec{dS}
+    \]      
+\end{corollary}
+
+\begin{corollary}
+    If $S$ is a compact, oriented surface with $\partial S = \emptyset$ and $\vec{F} \in C^1(S)$, then
+    \[
+        \iint_S \curl \vec{F} \cdot \vec{dS} = 0
+    \]  
+\end{corollary}
+
+\begin{corollary}
+    Suppose $\vec{F} = \nabla F$ for some $f \in C^2$ and $S$ is an oriented surface with $\partial S = \gamma_1 - \gamma_2$.
+    Then,
+    \[
+        \int_{\gamma_1} \vec{F} \cdot \vec{ds} = \int_{\gamma_2} \vec{F} \cdot \vec{ds}
+    \]     
+\end{corollary}
+
+\begin{exmp}
+    Let $C = \{ y + z = 2\} \cap \{x^2 + y^2 = 1 \}$ with (+) orientation. Let $\vec{F} = (-y^2, x, z^2)$. Evaluate $\int_C \vec{F} \cdot \vec{ds}$.
+    
+    To solve, by Stokes
+    \[
+        \int_C \vec{F} \cdot \vec{ds} = \iint_S \curl \vec{F} \cdot \vec{dS}
+    \] 
+    Here $\curl \vec{F} = (0, 0, 1 + 2y)$ and $\vec{n} = \frac{(0, 1, 1)}{\sqrt{2}}$ 
+    Therefore,
+    \[
+        \int_C \vec{F} \cdot \vec{ds} = \iint_D (0, 0, 1 + 2y) \cdot (0, 1, 1) \; dA = \iint_D (1 + 2y) \; dA
+    \] 
+    To solve this integral, we make the change of variables $x = r \cos \theta, y = r \sin \theta$, $D = \{0 \leq r \leq 1, 0 \leq \theta \leq 2 \pi \}$.
+    Then we get
+    \[
+        = \int_0^{2 \pi} \int_0^1 (1 + 2r \sin \theta) r \; dr \; d \theta = \int_0^{2 \pi} \left( \frac{1}{2} + \frac{2}{3} \sin \theta \right) d\theta = \pi
+    \]   
+\end{exmp}
+
+\subsection{Divergence Theorem}
+
+\begin{theorem}[Divergence Theorem]
+    Let $W \subset \R^3$ be a bounded solid region in $\R^3$ with piecewise smooth boundary $S = \partial W$ with positive orientation and
+    $\vec{F} \in C^1(W, \R^3)$. Then
+    \[
+        \iiint_W \dive \vec{F} \; dV = \iint_S \vec{F} \cdot \vec{dS}
+    \]     
+    Here, $\dive \vec{F} := \frac{\partial F_1}{\partial x} + \frac{\partial F_2}{\partial y} + \frac{\partial F_3}{\partial z}$
+\end{theorem}
+
+\begin{corollary}
+    Under the same assumptions as above, for any $f, g \in C^2(W)$, 
+    \[
+        \iiint_W \left[g \Delta f - f \Delta g \right] \; dV = \iint_{\partial W} \left[ g \nabla f \cdot \vec{dS} - f \nabla g \cdot \vec{dS} \right]
+    \]  
+\end{corollary}
+
+\begin{corollary}
+    Suppose $W, W_1, W_2, \dots, W_k \subset \R^n$ are regions as in the divergence theorem with
+    \begin{itemize}
+        \item $W_i \cap W_j = \emptyset$ for all $i \neq j$;
+        \item $W_j \subset W^{\text{int}}$, $p_j \in W_j^{\text{int}}$ for all $j = 1, \dots, k$;  
+    \end{itemize}
+    for some points $p_1, \dots, p_k$. If $\vec{F} \in C^1(W \setminus \{p_1, \dots, p_k\})$ and $\dive \vec{F} = 0$ for all $x \in W \setminus \{p_1, \dots, p_k\}$, then
+    \[
+        \iint_{\partial W} \vec{F} \cdot \vec{dS} = \sum_{j = 1}^k \iint_{\partial W_j} \vec{F} \cdot \vec{dS}
+    \]  
+\end{corollary}
+
+\begin{exmp}[Gauss law]
+    Suppose $W \subset \R^3$ as in the divergence theorem and $\vec{F} = (x, y, z)$ and $r = \sqrt{x^2 + y^2 + z^2}$. Then, if $(0, 0, 0) \notin \partial W$,
+    \[
+        \iint_{\partial W} \frac{\vec{F}}{r^3} \cdot \vec{dS} = \begin{cases}
+        4 \pi & \text{if } (0, 0, 0) \in W^{\text{int}} \\
+        0 & \text{otherwise}
+        \end{cases}
+    \]    
+    To show this, set $\vec{F} = \frac{\vec{r}}{r^3}$. Then $\dive \vec{F} = 0$, $\vec{r} \in \R^3 \setminus (0, 0, 0)$. SO if $(0, 0, 0) \notin W$, $\vec{F} \in C^1(W)$ and by
+    the divergence theorem, $\iint_{\partial W} \frac{\vec{r}}{r^3} \cdot \vec{dS} = 0$. If $(0, 0, 0) \in W$, pick $\delta > 0$ small so that $B_{\delta}(0) \subset W^{\text{int}}$.
+    Let $\tilde{W} = W \setminus B_{\delta}(0)$. By the most recent corollary,
+    \[
+        \iint_{\partial W} \frac{\vec{r}}{r^3} \cdot \vec{dS} = \iint_{\partial B_{\delta}(0)} \frac{\vec{r}}{r^3} \cdot \vec{dS} = \iint_{\partial B_{\delta}(0)} \frac{\vec{r}}{\delta^3} \cdot \vec{dS} = \frac{1}{\delta^3} \iint_{\partial B_{\delta}(0)} \vec{r} \cdot \vec{dS} = 4 \pi
+    \]                
+\end{exmp}
+
+\subsection{Divergence Theorem Applications}
+
+\begin{exmp}
+    Compute $\iint_S \vec{F} \cdot \vec{dS}$ where $\vec{F} = (3x + z^{77}, y^2 - sinx^2 z, xz + ye^{x^3})$,  
+    $S = \partial W$ where $W = \{0 \leq x \leq 1, 0 \leq y \leq 3, 0 \leq z \leq 2 \}$.
+    
+    To solve, we can use the divergence theorem. We have $\dive F = 3 + 2y + x$. Then by the divergence theorem,
+    \begin{align*}
+        \iint_S \vec{F} \cdot \vec{dS} = \iiint_W (3 + 2y + x) \; dV &= \int_0^1 \int_0^3 \int_0^2 (3 + 2y + x) \; dz \; dy \; dx \\
+        &= \int_0^1 \int_0^3 2(3 + 2y + x) \; dy \; dx \\
+        &= \int_0^1 2(9 + 9 + 3x) \; dx \\
+        &= \int_0^1 36 + 6x \; dx = 39
+    \end{align*} 
+\end{exmp}
+
+\end{document}

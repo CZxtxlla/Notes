@@ -1,0 +1,322 @@
+% mcgillnotes3.sty
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mcgillnotes3}[2025/12/17 v14.5 Subsection-Based Indexing]
+
+%----------------------------------------------------------------------------------------
+%   1. CORE PACKAGES
+%----------------------------------------------------------------------------------------
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+%\RequirePackage{mathpazo} % Palatino Font
+%\RequirePackage{lmodern}
+\RequirePackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\RequirePackage{mathtools,amsmath,amssymb,amsthm,amsfonts}
+\mathtoolsset{showonlyrefs=false} 
+\RequirePackage{dsfont,nicefrac}
+\RequirePackage{titletoc}
+\RequirePackage[dvipsnames, svgnames, x11names]{xcolor}
+\RequirePackage{tikz,pgfplots}
+\usepgfplotslibrary{colormaps}
+\RequirePackage[labelfont=bf,textfont=md,font=small, font=footnotesize]{caption}
+\RequirePackage{capt-of}
+\RequirePackage{etoolbox}
+\RequirePackage{lettrine}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins, breakable, theorems}
+\RequirePackage{array,tabularx,booktabs}
+\RequirePackage{fancyhdr}
+\RequirePackage{setspace}
+\RequirePackage{marginnote} 
+
+% --- INDEXING PACKAGE ---
+\RequirePackage{imakeidx}
+\makeindex[columns=2, title=Index, intoc] 
+
+% --- TITLES & FORMATTING (Must be loaded here) ---
+\RequirePackage[explicit,newlinetospace]{titlesec}
+
+% --- HYPERREF (Must be loaded after most packages) ---
+\RequirePackage[colorlinks=true, linkcolor=MidnightBlue, urlcolor=MidnightBlue, citecolor=MidnightBlue]{hyperref}
+\RequirePackage{cleveref}
+
+% Line spacing
+\setstretch{1.05}
+
+%----------------------------------------------------------------------------------------
+%   2. STRICT GEOMETRY (Asymmetric Layout for Marginalia)
+%----------------------------------------------------------------------------------------
+\RequirePackage{geometry}
+
+\geometry{
+    left=13mm, 
+    textwidth=145mm, 
+    marginparsep=8mm, 
+    marginparwidth=45mm,
+    top=25mm,
+    bottom=20mm
+}
+
+% Redefine \maketitle to use centered geometry for title page
+\let\oldmaketitle\maketitle
+\renewcommand{\maketitle}{%
+  \newgeometry{margin=1in}% Symmetric margins for title page
+  \oldmaketitle
+  \restoregeometry% Return to main layout
+}
+
+% Start section numbering at 1
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
+% --- HEADERS AND FOOTERS ---
+\pagestyle{fancy}
+\fancyhfoffset[R]{8mm + 45mm} % Extend header to include margin
+\fancyhead{} 
+\fancyhead[L]{\small \sffamily \color{gray} \rightmark} 
+\fancyhead[R]{\small \bfseries \thepage} 
+\fancyfoot{} 
+\renewcommand{\headrulewidth}{0pt}
+
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+
+%----------------------------------------------------------------------------------------
+%   3. SUBSECTION TITLE CAPTURE FOR INDEXING
+%----------------------------------------------------------------------------------------
+
+% Initialize variable for Subsection Name
+\newcommand{\currentSubsectionName}{Introduction}
+
+% 1. Format SECTION
+% When a new Section starts, we reset the Subsection Name to "Introduction"
+% This handles words defined before the first subsection appears.
+\titleformat{\section}
+  {\normalfont\Large\sffamily\bfseries\color{MidnightBlue}} % Format
+  {\thesection} % Label
+  {1em} % Separator
+  {#1\gdef\currentSubsectionName{Introduction}} % Title Code + Reset Subsec Name
+
+% 2. Format SUBSECTION
+% We capture the subsection title immediately here
+\titleformat{\subsection}
+  {\normalfont\large\sffamily\bfseries\color{MidnightBlue}}
+  {\thesubsection}
+  {1em}
+  {#1\gdef\currentSubsectionName{#1}} % Capture Title
+
+%----------------------------------------------------------------------------------------
+%   4. MARGINALIA & FOOTNOTES SETTINGS
+%----------------------------------------------------------------------------------------
+\let\oldfootnote\footnote
+\newcounter{sidenote}
+\renewcommand{\footnote}[1]{%
+  \stepcounter{sidenote}%
+  \textsuperscript{\thesidenote}%
+  \marginnote{\textsuperscript{\thesidenote}\footnotesize\sffamily\color{gray!40!black} #1}%
+}
+
+% Adjust font size for margin notes
+\renewcommand*{\marginfont}{\footnotesize\sffamily\color{gray!40!black}}
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{\raggedright}
+
+% Fix numbering
+\renewcommand{\thefootnote}{\arabic{footnote}}
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+
+% Define marginfigure environment
+\newcounter{marginfigure}
+\renewcommand{\themarginfigure}{\arabic{marginfigure}}
+\newenvironment{marginfigure}[1][0pt]{%
+  \begin{lrbox}{\@tempboxa}%
+    \begin{minipage}{\marginparwidth}%
+    \centering
+    \captionsetup{type=figure}%
+}{%
+    \end{minipage}%
+  \end{lrbox}%
+  \marginnote{\usebox{\@tempboxa}}%
+}
+
+%----------------------------------------------------------------------------------------
+%   5. COLORS
+%----------------------------------------------------------------------------------------
+% Hayek Colors
+\definecolor{hayekRed}{RGB}{128, 0, 0}       
+\definecolor{hayekRedBack}{RGB}{250, 235, 235} 
+
+% Proof Color
+\definecolor{proofGray}{RGB}{240, 240, 240} 
+
+% Retained Palette
+\definecolor{propPurple}{RGB}{130, 0, 150}
+\definecolor{propBack}{RGB}{250, 240, 250}
+\definecolor{lemGreen}{RGB}{34, 120, 69}
+\definecolor{lemBack}{RGB}{232, 248, 238}
+\definecolor{defGreen}{RGB}{160, 115, 50}   
+\definecolor{defBack}{RGB}{252, 248, 240}
+\definecolor{goalBlue}{RGB}{70, 130, 180}
+\definecolor{goalBack}{RGB}{240, 248, 255}
+\definecolor{exOrange}{RGB}{203, 155, 91}
+\definecolor{exBack}{RGB}{254, 247, 239}
+
+%----------------------------------------------------------------------------------------
+%   6. THEOREMS & ENVIRONMENTS (HAYEK STYLE)
+%----------------------------------------------------------------------------------------
+\newcounter{thm}[subsection]
+\renewcommand{\thethm}{\thesubsection.\arabic{thm}}
+
+% --- BASE HAYEK STYLE DEFINITION ---
+\tcbset{
+    hayekstyle/.style={
+        enhanced,
+        breakable,
+        arc=5pt,
+        boxrule=1pt,
+        left=10pt, right=10pt, top=8pt, bottom=10pt,
+        detach title, 
+        before upper={\bfseries\tcbtitle.\quad\normalfont}, 
+        coltitle=black,
+        before skip=12pt, after skip=12pt
+    }
+}
+
+% --- THEOREM BOX ---
+\newtcolorbox{thm}[1][]{
+    hayekstyle,
+    colframe=hayekRed,
+    colback=hayekRedBack,
+    title={Theorem \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
+    fonttitle=\bfseries\color{hayekRed}
+}
+
+% --- PROPOSITION BOX ---
+\newtcolorbox{prop}[1][]{
+    hayekstyle,
+    colframe=propPurple,
+    colback=propBack,
+    title={Proposition \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
+    fonttitle=\bfseries\color{propPurple}
+}
+
+% --- LEMMA BOX ---
+\newtcolorbox{lem}[1][]{
+    hayekstyle,
+    colframe=lemGreen,
+    colback=lemBack,
+    title={Lemma \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
+    fonttitle=\bfseries\color{lemGreen}
+}
+
+% --- COROLLARY BOX ---
+\newtcolorbox{cor}[1][]{
+    hayekstyle,
+    colframe=propPurple,
+    colback=propBack,
+    title={Corollary \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
+    fonttitle=\bfseries\color{propPurple}
+}
+
+% --- DEFINITION BOX ---
+\newtcolorbox{defn}[1][]{
+    hayekstyle,
+    colframe=defGreen,
+    colback=defBack,
+    title={Definition \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
+    fonttitle=\bfseries\color{defGreen}
+}
+
+% --- EXAMPLE BOX ---
+\newtcolorbox{exmp}[1][]{
+    hayekstyle,
+    colframe=black,
+    colback=white,
+    title={Example \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
+    fonttitle=\bfseries\color{black}
+}
+
+% --- UPDATED GOAL/QUESTION/FACT/MOTIVATION BOX (Uniform Blue) ---
+\newtcolorbox{goal}[1][goal]{
+    hayekstyle,
+    colframe=goalBlue,
+    colback=goalBack,
+    title={%
+        \ifstrequal{#1}{question}{Question}{%
+        \ifstrequal{#1}{fact}{Fact}{%
+        \ifstrequal{#1}{motivation}{Motivation}{Goal}}}%
+    },
+    fonttitle=\bfseries\color{goalBlue}
+}
+
+% --- REMARK BOX ---
+\newtcolorbox{rem}[1][]{
+    enhanced jigsaw,
+    colframe=gray!60, colback=gray!5,
+    boxrule=0pt, leftrule=2pt,
+    sharp corners, breakable,
+    left=10pt, right=10pt, top=5pt, bottom=5pt,
+    parbox=false,
+    before skip=10pt, after skip=10pt,
+    title={Remark \refstepcounter{thm}\thethm\ifstrempty{#1}{}{~(#1)}},
+    detach title,
+    before upper={\bfseries\textcolor{gray}{Remark \thethm\ifstrempty{#1}{}{~(#1)}.}\quad\normalfont}
+}
+
+% --- PROOF ENVIRONMENT ---
+\renewenvironment{proof}[1][\proofname]{%
+    \tcolorbox[
+        enhanced jigsaw,
+        colback=proofGray, 
+        colframe=proofGray, 
+        boxrule=0pt,
+        arc=5pt,
+        breakable,
+        left=10pt, right=10pt, top=10pt, bottom=10pt,
+        parbox=false,
+        before skip=12pt, after skip=12pt,
+        fontupper=\normalfont % Ensures body text is not bold
+    ]
+    \pushQED{\qed}
+    \normalfont \topsep0pt 
+    \trivlist
+    \item[\hskip\labelsep\bfseries\color{gray!60!black}#1\@addpunct{.}]\ignorespaces
+}{%
+    \popQED\endtrivlist
+    \endtcolorbox
+}
+
+%----------------------------------------------------------------------------------------
+%   7. UTILITIES
+%----------------------------------------------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}} 
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\DeclareMathOperator{\interior}{Int}
+\DeclareMathOperator{\exterior}{Ext}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\imag}{Im}
+\DeclareMathOperator{\spann}{span}
+\DeclareMathOperator{\esssup}{ess\,sup}
+\DeclareMathOperator{\essinf}{ess\,inf}
+\DeclareMathOperator{\supp}{supp}
+
+
+% --- SUBSECTION INDEXING UTILITY ---
+
+% Helper to sort subsections numerically (e.g. 1.2 comes before 1.10)
+% Format: 01-02 (Section 01, Subsection 02)
+\newcommand{\indexsortkey}{%
+  \ifnum\value{section}<10 0\fi\arabic{section}-%
+  \ifnum\value{subsection}<10 0\fi\arabic{subsection}%
+}
+
+% \newword command: Groups words under "Subsection X.Y: [Title]" in the index
+\newcommand{\newword}[1]{%
+    \textit{\textcolor{hayekRed}{#1}}% Style
+    \index{\indexsortkey @\textbf{\thesubsection: \currentSubsectionName}!#1}% Index logic
+}
