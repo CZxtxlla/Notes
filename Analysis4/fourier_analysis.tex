@@ -317,12 +317,12 @@ f \in L^1(\mathbb{T}; \C)$, $L^2(\mathbb{T}; \C) \subseteq L^1(\mathbb{T}; \C)$.
     \begin{description}
         \item[(a)] 
         \[
-            \widehat{f * g}(\zeta) = \int (f*g)(x) e^{-2 \pi i \zeta x} \; dx = \int \int f(x-y) g(y) \; dy \; e^{-2 \pi i \zeta x} \; dx
+            \widehat{f * g}(\zeta) = \int (f*g)(x) e^{-2 \pi i \zeta x} \; dx = \iint f(x-y) g(y) \; dy \; e^{-2 \pi i \zeta x} \; dx
         \]  
         Since $f, g \in L^1(\R)$, this integral is finite\footnote{b/c $\leq \| f \|_1 \| g \|_1$ } so 
         by Fubini,
         \[
-            = \int \int_{\R} f(x-y) e^{-2 \pi i \zeta (x-y)} \; dx \; g(y) e^{-2 \pi i \zeta y} \; dy
+            = \iint_{\R} f(x-y) e^{-2 \pi i \zeta (x-y)} \; dx \; g(y) e^{-2 \pi i \zeta y} \; dy
         \] 
         Using $z = x-y$, 
         \[
@@ -403,7 +403,7 @@ f \in L^1(\mathbb{T}; \C)$, $L^2(\mathbb{T}; \C) \subseteq L^1(\mathbb{T}; \C)$.
     We hope that if $f \in L^1(\R)$, then $\check{\hat{f}} = f$. However,
     \[
         \check{\hat{f}} = \int \left( \int f(z) e^{-2 \pi i \zeta z} \; dz \right) e^{2 \pi i x \zeta} \; d\zeta
-        \leq \int \int |f(z)| \; dz \; d \zeta = \infty
+        \leq \iint |f(z)| \; dz \; d \zeta = \infty
     \] 
 \end{rem}
 \begin{thm}[Fourier Inversion]
@@ -423,7 +423,7 @@ f \in L^1(\mathbb{T}; \C)$, $L^2(\mathbb{T}; \C) \subseteq L^1(\mathbb{T}; \C)$.
     If $ f \in L^1(\R)$, $\hat{f} \equiv 0 \Rightarrow f \equiv 0$ a.e. 
 \end{cor}
 \begin{proof}[Proof of Thm]
-    Let $\epsilon > 0$. Fix $x \in \R$, and define $\phi^\epsilon(\zeta) = e^{2 \pi i x \zeta} - e^{- \pi \epsilon \zeta^2}$ 
+    Let $\epsilon > 0$. Fix $x \in \R$, and define $\phi^\epsilon(\zeta) = e^{2 \pi i x \zeta} e^{- \pi \epsilon \zeta^2}$ 
     Then
     \begin{align*}
         \hat{\phi^{\epsilon}}(y) &= \int \phi^{\epsilon}(\zeta) e^{-2 \pi i y \zeta} \; d \zeta \\
@@ -464,9 +464,9 @@ f \in L^1(\mathbb{T}; \C)$, $L^2(\mathbb{T}; \C) \subseteq L^1(\mathbb{T}; \C)$.
     \end{align*}
     Therefore
     \begin{align*}
-        \int |(f * K_\epsilon)(x) - f(x)| \; dx &\leq \int \int |f(x-y) - f(x)| K_\epsilon(y) \; dy \; dx \\
-        &= \int \int |f(x-y) - f(x) | \frac{1}{\sqrt{\epsilon}} e^{-\pi (y)^2 / \epsilon} \; dy \; dx \\
-        &= \int \int |f(x - \sqrt{\epsilon}y) - f(x)| \; dx \; e^{-\pi y^2} \; dy
+        \int |(f * K_\epsilon)(x) - f(x)| \; dx &\leq \iint |f(x-y) - f(x)| K_\epsilon(y) \; dy \; dx \\
+        &= \iint |f(x-y) - f(x) | \frac{1}{\sqrt{\epsilon}} e^{-\pi (y)^2 / \epsilon} \; dy \; dx \\
+        &= \iint |f(x - \sqrt{\epsilon}y) - f(x)| \; dx \; e^{-\pi y^2} \; dy
     \end{align*} 
     Then by two DCT's, we can take $\epsilon \to 0$ inside the integral. (Finish proof in the posted notes)
 \end{proof}
@@ -737,8 +737,8 @@ to do it for $f \in L^2(\R)$ like before, and there's no easy way to compare $L^
     \end{align*}
     So $\forall g \in L^2(\R)$, $\forall \eta > 0$, $\exists \phi \in C_c^\infty(\R)$ s.t. $\| g - \phi \|_2 < \eta $.
     \begin{align*}
-        &\left| \int 2 \pi i \zeta \hat{f_n}(\zeta) g(\zeta) \; d\zeta - \int 2 \pi i \zeta \hat{f}(\zeta) g(\zeta) \; d\zeta \right| \\
-         &\leq \left| \int 2 \pi i \zeta \hat{f_n}(\zeta)(g(\zeta) - \phi(\zeta))  \; d \zeta \right| + \left| \int 2 \pi i \zeta (\hat{f_n}(\zeta) - \hat{f}(\zeta)) \phi(\zeta) \; d\zeta \right| + \left| \int 2 \pi i \zeta \hat{f}(\zeta) (\phi(\zeta) - g(\zeta)) \; d\zeta \right| \\
+        &\left| \int 2 \pi i \zeta \hat{f_n}(\zeta) g(\zeta) \; d\zeta - \int 2 \pi i \zeta \hat{f}(\zeta) g(\zeta) \; d\zeta \right| 
+        \leq \left| \int 2 \pi i \zeta \hat{f_n}(\zeta)(g(\zeta) - \phi(\zeta))  \; d \zeta \right| \\  &+ \left| \int 2 \pi i \zeta (\hat{f_n}(\zeta) - \hat{f}(\zeta)) \phi(\zeta) \; d\zeta \right| + \left| \int 2 \pi i \zeta \hat{f}(\zeta) (\phi(\zeta) - g(\zeta)) \; d\zeta \right| \\
          &\leq \| 2 \pi i (\cdot) \hat{f_n}(\cdot) \|_2 \| g - \phi \|_2 + \| 2 \pi i (\cdot) \hat{f}(\cdot) \|_2 \| g - \phi \|_2 \\
          &\leq 2 C \eta + \lim_{n \to \infty} "" = 0   
     \end{align*}    

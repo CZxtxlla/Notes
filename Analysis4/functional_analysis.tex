@@ -15,7 +15,7 @@ We will focus on $(X, \| . \| )$, a normed vector space, i.e.
 The theory will be best for Banach spaces.
 
 \begin{defn}[Banach Space]
-    $(X, \| . \| )$ is a \newword{Banach space} if it $X$ is complete as a metric space,
+    $(X, \| . \| )$ is a \newword{Banach space} if $X$ is complete as a metric space,
     with $(p(x, y) = \| x - y \| )$  
 \end{defn}
 
@@ -1369,7 +1369,7 @@ There is another well known topology on $X^*$ called the weak* topology, denoted
 which is the weak topology on $X^*$ induced by $X$. 
 
 $f_n \stackrel{*}{\to} f$ in $\sigma(X^*, X)$ iff $\forall x \in X$, $f_n(x) \to f(x)$ in $\R$. 
-Whenever $X$ is reflexive, $X \sim X^**$, so $\sigma(X^*, X) = \sigma(X^*, X^{**})$.
+Whenever $X$ is reflexive, $X \sim X^{**}$, so $\sigma(X^*, X) = \sigma(X^*, X^{**})$.
 
 \underline{Hilbert Spaces}:
 Let $\{x_{n}\}_{n=1}^{\infty} \subseteq H$. Then $x_n \rightharpoonup x$ in $H$ iff $\forall f \in H^*$, $f(x_n) \to f(x)$ in $\R$. 
@@ -1640,7 +1640,7 @@ be sequentially compact in $\sigma(X, X^*)$. We start with the general result.
     $f_{n_k}(x) \to f(x)$. By RRT, $\exists x_0 \in H_0$ s.t. $f(x) = (x, x_0)$.  
     Thus 
     \[
-        (x_{n_k}, x) \rightharpoonup (x, x_0) \quad \forall x \in H_0
+        (x, x_{n_k}) \to (x, x_0) \quad \forall x \in H_0
     \] 
     In order to upgrade this to $\forall x \in H$, let
     \[
@@ -1654,7 +1654,7 @@ be sequentially compact in $\sigma(X, X^*)$. We start with the general result.
     \begin{align*}
         (x, x_{n_k}) =& (P x + (\text{Id} - P) x, x_{n_k}) \\
         =& (\underbrace{P x}_{\in H_0}, x_{n_k}) + (\underbrace{(\text{Id} - P ) x}_{\in H_0^\perp}, \underbrace{x_{n_k}}_{\in H_0}) \\
-        \rightharpoonup& (P x, x_0) + ((\text{Id} - P) x, x_0) \\
+        \to& (P x, x_0) + ((\text{Id} - P) x, x_0) \\
         =& (x, x_0) \qedhere
     \end{align*} 
 \end{proof}
@@ -1668,8 +1668,8 @@ be sequentially compact in $\sigma(X, X^*)$. We start with the general result.
     \]  
     Applying a change of variable with $y' = x- y$, $dy' = -dy$, we get
     \begin{align*}
-        (f * g)(x) := \int_{X - \R^d} f(y') g(x - y') \; (-dy') &= \int_{-\R^d} f(y') g(x - y') \; (-dy) \\
-        &= \int_{\R^d} f(y') g(x - y') \; (-dy') = (g * f)(x)
+        (f * g)(x) := \int_{X - \R^d} f(y') g(x - y') \; (-dy') &= \int_{-\R^d} f(y') g(x - y') \; (-dy') \\
+        &= \int_{\R^d} f(y') g(x - y') \; dy' = (g * f)(x)
     \end{align*}  
 \end{defn}
 
@@ -1699,7 +1699,7 @@ be sequentially compact in $\sigma(X, X^*)$. We start with the general result.
         \| f * g \|_1 &= \int \left| f * g \right|(x) \; dx \\
         &= \int \left| \int f(x-y) g(y) \; dy \right| \; dx \\
         &= \int \left| \int F(x, y) \; dy \right| \; dx \footnote{Where $F(x, y) = f(x-y) g(y)$}\\
-        &\leq \int \int \left| F(x, y) \right| \; dy \; dx \quad \text{by Minkowski's inequality} \\
+        &\leq \iint \left| F(x, y) \right| \; dy \; dx \quad \text{by Minkowski's inequality} \\
     \end{align*}
     Observe that for a.e. $y \in \R^d$, 
     \begin{align*}
@@ -1710,7 +1710,7 @@ be sequentially compact in $\sigma(X, X^*)$. We start with the general result.
     \end{align*}  
     By Tonelli,
     \begin{align*}
-        \int \int |F(x, y)| \; dy \; dx &= \int \int |F(x, y)| \; dx \; dy \\
+        \iint |F(x, y)| \; dy \; dx &= \iint |F(x, y)| \; dx \; dy \\
         &\leq \int |g(y)| \| f \|_1 \; dy \\
         &= \| f \|_1 \| g \|_1 \\
         &\Rightarrow \| f * g \|_1 \leq \| f \|_1 \| g \|_1 \quad (*)
@@ -1732,7 +1732,7 @@ be sequentially compact in $\sigma(X, X^*)$. We start with the general result.
     So
     \begin{align*}
         |f*g|(x) &\leq \int |f(x- y)||g(y)| \; dy = \int \underbrace{|f(x-y)|^{1/p} |g(y)|}_{\in L^p(\R^d)} \underbrace{|f(x-y)|^{1/q}}_{\in L^q(\R^d)} \; dy \\
-        &\leq \left(\int |f(x-y)|^{p/p} |g(y)|^p \; dy\right)^{1/p} \left(\int |f(x-y)|^{q/q} \; dy\right)^{1/q} \quad \text{by Holder's inequality} \\
+        &\stackrel{Holder}{\leq} \left(\int |f(x-y)|^{p/p} |g(y)|^p \; dy\right)^{1/p} \left(\int |f(x-y)|^{q/q} \; dy\right)^{1/q}\\
         &= \left(\int |f(x-y)| |g(y)|^p \; dy\right)^{1/p} \| f \|_1^{1/q} \\
         &\Rightarrow |f*g|^p(x) \leq \underbrace{\left(\int |f(x-y)| |g(y)|^p \; dy\right)}_{= |f| * |g|^p(x)} \| f \|_1^{p/q} \\
         &\Rightarrow \int |f*g|^p(x) \; dx \leq \| |f| * |g|^p \|_{1} \| f \|_1^{p/q} \\
@@ -1895,7 +1895,7 @@ $\{p_{\epsilon}\}_{\epsilon>0} $ is a family of "kernels" which belong to:
         \item[(1)] $f$ continuous on $x$ therefore $\forall \eta > 0$, $\exists \delta > 0$
         s.t. $|x - y| < \delta \Rightarrow |f(x) - f(y)| < \eta$. So 
         \begin{align*}
-            |f_\epsilon(x) - f(x)| &= \left| \int f(x-y) p_\epsilon(y) \; dy  - f(x) \right| \\
+            &|f_\epsilon(x) - f(x)| = \left| \int f(x-y) p_\epsilon(y) \; dy  - f(x) \right| \\
             &= \left| \int f(x-y) p_\epsilon(y) \; dy - \int f(x) p_\epsilon (y) \; dy \right| \\
             &= \left| \int (f(x-y) - f(x)) p_\epsilon \; dy \right|  \\  
             &\leq \int_{|y| \leq \delta} |f(x-y) - f(x)| p_\epsilon(y) \; dy +
@@ -1920,9 +1920,9 @@ $\{p_{\epsilon}\}_{\epsilon>0} $ is a family of "kernels" which belong to:
         \]
         So
         \begin{align*}
-            |f_\epsilon(x) - f(x)| &\leq \int_{|y| < \delta} |f(x-y) - f(x)| p_\epsilon(y) \; dy + \int_{|y| > \delta} (|f(x-y)| + |f(x)|) p_\epsilon(y) \; dy \\
-            &\leq \sup_{x \in K} \int_{|y| < \delta} |f(x-y) - f(x)| p_\epsilon(y) \; dy + \sup_{x \in K} \int_{|y| > \delta \cap |y| \leq \epsilon} (|f(x-y)| + |f(x)|) p_\epsilon(y) \; dy \\
-            &\leq \eta + \frac{\sup}{K + B(0, 1)} |f(z)| \int_{|y| > \delta \cap |y| \leq \epsilon} p_\epsilon(y) \; dy \\
+            &|f_\epsilon(x) - f(x)| \\ &\leq \int_{|y| < \delta} |f(x-y) - f(x)| p_\epsilon(y) \; dy + \int_{|y| > \delta} (|f(x-y)| + |f(x)|) p_\epsilon(y) \; dy \\
+            &\leq \sup_{x \in K} \int_{|y| < \delta} |f(x-y) - f(x)| p_\epsilon(y) \; dy + \sup_{x \in K} \int_{\substack{|y| > \delta \\ |y| \leq \epsilon}} (|f(x-y)| + |f(x)|) p_\epsilon(y) \; dy \\
+            &\leq \eta + \sup_{z \in \overline{K + B(0, 1)}} |f(z)| \int_{\substack{|y| > \delta \\ |y| \leq \epsilon}} p_\epsilon(y) \; dy \\
         \end{align*}      
         Therefore 
         \[
