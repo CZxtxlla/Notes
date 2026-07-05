@@ -715,6 +715,28 @@ and in the case when $f$ is bounded and a.e. continuous, we can compute the Riem
     \]       
 \end{definition}
 
+\begin{ex}\textit{Change of Measure for a Normal RV}
+    
+    Let $X$ be the standard normal rv defined on some prob. space $(\Omega, \mathcal{F}, \mathbb{P})$.
+    $\Omega$ is uncountably infinite and thus $\mathbb{P}(\omega) = 0 \; \forall \omega \in \Omega$.
+    Note $\mathbb{E} X = 0 $ and $\operatorname{Var}(X) = 1$. Define $Y = X + \theta$ for some constant
+    $\theta$. Now $Y$ is a normal random variable with $\mathbb{E} Y = 1$. We want to perform a change
+    of measure such that $\tilde{\mathbb{E}} Y = 0$, i.e. change the distribution without changing the 
+    actual random variable $Y$.
+    
+    Define the random variable
+    \[
+        Z(\omega) = e^{-\theta X(\omega) - \frac{1}{2} \theta^2} \quad \text{for all } \omega \in \Omega
+    \] 
+    Note $\mathbb{E} Z = 1$ and $Z(\omega) > 0 \; \forall \omega \in \Omega$ (I will not prove this is it easy to do).
+    Now we can define
+    \[
+        \tilde{\mathbb{P}}(A) = \int_A Z(\omega) \; d \mathbb{P}(\omega) \quad \forall A \in \mathcal{F}
+    \] 
+
+    We can then prove that $Y$ is the standard normal random variable with respect to $(\Omega, \mathcal{F}, \tilde{\mathbb{P}})$
+    by computing the cdf. 
+\end{ex}
 
 \begin{theorem}[Radon-Nikodym]
     $\mathbb{P}$ and $\tilde{\mathbb{P}}$ equivalent probability measures on the same space $(\Omega, \mathcal{F})$.
@@ -726,15 +748,197 @@ and in the case when $f$ is bounded and a.e. continuous, we can compute the Riem
 \end{theorem}
 
 
-
-
-
 \subsection{Exercises}
 
 
 \section{Information and Conditioning}
 
+\subsection{Information and $\sigma$-algebras}
 
+\begin{definition}[filtration]
+    Let $\Omega$ be a nonempty set. Let $T$ be a fixed positive number and asume that for each
+    $t \in [0, T]$ there is a $\sigma$-algebra $\mathcal{F}(t)$. Assume further that for every $s < t$,
+    $\mathcal{F}(s) \subseteq \mathcal{F}(t)$. Then we call the collection of $\sigma$-algebras, $\mathcal{F}(t), \; t \in [0, T]$,
+    a \textbf{filtration}.         
+\end{definition}
+
+\begin{ex} \leavevmode
+    
+    Suppose $\Omega = C_0[0, T]$, the set of continuous functions on $[0, T]$ and that take the value zero
+    at zero. Say we get to observe a specific $\tilde{\omega} \in \Omega$ up to time $0 \leq t \leq T$.
+    Then certain subsets of $\Omega$ are resolved, like the subset $\{\omega \in \Omega : \max_{0 \leq s \leq t} \omega(s) \leq 1\}$  
+    since we can exactly tell by time $t$ whether or not $\tilde{\omega}$ is in the set or not. This subset
+    would thus go in $\mathcal{F}(t)$.    
+\end{ex}
+
+\begin{definition}
+    Let $X$ be a random variable defined on a nonempty space $\Omega$. Then the $\sigma$-algebra generated
+    by $X$, denoted $\sigma(X)$, is the collection of all subsets of $\Omega$ of the form $\{X \in B\}$,
+    where $B \in \mathcal{B}(\R)$.        
+\end{definition}
+
+\begin{definition}
+    Let $X$ be a random variable defined on a non-empty sample space $\Omega$. Let $\mathcal{G}$ be a 
+    $\sigma$-algebra of subsets of $\Omega$. If every set in $\sigma(X)$ is also in $\mathcal{G}$, then 
+    we say that $X$ is $\mathcal{G}$-measurable.
+\end{definition}
+
+A random variable is $\mathcal{G}$-measurable iff the information in $\mathcal{G}$ is sufficient to 
+determine the value of $X$. Additionally, if $X$ is $\mathcal{G}$-measurable then so is $f(X)$ where
+$f$ is any Borel measurable function. If $X$ and $Y$ are $\mathcal{G}$-measurable then so it $f(X, Y)$
+for any Borel measurable $f$, namely $X + Y$ and $XY$. 
+
+\begin{definition}
+    Let $\Omega$ be a nonempty sample space equipped with filtration $\mathcal{F}(t)$, $0 \leq t \leq T$.
+    Let $X(t)$ be a collection of random variables indexed by $t \in [0, T]$. Then we say this collection of 
+    rvs is an \textbf{adapted stochastic process} if for each $t$ the random variable $X(t)$ is 
+    $\mathcal{F}(t)$ measurable.        
+\end{definition}
+
+\subsection{Independence}
+Independence is when a random variable is independent of a $\sigma$-algebra, i.e. the $\sigma$-algebra
+gives no information about the value of the random variable. Independence is affected by the probability measure,
+whereas measurability is not affected. Independence of sets is something we have covered before, 
+$A, B$ are independent if $\mathbb{P}(A \cap B) = \mathbb{P}(A) \cdot \mathbb{P}(B)$. We want to define independence
+of rvs similarly, in that if we know $X(\omega)$ then our estimation for the distribution of $Y$ is the same as it was before.
+
+\begin{definition}[independence]
+    Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space, and $\mathcal{G}, \mathcal{H}$ two sub $\sigma$-algebras
+    of $\mathcal{F}$. Then we say these two $\sigma$-algebras are independent if
+    \[
+        \mathbb{P}(A \cap B) = \mathbb{P}(A) \cdot \mathbb{P}(B) \quad \forall A \in \mathcal{G}, B \in \mathcal{H}
+    \]      
+
+    Let $X$ and $Y$ be two random variables on this probability space. We say these random variables are independent if
+    the two $\sigma$-algebras they generate, $\sigma(X)$ and $\sigma(Y)$, are independent. We say a random variable
+    $X$ is independent of the $\sigma$-algebra $\mathcal{G}$ if $\sigma(X)$ and $\mathcal{G}$ are independent.          
+\end{definition}
+
+Note that the previous definition implies $X$ and $Y$ are independent iff for all Borel subsets $C, D \in \mathcal{B}(\R)$ 
+\[
+    \mathbb{P}\{X \in C \text{ and } Y \in D\} = \mathbb{P}\{X \in C\} \cdot \mathbb{P}\{Y \in D\}
+\]   
+
+\begin{ex}
+    Consider the stock price random variables based on the coin tosses defined before. The random variables
+    $S_2$ and $S_3$ are intuitively not independent, but we can prove it by showing
+    \[
+        p^3 = \mathbb{P}\{S_2 = 16 \text{ and } S_3 = 32\} = \mathbb{P}\{S_2 = 16\} \cdot \mathbb{P}\{S_3 = 32\} = p^5
+    \]  
+
+    Thus they are not independent, but $S_2$ and $\frac{S_3}{S_2}$ are independent because the latter only depends on the
+    last coin toss.  
+\end{ex}
+
+Independence can be extended further than just two $\sigma$-algebras / rvs to any countable sequence, where 
+the first $n$ $\sigma$-algebras / rvs are independent for all $n \geq 1$.
+
+\begin{theorem}
+    Let $X$ and $Y$ be independent random variables, and $f$ and $g$ Borel-measurable functions on $\R$. Then
+    $f(X)$ and $g(Y)$ are independent random variables.      
+\end{theorem}
+\begin{proof}
+    You can prove this by demonstrating that $\sigma(f(X)) \subseteq \sigma(X)$ and $\sigma(g(Y)) \subseteq \sigma(Y)$
+    and then use their independence.  
+\end{proof}
+
+\begin{definition}[joint distribution]
+    Let $X$ and $Y$ be two random variables. The pair of random variables $(X, Y)$ takes values in the plane
+    $\R^2$ and the \textbf{joint distribution measure} of $(X< Y)$ is given by
+    \[
+        \mu_{X, Y}(C) = \mathbb{P}\{(X, Y) \in C\} \quad \forall C \in \mathcal{B}(\R^2)
+    \]     
+    Similarly we can define a joint cdf
+    \[
+        F_{X, Y}(a, b) = \mu_{X, Y}((-\infty, a] \times (-\infty, b]) = \mathbb{P}\{X \leq a, Y \leq b\}
+    \] 
+    and joint density $f_{X, Y}(x, y)$ such that
+    \[
+        \mu_{X, Y}(C) = \int_{-\infty}^\infty \int_{-\infty}^\infty \mathbb{I}_C (x, y) f_{X, Y}(x, y) \; dy \; dx
+    \]  
+    for all Borel sets $C \subset \R^2$. This holds iff
+    \[
+        F_{X, Y}(a, b) = \int_{-\infty}^a \int_{-\infty}^b f_{X, Y}(x, y) \; dy \; dx
+    \] 
+    for all $a, b \in \R$.
+    
+    The marginal distribution measures of $X$ and $Y$ are 
+    \[
+        \mu_X(A) = \mathbb{P}\{X \in A\} = \mu_{X, Y}(A \times \R), \; \mu_Y(B) = \mathbb{P}\{Y \in B\} = \mu_{X, Y}(\R \times B)
+    \]   
+    You can also get the marginal densities by integrating out the other variable.
+\end{definition}
+
+\begin{theorem}
+    Let $X$, $Y$ be random variables. The following are equivalent:
+    \begin{enumerate}
+        \item $X$ and $Y$ are independent.
+        \item $\mu_{X, Y}(A \times B) = \mu_X(A) \cdot \mu_Y(B)$ for all $A, B \in \mathcal{B}(\R)$. 
+        \item $F_{X, Y}(a, b) = F_X(a) \cdot F_Y(b)$ for all $a, b, \in \R$.
+        \item $\mathbb{E}e^{uX + vY} = \mathbb{E}e^{uX} \cdot \mathbb{E}e^{vY}$ for $u, v \in \R$ s.t. the expectations are finite.
+        \item $f_{X, Y}(x, y) = f_X(x) \cdot f_Y(y)$ for a.e. $x, y \in \R$ if a density exists.  
+    \end{enumerate}
+    The above also imply that $\mathbb{E}[XY] = \mathbb{E}X \cdot \mathbb{E}Y$ provided $\mathbb{E}|XY| < \infty$. 
+\end{theorem}
+\begin{proof}
+    Not too difficult just rearranging defns, exercise.
+\end{proof}
+
+\begin{ex}\textit{Independent Normal RVs}
+
+    $X$ and $Y$ are independent and standard normal if they have joint density
+    \[
+        f_{X, Y}(x, y) = \frac{1}{2 \pi}e^{-\frac{1}{2}(x^2 + y^2)}
+    \]    
+    This is imply the product of the standard normal density for $X$ and $Y$.  
+\end{ex}
+
+\begin{definition}[variance, covariance]
+    Let $X$ be a rv with $\mathbb{E} |X| < \infty$. The \textbf{variance} of $X$, denoted $\operatorname{Var}(X)$ is defined
+    \[
+        \operatorname{Var}(X) = \mathbb{E}[(X - \mathbb{E}X)^2]
+    \]    
+    The standard deviation of $X$ is $\sqrt{\operatorname{Var}(X)}$. Additionally by linearity of expectation we have
+    \[
+        \operatorname{Var}(X) = \mathbb{E}[X^2] - (\mathbb{E}X)^2.
+    \]   
+
+    Letting $Y$ be another rv and assuming $\mathbb{E} X, \mathbb{E} Y, \operatorname{Var}(X), \operatorname{Var}(Y)$
+    are all finite we define the \textbf{covariance} of $X$ and $Y$ to be
+    \[
+        \operatorname{Cov}(X, Y) = \mathbb{E}[(X - \mathbb{E} X)(Y - \mathbb{E} Y)] 
+    \]     
+    Again by linearity we get
+    \[
+        \operatorname{Cov}(X, Y) = \mathbb{E}[XY] - \mathbb{E} X \cdot \mathbb{E} Y
+    \] 
+    Assume additionally that $\operatorname{Var}(X), \operatorname{Var}(Y) > 0$, then the \textbf{correlation coefficient}
+    of $X$ and $Y$ is defined
+    \[
+        \rho(X, Y) = \frac{\operatorname{Cov}(X, Y)}{\sqrt{\operatorname{Var}(X)\operatorname{Var}(Y)}}
+    \]     
+    If $\rho(X, Y) = 0$ we say that $X, Y$ are uncorrelated.  
+\end{definition}
+
+\subsection{Conditional Expectations}
+
+\subsection{Exercises}
+
+\begin{ex}\textit{Problem 1}
+
+$(\Omega, \mathcal{F}, \mathbb{P})$ a prob space, and rv $X$ is measurable with respect to the trivial $\sigma$-algebra,
+$\mathcal{F}_0 = \{\emptyset, \Omega\}$. This implies that $\sigma(X) \subseteq \mathcal{F}_0$. Thus 
+$\{\omega \in \Omega : X(\omega) \in B \} \in \{\emptyset, \Omega\}, \forall B \in \mathcal{B}_{\R}$.
+
+Suppose for contradiction $X$ is not a constant. Then there exists a $\omega_1, \omega_2 \in \Omega$ such that
+$X(\omega_1) \neq X(\omega_2)$. Let $a = X(\omega_1)$. Then $\{a\}$ is a Borel set and $\omega_1 \in X^{-1}(\{a\}) \in \{\emptyset, \Omega\}$
+thus it is non empty and must be equal to $\Omega$. Then, $\forall \omega \in \Omega, X(\omega) = a$ which is a contradiction to 
+$X(\omega_2) \neq X(\omega_1) = a$. Therefore $X$ must be constant.    
+\end{ex}
+
+\section{Brownian Motion}
+
+\subsection{Introduction}
 
 
 
