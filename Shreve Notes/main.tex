@@ -1020,10 +1020,6 @@ the first $n$ $\sigma$-algebras / rvs are independent for all $n \geq 1$.
     \] 
 \end{lemma}
 
-\begin{ex}[Normal rvs]
-    Hello
-\end{ex}
-
 \begin{definition}[martingales]
     Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a prob space, $T$ a fixed positive number, and let $\mathcal{F}(t)$, $0 \leq t \leq T$,
     be a filtration of sub $\sigma$-algebras of $\mathcal{F}$. Consider an adapted stochastic process $M(t), 0 \leq t \leq T$.
@@ -1064,14 +1060,28 @@ the first $n$ $\sigma$-algebras / rvs are independent for all $n \geq 1$.
 
 \begin{ex}\textit{Problem 1}
 
-$(\Omega, \mathcal{F}, \mathbb{P})$ a prob space, and rv $X$ is measurable with respect to the trivial $\sigma$-algebra,
-$\mathcal{F}_0 = \{\emptyset, \Omega\}$. This implies that $\sigma(X) \subseteq \mathcal{F}_0$. Thus 
-$\{\omega \in \Omega : X(\omega) \in B \} \in \{\emptyset, \Omega\}, \forall B \in \mathcal{B}_{\R}$.
+    $(\Omega, \mathcal{F}, \mathbb{P})$ a prob space, and rv $X$ is measurable with respect to the trivial $\sigma$-algebra,
+    $\mathcal{F}_0 = \{\emptyset, \Omega\}$. This implies that $\sigma(X) \subseteq \mathcal{F}_0$. Thus 
+    $\{\omega \in \Omega : X(\omega) \in B \} \in \{\emptyset, \Omega\}, \forall B \in \mathcal{B}_{\R}$.
 
-Suppose for contradiction $X$ is not a constant. Then there exists a $\omega_1, \omega_2 \in \Omega$ such that
-$X(\omega_1) \neq X(\omega_2)$. Let $a = X(\omega_1)$. Then $\{a\}$ is a Borel set and $\omega_1 \in X^{-1}(\{a\}) \in \{\emptyset, \Omega\}$
-thus it is non empty and must be equal to $\Omega$. Then, $\forall \omega \in \Omega, X(\omega) = a$ which is a contradiction to 
-$X(\omega_2) \neq X(\omega_1) = a$. Therefore $X$ must be constant. 
+    Suppose for contradiction $X$ is not a constant. Then there exists a $\omega_1, \omega_2 \in \Omega$ such that
+    $X(\omega_1) \neq X(\omega_2)$. Let $a = X(\omega_1)$. Then $\{a\}$ is a Borel set and $\omega_1 \in X^{-1}(\{a\}) \in \{\emptyset, \Omega\}$
+    thus it is non empty and must be equal to $\Omega$. Then, $\forall \omega \in \Omega, X(\omega) = a$ which is a contradiction to 
+    $X(\omega_2) \neq X(\omega_1) = a$. Therefore $X$ must be constant. 
+\end{ex}
+
+\begin{ex} \textit{Problem 2}
+    \begin{enumerate}
+        \item $\sigma(X) = \{\{ X \in B \} \; \forall B \in \mathcal{B}_{\R}\} = \{ \emptyset, \{S_2 = 4\}, \{S_2 \neq 4\}, \Omega_2\} = \{  \emptyset, \{HT, TH\}, \{TT, HH\}, \Omega_2\}$ 
+        \item $\sigma(S_1) = \{\{ S_1 \in B \} \; \forall B \in \mathcal{B}_{\R}\} = \{\emptyset, \{HH, HT\}, \{TH, TT\}, \Omega_2\}$
+        \item These $\sigma$-algebras are independent if $\tilde{\mathbb{P}}(A \cap B) = \tilde{\mathbb{P}}(A) \cdot \tilde{\mathbb{P}}(B) \quad \forall A \in \sigma(X), \forall B \in \sigma(S_1)$.
+        This is obviously true if $A = \emptyset, \Omega_2$ or $B = \emptyset, \Omega_2$ so we only check intermediate cases. This can be proved with some brute force
+        which I will not do here.
+        \item Consider $A = \{HH, HT\}, B = \{HT, TH\}$. $\mathbb{P}(A) = \frac{2}{3}, \mathbb{P}(B) = \frac{4}{9}$. Thus $\mathbb{P}(A) \cdot \mathbb{P}(B) = \frac{8}{27}$.
+        But $\mathbb{P}(A \cap B) = \mathbb{P}(\{HT\}) = \frac{2}{9} = \frac{6}{27}$, thus they are not equal.     
+    \end{enumerate}
+
+    
 \end{ex}
 
 \section{Brownian Motion}
