@@ -25,6 +25,7 @@
 \usepackage{framed}
 \usepackage{tcolorbox}
 \usepackage{xcolor} 
+\usepackage{tikz}
 % open 
 \newcommand{\open}[0]{\mathcal{O}}
 \newcommand{\topo}[0]{\mathcal{T}}
@@ -219,7 +220,7 @@ prefoothook = \endmysolbar]{sol}
 
 \begin{abstract}
 	This document contains a summary of key results, theorems, and definitions that I deem important or interesting.
-    This is not a comprehensive summary of the textbook, but a taste.
+    This is not a comprehensive summary of the textbook, but a taste...
 \end{abstract}
 
 \tableofcontents
@@ -1087,9 +1088,119 @@ the first $n$ $\sigma$-algebras / rvs are independent for all $n \geq 1$.
 \section{Brownian Motion}
 
 
+\subsection{Scaled Random Walks}
 
-\subsection{Introduction}
+This section is more about building intuition and less about specifics.
+
+We begin with a symmetric random walk. To construct it, we repeatedly toss a fair coin and denote the successive outcomes
+as $\omega = \omega_1 \omega_2 \omega_3 \dots$. Let
+\[
+    X_j = \begin{cases}
+        1 & \text{ if } \omega_j = H \\
+        0 & \text{ if } \omega_j = T
+    \end{cases}
+\]  
+and define $M_0 = 0$,
+\[
+    M_k = \sum_{j = 1}^k X_j , \quad k = 1, 2, \dots
+\] 
+The process $M_k, \; k = 1, 2, \dots$ is a \textbf{symmetric random walk}.
+
+\begin{figure}[htbp]
+    \centering % This command centers everything below it
+    
+    \begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth]
+      % Draw Axes
+      \draw[->, ultra thick] (0,-2.3) -- (0,1.4);
+      \draw[->, ultra thick] (0,0) -- (5.5,0);
+    
+      % Y-axis ticks and labels
+      \foreach \y in {-2, -1, 1} {
+        \draw[ultra thick] (-0.08,\y) -- (0.08,\y);
+        \node[left=0.15cm] at (0,\y) {\textbf{\y}};
+      }
+    
+      % X-axis ticks and labels
+      \foreach \x in {1, 2, 3, 4, 5} {
+        \draw[ultra thick] (\x,-0.08) -- (\x,0.08);
+        \node[below=0.2cm] at (\x,0) {\textbf{\x}};
+      }
+    
+      % Draw the Random Walk Path
+      \draw[ultra thick] (0,0) -- (1,1) -- (2,0) -- (3,-1) -- (4,-2) -- (5,-1);
+    
+      % Draw the points (dots) and their labels
+      \fill (0,0) circle (3.5pt) node[left=0.2cm] {$M_0$};
+      \fill (1,1) circle (3.5pt) node[above left=0.1cm] {$M_1$};
+      \fill (2,0) circle (3.5pt) node[above right=0.1cm] {$M_2$};
+      \fill (3,-1) circle (3.5pt) node[above right=0.1cm] {$M_3$};
+      \fill (4,-2) circle (3.5pt) node[right=0.2cm] {$M_4$};
+      \fill (5,-1) circle (3.5pt) node[right=0.2cm] {$M_5$};
+    \end{tikzpicture}
+    
+    % Standard LaTeX caption command (replaces the \node from the previous version)
+    \caption{\textbf{Five steps of a random walk.}}
+    
+\end{figure}
+
+For any nonnegative integers $0 = k_0 < k_1 < k_2 < \dots < k_m$ the random variables 
+\[
+    M_{k_1} = (M_{k_1} - M_{k_0}), (M_{k_2} - M_{k_1}) \dots, (M_{k_m} - M_{k_{m - 1}})
+\]  
+are independent and
+\[
+    M_{k_{i + 1}} - M_{k_i} = \sum_{j = k_{i + 1}}^{k_{i + 1}} X_j
+\] 
+is called the \textbf{increment} of the random walk. Increments have expectation $0$ and are independent if they do not overlap.
+Additionally, the variance of $M_{k_{i + 1}} - M_{k_i}$ is $k_{i + 1} - k_i$.  
+
+The symmetric walk is a martingale.
+\begin{proof}
+    \begin{align*}
+        \mathbb{E}[M_{\ell} | \mathcal{F}_k] &= \mathbb{E}[(M_{\ell} - M_{k}) + M_k | \mathcal{F}_k] \\
+        &= \mathbb{E}[ M_{\ell} - M_{k} | \mathcal{F}_k] + \mathbb{E}[M_k | \mathcal{F}_k] \\ 
+        &= \mathbb{E}[ M_{\ell} - M_{k} | \mathcal{F}_k] + M_k \\
+        &= \mathbb{E}[ M_{\ell} - M_{k} ] + M_k = M_k \qedhere
+    \end{align*}
+\end{proof}
+
+The \textbf{quadratic variation} of the symmetric random walk up to time $k$ is defined to be
+\[
+    [M, M]_k = \sum_{j = 1}^k (M_j - M_{j - 1})^2 = k
+\] 
+Note this is the same as the variance, but the variance is an average over all paths so it takes the probability of heads vs tails
+into account, whereas the quadratic variation is computed along a single path. Since it only requires one path, it can
+be calculated explicitly in practice whereas variance cannot. For a random walk the path chosen doesn't affect the 
+quadratic variation, but for other processes it might.
+
+We define the \textbf{scaled symmetric walk} by fixing a positive integer $n$ and defining
+\[
+    W^{(n)}(t) = \frac{1}{\sqrt{n}}M_{nt}
+\]  
+provided that nt is an integer. Otherwise $W^{(n)}(t)$ is the linear interpolation between the nearest values where $nt$ is
+an integer.
+
+The scaled random walk acts just like the regular random walk but with much finer time increments (n times to be exact).
+So, it will have the same expected value and variance at the same times as the regular random walk.
+
+The quadratic variation of the scaled random walk can be computed just like the standard random walk
+
+\[
+    [W^{(n)}, W^{(n)}]_t = \sum_{j = 1}^{nt} \left(W^{(n)}\left(\frac{j}{n}\right) - W^{(n)}\left(\frac{j - 1}{n}\right)\right)^2 = 
+    \sum_{j = 1}^{nt} \left[ \frac{1}{\sqrt{n}} X_j \right]^2 = t
+\] 
+
+\begin{theorem}[Central Limit]
+    As $n$ goes to $\infty$, the distribution of the scaled random walk $W^{(n)}(t)$ converges to the normal distribution with 
+    mean $0$ and variance $t$.
+\end{theorem}
+\begin{proof}
+    This can be proved using the moment generating function of the normal distribution and for the scaled random walk
+    and showing that they are equal. Refer to the book for the proof, but it's just a lot of rearranging etc...
+\end{proof}
 
 
+\subsection{Brownian Motion}
 
 \end{document}
+
