@@ -1236,5 +1236,85 @@ using the fact that $M_{nt} = H_{nt} - T_{nt}$ and $nt = H_{nt} + T_{nt}$ we can
 
 \subsection{Brownian Motion}
 
-\end{document}
+\begin{definition}[Brownian Motion]
+    Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space and for each $\omega \in \Omega$ suppose there
+    is a continuous function $W(t)$ of $t \geq 0$ such that $W(0) = 0$ and that depends on $\omega$. Then
+    $W(t), t \geq 0$ is a \textbf{Brownian motion} if for all $0 = t_0 < t_1 < \dots < t_m$ the increments
+    \[
+        W(t_1) = W(t_1) - W(t_0), W(t_2) - W(t_1), \dots, W(t_m) - W(t_{m - 1})
+    \] 
+    are independent and normally distributed with mean $0$ and variance $t_{i + 1} - t_i$  
+\end{definition}
 
+As talked about before, $W(t)$ is essentially the scaled random walk as $n$ goes to $\infty$. The scaled random walk
+has time steps and it is linear between the time steps and also only approximately normally distributed, while the
+Brownian motion is exactly normal on every interval and no linear pieces.   
+
+\begin{ex}
+    One way to think about $\omega$ is as the Brownian motion path. Suppose we wanted to calculate the probabolity of set
+    $A$ containing all $\omega$ such that the Brownian motion path satisfies $0 \leq W(0.25) \leq 0.2$. 
+    First, calculating this for the scaled random walk $W^{(100)}$, we get $A = \{\omega : 0 \leq W^{(100)}(0.25) \leq 0.2\} $  
+
+    Then the unscaled random walk $M_{25}$ must fall between $0$ and $2$ after 25 tosses, and since it can only
+    be an odd number it is the probability that $M_{25} = 1$ or $W^{(100)}(0.25) = 0.1$. Thus the coin must result
+    in any order of 13 heads and 12 tails, and the probability this occurs is $\mathbb{P}(A) = 0.1555$.
+    
+    Now for the Brownian motion, 
+    \[
+        \mathbb{P}\{0 \leq W(0.25) \leq 0.2\} = \frac{2}{2\pi}\int_{0}^{0.2} e^{-2 x^2} \; dx
+    \] 
+    These two areas are nearly the same.
+\end{ex}
+
+With some calculation, using the normal distribution density $\varphi(u) = e^{\frac{1}{2}u^2 t}$, where $t$ is the variance,
+we can determine the moment generating function for Brownian motion, i.e. for the $m$-dimensional random vector
+$(W(t_1), W(t_2), \dots, W(t_m))$.    
+\begin{align*}
+    \varphi(u_1, u_2, \dots, u_m) = \exp{ \left\{\frac{1}{2}u_m^2 (t_m - t_{m - 1})\right\}}
+    \cdot &\exp{ \left\{\frac{1}{2}(u_{m - 1} + u_m)^2 (t_{m - 1} - t_{m - 2})\right\}} \\
+    \cdots &\exp{ \left\{\frac{1}{2}(u_1 + u_2 + \dots + u_m)^2 t_1\right\}}
+\end{align*}
+
+The distribution of the Brownian motion increments can be specified by a joint density or joint mgf of the random vector
+$(W(t_1), W(t_2), \dots, W(t_m))$.
+
+\begin{theorem}[Alternative characterizations of Brownian motion]
+    Let $(\Omega, \mathcal{F}), \mathbb{P}$ be a prob space. For each $\omega \in \Omega$, assume there is a continuous function 
+    $W(t)$ of $t \geq 0$ that satisfies $W(0) = 0$ and that depends on $\omega$. The following 3 properties are equivalent.
+    \begin{enumerate}
+        \item For all $0 = t_0 < t_1 < \dots < t_m$, the increments 
+        \[
+            W(t_1) = W(t_1) - W(t_0), W(t_2) - W(t_1), \dots, W(t_m) - W(t_{m - 1})
+        \]  
+        are independent and normally distributed with mean 0 and variance $t_{i + 1} - t_i$.
+        \item For all $0 = t_0 < t_1 < \dots < t_m$ the random variables $W(t_0), W(t_1), \dots , W(t_m)$ are
+        jointly normally distributed with mean $0$ and covariance matrix
+        \[
+            \begin{bmatrix}
+            t_1 & t_1 & \dots & t_1 \\
+            t_1 & t_2 & \dots & t_2 \\
+            \vdots & \vdots & & \vdots \\
+            t_1 & t_2 & \dots & t_m
+            \end{bmatrix}
+        \] 
+        \item For all $0 = t_0 < t_1 < \dots < t_m$ the random variables $W(t_0), W(t_1), \dots , W(t_m)$ have 
+        the joint moment generating function described above.
+    \end{enumerate}   
+    If any of the following hold then $W(t)$, $t \geq 0$ is a Brownian motion.  
+\end{theorem}
+
+\begin{definition}[Filtration]
+    Let $(\Omega, \mathcal{F}), \mathbb{P}$ be a prob space with a Brownian motion $W(t), t \geq 0$. A \textbf{filtration}
+    for the Brownian motion is a collection of $\sigma$-algebras $\mathcal{F}(t), t \geq 0$, satisfying the following
+    \begin{enumerate}
+        \item (Information accumulates)
+        \item (Adaptivity)
+        \item (Independence of future increments)
+    \end{enumerate}  
+    
+\end{definition}
+
+\subsection{Quadratic Variation}
+
+
+\end{document}
