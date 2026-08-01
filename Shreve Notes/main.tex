@@ -1199,6 +1199,40 @@ The quadratic variation of the scaled random walk can be computed just like the 
     and showing that they are equal. Refer to the book for the proof, but it's just a lot of rearranging etc...
 \end{proof}
 
+Now we can use this theorem to prove the following. Assume we had a binomial asset pricing model on time
+interval $[0, t]$ such that we have chosen an integer $n$ and $nt$ is an integer. The model takes $n$ steps
+per unit of time. Assume the up factor and down factor are $u_n = 1 + \frac{\sigma}{\sqrt{n}}$ and 
+$d_n = 1 - \frac{\sigma}{\sqrt{n}}$ respectively. Then the risk neutral probabilities are \footnote{Assuming an interest rate $r = 0$}
+
+\[
+    \tilde{p} = \frac{1 + r - d_n}{u_n - d_n} = \frac{\frac{\sigma}{\sqrt{n}}}{2\frac{\sigma}{\sqrt{n}}} = \frac{1}{2} \quad \text{and} \quad
+    \tilde{q} = \frac{u_n - 1 - r}{u_n - d_n} = \frac{\frac{\sigma}{\sqrt{n}}}{2\frac{\sigma}{\sqrt{n}}}
+\] 
+
+The stock price at time $t$ is determined by the initial stock price and result of the first $nt$ coin tosses, and
+using the fact that $M_{nt} = H_{nt} - T_{nt}$ and $nt = H_{nt} + T_{nt}$ we can then get
+
+\[
+    S_n(t) = S(0) u_n^{H_{nt}} d_n^{T_{nt}} = S(0)\left(1 + \frac{\sigma}{\sqrt{n}}\right)^{\frac{1}{2}(nt + M_{nt})} \left(1 - \frac{\sigma}{\sqrt{n}}\right)^{\frac{1}{2}(nt - M_{nt})}
+\] 
+
+\begin{theorem}
+    As $n \to \infty$, the distribution of $S_n(t)$ converges to the distribution\footnote{This distribution is called log-normal, in this case with mean $-\frac{1}{2} \sigma^2 t$ and variance $\sigma^2t $  } of
+    \[
+        S(t) = S(0)e^{\sigma W(t) - \frac{1}{2}\sigma^2 t}
+    \]
+\end{theorem}
+
+\begin{proof}
+    Take the log of the $S_n(t)$ equation and use the taylor expansion of $\log(1 + x) = x - \frac{1}{2}x^2 + \mathcal{O}(x^3)$.
+    Then
+    \[
+    \log S(t) = \log S(0) + \frac{1}{2}(nt + M_{nt})\left(\frac{\sigma}{\sqrt{n}} - \frac{\sigma^2}{2n} + \mathcal{O}(n^{-3/2})\right)
+    + \frac{1}{2}(nt - M_{nt})\left(-\frac{\sigma}{\sqrt{n}} - \frac{\sigma^2}{2n} + \mathcal{O}(n^{-3/2})\right)
+    \]
+    With some simplification this gets us what we need. \qedhere
+\end{proof}
+
 
 \subsection{Brownian Motion}
 
