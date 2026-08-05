@@ -1097,7 +1097,7 @@ as $\omega = \omega_1 \omega_2 \omega_3 \dots$. Let
 \[
     X_j = \begin{cases}
         1 & \text{ if } \omega_j = H \\
-        0 & \text{ if } \omega_j = T
+        -1 & \text{ if } \omega_j = T
     \end{cases}
 \]  
 and define $M_0 = 0$,
@@ -1307,14 +1307,28 @@ $(W(t_1), W(t_2), \dots, W(t_m))$.
     Let $(\Omega, \mathcal{F}), \mathbb{P}$ be a prob space with a Brownian motion $W(t), t \geq 0$. A \textbf{filtration}
     for the Brownian motion is a collection of $\sigma$-algebras $\mathcal{F}(t), t \geq 0$, satisfying the following
     \begin{enumerate}
-        \item (Information accumulates)
-        \item (Adaptivity)
-        \item (Independence of future increments)
+        \item (Information accumulates) For $0 \leq s < t$, every set in $\mathcal{F}(s)$ is also in $\mathcal{F}(t)$  
+        \item (Adaptivity) For each $t \geq 0$, the Brownian motion at time $t$, $W(t)$, is $\mathcal{F}(t)$ measurable.    
+        \item (Independence of future increments) For $0 \leq t < u$, the increment $W(u) - W(t)$ is independent of $\mathcal{F}(t)$.   
     \end{enumerate}  
-    
 \end{definition}
 
+\begin{theorem}
+    Brownian motion is a martingale
+\end{theorem}
+\begin{proof}
+    Let $0 \leq s \leq t$ be given. Then
+    \begin{align*}
+        \mathbb{E}[W(t) | \mathcal{F}(s)] &= \mathbb{E}[(W(t) - W(s)) + W(s) | \mathcal{F}(s)] \\
+        &= \mathbb{E}[W(t) - W(s) | \mathcal{F}(s)] + \mathbb{E}[W(s) | \mathcal{F}(s)] \\
+        &= \mathbb{E}[W(t) - W(s)] + W(s) \\
+        &= W(s) \qedhere
+    \end{align*}
+\end{proof}
+
 \subsection{Quadratic Variation}
+
+
 
 
 \end{document}
