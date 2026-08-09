@@ -1328,6 +1328,59 @@ $(W(t_1), W(t_2), \dots, W(t_m))$.
 
 \subsection{Quadratic Variation}
 
+Computing the quadratic variation is easy when you have fixed time steps, like we did for the scaled random walk.
+Here, there are no fixed time steps. We will first start by computing the first order variation. In the case of a function
+$f(t)$, it is the amount of up and down oscillation undergone between time $0$ and time $T$, with the down moves
+adding to the up moves.
+
+To compute the first order variation of a function up to time $T$, we first choose a partition $\Pi= \{t_0, t_1, \dots, t_n\}$
+of $[0, T]$. This will serve as the step size, and they are not required to be equally spaced. We then define
+\[
+    FV_T(f) = \lim_{\| \Pi \| \to 0 } \sum_{j = 0}^{n - 1} |f(t_{j + 1} - f(t_j))| 
+\]    
+where $\| \Pi \| = \max_{j = 0, \dots, n - 1} (t_{j + 1} - t_j)$. Using the mean value theorem, we get
+\[
+    FV_T(f) = \lim_{\| \Pi \| \to 0 } \sum_{j = 0}^{n - 1} |f'(t_j^*)|(t_{j + 1} - t_j) = \int_0^T |f'(t)| \; dt
+\] 
+
+\begin{definition}
+    Let $f(t)$ be a function defined for $0 \leq t \leq T$. The quadratic variation of $f$ up to time $T$ is
+    \[
+        [f, f](T) = \lim_{\| \Pi \| \to 0 } \sum_{j = 0}^{n - 1}[f(t_{j + 1}) - f(t_j)]^2
+    \]     
+    where $\Pi= \{t_0, t_1, \dots, t_n\}$ and $0 = t_0 < t_1 < \dots < t_n = T$. 
+\end{definition}
+
+\begin{remark}
+    If $f$ has a continuous derivative,
+    \begin{align*}
+        [f, f](T) &= \lim_{\| \Pi \| \to 0 } \sum_{j = 0}^{n - 1}[f(t_{j + 1}) - f(t_j)]^2 = \lim_{\| \Pi \| \to 0 } \sum_{j = 0}^{n - 1}|f'(t_j^*)|^2(t_{j + 1} - t_j)^2 \\
+        &\leq \lim_{\| \Pi \| \to 0 } \| \Pi \| \sum_{j = 0}^{n - 1}|f'(t_j^*)|^2(t_{j + 1} - t_j) = \lim_{\| \Pi \| \to 0 } \| \Pi \| \cdot \lim_{\| \Pi \| \to 0} \sum_{j = 0}^{n - 1} |f'(t_j^*)|^2(t_{j + 1} - t_j) \\
+        &= \lim_{\| \Pi \| \to 0 } \| \Pi \| \int_0^T |f'(t)|^2 \; dt = 0
+    \end{align*}
+\end{remark}
+
+Functions with continuous derivatives behave nicely, but Brownian motion does not have a continuous derivative, atleast with respect
+to time.
+
+\begin{theorem}
+    Let $W$ be a Brownian motion. Then $[W, W](T) = T$ for all $T \geq 0$ almost surely.   
+\end{theorem}
+\begin{proof}
+    Given a paritition $\Pi$, define the \textit{sampled quadratic variation}
+    \[
+        Q_{\Pi} = \sum_{j = 0}^{n - 1} (W(t_{j + 1}) - W(t_j))^2
+    \]  
+    We want to show this converges to $0$ as $\| \Pi \| \to 0$. 
+    It is easy to show $\mathbb{E}Q_{\Pi} = T$. Slightly harder but just tedious you can show the variance goes to $0$,
+    and thus it converges to its ecpected value, which is $T$. 
+\end{proof}
+
+We write $dW(t) dW(t) = dt$ to represent the fact that Brownian motion accumulates quadratic variation at 
+the rate of one per unit of time. This quadratic variation is the source of the volatility in asset prices 
+driven by Brownian motion. 
+
+
 
 
 
